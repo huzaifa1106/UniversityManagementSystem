@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane style="-fx-background-color: #ADD8E6;" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="CompanyLogin.Controller">
+<AnchorPane style="-fx-background-color: #ADD8E6;" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.CompanyLogin.Controller">
 
    <VBox alignment="CENTER" layoutX="-19.0" prefHeight="600.0" prefWidth="800.0" spacing="15">
       <Label prefHeight="64.0" prefWidth="353.0" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #333;" text="    UOFG Student Management System" textAlignment="CENTER">

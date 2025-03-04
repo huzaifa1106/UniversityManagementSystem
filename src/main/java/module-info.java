@@ -2,6 +2,6 @@ module GuelphLoginPage {
     requires javafx.controls;
     requires javafx.fxml;
 
-    opens CompanyLogin to javafx.fxml;
-    exports CompanyLogin;
+    opens GUI.CompanyLogin to javafx.fxml;
+    exports GUI.CompanyLogin;
 }

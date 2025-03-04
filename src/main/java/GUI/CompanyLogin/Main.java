@@ -1,4 +1,4 @@
-package CompanyLogin;
+package GUI.CompanyLogin;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -14,7 +14,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
         // Load FXML from classpath
-        URL fxmlLocation = getClass().getResource("/CompanyLogin/LoginPage.fxml");
+        URL fxmlLocation = getClass().getResource("/GUI/CompanyLogin/LoginPage.fxml");
 
 
         if (fxmlLocation == null) {
