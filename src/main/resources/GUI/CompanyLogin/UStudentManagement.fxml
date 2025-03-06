@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0"
+            style="-fx-background-color: #f8f9fa;" xmlns="http://javafx.com/javafx/11.0.14-internal"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.CompanyLogin.UStudentManagementController">
+
+    <left>
+        <Pane prefHeight="600.0" prefWidth="181.0" style="-fx-background-color: #6A89A7;" BorderPane.alignment="CENTER">
+            <children>
+                <Button layoutX="10.0" layoutY="98.0" onAction="#loadSubjectManagement" prefHeight="62.0" prefWidth="147.0" styleClass="menu-button" text="Subject Management" />
+                <Button layoutX="10.0" layoutY="171.0" onAction="#loadCourseManagement" prefHeight="69.0" prefWidth="146.0" styleClass="menu-button" text="Course Management" />
+                <Button layoutX="11.0" layoutY="254.0" onAction="#loadStudentManagement" prefHeight="68.0" prefWidth="147.0" styleClass="menu-button" text="Student Management" />
+                <Button layoutX="12.0" layoutY="336.0" onAction="#loadFacultyManagement" prefHeight="69.0" prefWidth="145.0" styleClass="menu-button" text="Faculty Management" />
+                <Button layoutX="11.0" layoutY="419.0" onAction="#loadEventManagement" prefHeight="76.0" prefWidth="146.0" styleClass="menu-button" text="Event Management" />
+
+                <Pane layoutX="7.0" layoutY="14.0" prefHeight="73.0" prefWidth="153.0" style="-fx-background-color: #ffffff;">
+                    <children>
+                        <ImageView fitHeight="70.0" fitWidth="155.0" layoutX="6.0" layoutY="2.0">
+                            <image>
+                                <Image url="@HomeScreen.png" />
+                            </image>
+                        </ImageView>
+                    </children>
+                </Pane>
+            </children>
+        </Pane>
+    </left>
+
+
+    <center>
+        <VBox alignment="CENTER" spacing="15" style="-fx-padding: 20px;">
+            <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-padding: 5px;" text="Student Management" />
+
+            <Pane prefHeight="130.0" prefWidth="600.0" style="-fx-background-color: #ffffff; -fx-border-color: lightgray; -fx-border-width: 1; -fx-padding: 10px;">
+                <children>
+                    <Label layoutX="14.0" layoutY="14.0" text="Full Name: " style="-fx-font-weight: bold;" />
+                    <Label fx:id="studentNameLabel" layoutX="90.0" layoutY="14.0" text="John Doe" />
+
+                    <Label layoutX="14.0" layoutY="34.0" text="Student ID: " style="-fx-font-weight: bold;" />
+                    <Label fx:id="studentIDLabel" layoutX="90.0" layoutY="34.0" text="123456" />
+
+                    <Label layoutX="14.0" layoutY="54.0" text="Telephone: " style="-fx-font-weight: bold;" />
+                    <Label fx:id="studentPhoneLabel" layoutX="90.0" layoutY="54.0" text="(123) 456-7890" />
+
+                    <Label layoutX="14.0" layoutY="74.0" text="Address: " style="-fx-font-weight: bold;" />
+                    <Label fx:id="studentAddressLabel" layoutX="90.0" layoutY="74.0" text="123 Main St, City" />
+
+                    <Label layoutX="280.0" layoutY="14.0" text="Progress: " style="-fx-font-weight: bold;" />
+                    <Label fx:id="studentProgressLabel" layoutX="350.0" layoutY="14.0" text="80%" />
+
+                    <Label layoutX="280.0" layoutY="34.0" text="Thesis Title: " style="-fx-font-weight: bold;" />
+                    <Label fx:id="studentThesisLabel" layoutX="350.0" layoutY="34.0" text="AI in Modern Education" />
+
+                    <Label layoutX="280.0" layoutY="54.0" text="Email Address: " style="-fx-font-weight: bold;" />
+                    <Label fx:id="studentEmailLabel" layoutX="390.0" layoutY="54.0" text="johndoe@example.com" />
+
+                    <Label layoutX="280.0" layoutY="74.0" text="Academic Level: " style="-fx-font-weight: bold;" />
+                    <Label fx:id="studentLevelLabel" layoutX="390.0" layoutY="74.0" text="Undergraduate" />
+
+                    <ImageView fitHeight="70.0" fitWidth="70.0" layoutX="510.0" layoutY="20.0">
+                        <image>
+                            <Image url="@ProfilePicture.jpg" />
+                        </image>
+                    </ImageView>
+                </children>
+            </Pane>
+
+            <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Progress Report" />
+            <TableView fx:id="progressTable" prefHeight="130.0" prefWidth="600.0">
+                <columns>
+                    <TableColumn fx:id="colCourse" prefWidth="200.0" text="Course" />
+                    <TableColumn fx:id="colGrade" prefWidth="100.0" text="Grade" />
+                    <TableColumn fx:id="colCredits" prefWidth="100.0" text="Credits" />
+                </columns>
+            </TableView>
+
+            <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Tuition Fee" />
+            <TableView fx:id="tuitionTable" prefHeight="100.0" prefWidth="600.0">
+                <columns>
+                    <TableColumn fx:id="colSemester" prefWidth="200.0" text="Semester" />
+                    <TableColumn fx:id="colAmount" prefWidth="150.0" text="Amount Due" />
+                    <TableColumn fx:id="colStatus" prefWidth="150.0" text="Status" />
+                </columns>
+            </TableView>
+        </VBox>
+    </center>
+
+</BorderPane>

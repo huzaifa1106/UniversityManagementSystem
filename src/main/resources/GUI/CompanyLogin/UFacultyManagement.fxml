@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #f8f9fa;" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.CompanyLogin.UFacultyManagementController">
+
+    <left>
+        <VBox spacing="10" style="-fx-background-color: #6A89A7; -fx-padding: 10px;" BorderPane.alignment="CENTER">
+            <ImageView fitHeight="70.0" fitWidth="155.0">
+                <image>
+                    <Image url="@HomeScreen.png" />
+                </image>
+            </ImageView>
+            <Button mnemonicParsing="false" prefHeight="63.0" prefWidth="150.0" text="Dashboard" />
+            <Button onAction="#loadSubjectManagement" prefHeight="62.0" prefWidth="147.0" text="Subject Management" />
+            <Button onAction="#loadCourseManagement" prefHeight="69.0" prefWidth="146.0" text="Course Management" />
+            <Button onAction="#loadStudentManagement" prefHeight="68.0" prefWidth="147.0" text="Student Management" />
+            <Button onAction="#loadFacultyManagement" prefHeight="69.0" prefWidth="145.0" text="Faculty Management" />
+            <Button onAction="#loadEventManagement" prefHeight="76.0" prefWidth="146.0" text="Event Management" />
+        </VBox>
+    </left>
+
+    <center>
+        <VBox alignment="CENTER" spacing="15" style="-fx-padding: 20px;">
+            <Label style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Faculty Members" />
+
+            <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Faculty List" />
+            <TableView fx:id="facultyListTable" prefHeight="200.0" prefWidth="750.0">
+                <columns>
+                    <TableColumn fx:id="colProfilePhoto" prefWidth="111.00000953674316" text="Profile" />
+                    <TableColumn fx:id="colName" prefWidth="146.60000610351562" text="Instructor Name" />
+                    <TableColumn fx:id="colCoursesOffered" prefWidth="160.5999755859375" text="Courses Offered" />
+                    <TableColumn fx:id="colEmail" prefWidth="156.20004272460938" text="Email" />
+                </columns>
+            </TableView>
+
+            <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Faculty Details" />
+            <TableView fx:id="facultyDetailsTable" prefHeight="200.0" prefWidth="750.0">
+                <columns>
+                    <TableColumn fx:id="colDegree" prefWidth="180.3999729156494" text="Degree" />
+                    <TableColumn fx:id="colResearchInterest" prefWidth="216.4000244140625" text="Research Interest" />
+                    <TableColumn fx:id="colOfficeLocation" prefWidth="205.60000610351562" text="Office Location" />
+                </columns>
+            </TableView>
+        </VBox>
+    </center>
+
+</BorderPane>

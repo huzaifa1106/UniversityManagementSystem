@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0"
+            style="-fx-background-color: #f8f9fa;" xmlns="http://javafx.com/javafx/11.0.14-internal"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.CompanyLogin.AStudentManagementController">
+
+    <left>
+        <VBox spacing="10" style="-fx-background-color: #6A89A7; -fx-padding: 10px;" BorderPane.alignment="CENTER">
+            <ImageView fitHeight="70.0" fitWidth="155.0">
+                <image>
+                    <Image url="@HomeScreen.png" />
+                </image>
+            </ImageView>
+            <Button mnemonicParsing="false" prefHeight="63.0" prefWidth="150.0" text="Dashboard" />
+            <Button onAction="#loadSubjectManagement" prefHeight="62.0" prefWidth="147.0" text="Subject Management" />
+            <Button onAction="#loadCourseManagement" prefHeight="69.0" prefWidth="146.0" text="Course Management" />
+            <Button onAction="#loadStudentManagement" prefHeight="68.0" prefWidth="147.0" text="Student Management" />
+            <Button onAction="#loadFacultyManagement" prefHeight="69.0" prefWidth="145.0" text="Faculty Management" />
+            <Button onAction="#loadEventManagement" prefHeight="76.0" prefWidth="146.0" text="Event Management" />
+        </VBox>
+    </left>
+
+
+    <center>
+        <VBox alignment="CENTER" spacing="15" style="-fx-padding: 20px;">
+            <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-padding: 5px;" text="Admin Student Management" />
+            <Label text="Enroll Student" style="-fx-font-size: 17px; -fx-font-weight: bold;" />
+
+            <GridPane hgap="20" vgap="10" prefHeight="174.0" prefWidth="600.0"
+                      style="-fx-background-color: white; -fx-padding: 15px; -fx-border-color: lightgray; -fx-border-width: 1;">
+
+                <Label text="Full Name:" style="-fx-font-weight: bold;" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                <TextField fx:id="studentNameField" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+                <Label text="Student ID:" style="-fx-font-weight: bold;" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                <TextField fx:id="studentIDField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                <Label text="Email Address:" style="-fx-font-weight: bold;" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                <TextField fx:id="studentEmailField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+                <Label text="Telephone:" style="-fx-font-weight: bold;" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                <TextField fx:id="studentPhoneField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
+                <Label text="Address:" style="-fx-font-weight: bold;" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                <TextField fx:id="studentAddressField" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+
+                <Label text="Current Semester:" style="-fx-font-weight: bold;" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                <TextField fx:id="studentSemesterField" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+
+                <Label text="Academic Level:" style="-fx-font-weight: bold;" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                <TextField fx:id="studentLevelField" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+
+                <Label text="Profile Picture:" style="-fx-font-weight: bold;" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                <ImageView fx:id="profileImageView" fitHeight="60.0" fitWidth="60.0" GridPane.columnIndex="3" GridPane.rowIndex="3">
+                    <image>
+                        <Image url="@ProfilePicture.jpg" />
+                    </image>
+                </ImageView>
+            </GridPane>
+
+            <Button fx:id="addStudentButton" onAction="#addStudent" style="-fx-font-weight: bold;" text="Register Student" />
+
+            <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Student List" />
+            <TableView fx:id="studentTable" prefHeight="200.0" prefWidth="600.0">
+                <columns>
+                    <TableColumn fx:id="colStudentID" prefWidth="100.0" text="Student ID" />
+                    <TableColumn fx:id="colName" prefWidth="93.4000244140625" text="Full Name" />
+                    <TableColumn fx:id="colEmail" prefWidth="116.0" text="Email Address" />
+                    <TableColumn fx:id="colGrade" prefWidth="116.0" text="Grade" />
+                    <TableColumn fx:id="colTuition" prefWidth="176.0" text="Tuition Status" />
+                </columns>
+            </TableView>
+
+            <HBox alignment="CENTER" spacing="15" style="-fx-padding: 10px;">
+                <Button fx:id="editStudentButton" onAction="#editStudent" prefHeight="35.0" prefWidth="130.0" text="Edit Student" />
+                <Button fx:id="deleteStudentButton" onAction="#deleteStudent" prefHeight="35.0" prefWidth="130.0" text="Delete Student" />
+                <Button fx:id="viewStudentProfileButton" onAction="#viewStudentProfile" prefHeight="35.0" prefWidth="150.0" text="View Student Profile" />
+                <Button fx:id="manageEnrollmentButton" onAction="#manageEnrollments" prefHeight="35.0" prefWidth="150.0" text="Manage Enrollments" />
+            </HBox>
+        </VBox>
+    </center>
+</BorderPane>
