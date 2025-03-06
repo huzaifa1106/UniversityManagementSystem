@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #f8f9fa;" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.CompanyLogin.ADashboardController">
+
+    <left>
+        <VBox spacing="12" style="-fx-background-color: #6A89A7; -fx-padding: 10px;" BorderPane.alignment="CENTER">
+            <ImageView fitHeight="70.0" fitWidth="155.0">
+                <image>
+                    <Image url="@HomeScreen.png" />
+                </image>
+            </ImageView>
+            <Button onAction="#loadDashboard" prefHeight="62.0" prefWidth="147.0" text="Dashboard" />
+            <Button onAction="#loadSubjectManagement" prefHeight="62.0" prefWidth="147.0" text="Subject Management" />
+            <Button onAction="#loadCourseManagement" prefHeight="69.0" prefWidth="146.0" text="Course Management" />
+            <Button onAction="#loadStudentManagement" prefHeight="68.0" prefWidth="147.0" text="Student Management" />
+            <Button onAction="#loadFacultyManagement" prefHeight="69.0" prefWidth="145.0" text="Faculty Management" />
+            <Button onAction="#loadEventManagement" prefHeight="76.0" prefWidth="146.0" text="Event Management" />
+        </VBox>
+    </left>
+
+    <center>
+        <VBox alignment="CENTER" prefHeight="600.0" prefWidth="505.0" spacing="15" style="-fx-padding: 20px;">
+            <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-padding: 5px;" text="Dashboard Overview" />
+
+            <HBox alignment="CENTER" spacing="15">
+                <VBox alignment="CENTER" prefHeight="94.0" prefWidth="261.0" spacing="5" style="-fx-background-color: #E3F2FD; -fx-padding: 15px; -fx-border-radius: 10px; -fx-background-radius: 10px;">
+                    <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Total Students" />
+                    <Label fx:id="totalStudentsLabel" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #1565C0;" text="0" />
+                </VBox>
+            </HBox>
+
+             <VBox alignment="CENTER" spacing="5" style="-fx-background-color: #E8F5E9; -fx-padding: 15px; -fx-border-radius: 10px; -fx-background-radius: 10px;">
+                 <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Total Courses" />
+                 <Label fx:id="totalCoursesLabel" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2E7D32;" text="0" />
+             </VBox>
+
+             <VBox alignment="CENTER" prefHeight="0.0" prefWidth="176.0" spacing="5" style="-fx-background-color: #FFF3E0; -fx-padding: 15px; -fx-border-radius: 10px; -fx-background-radius: 10px;">
+                 <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Total Faculties" />
+                 <Label fx:id="totalFacultiesLabel" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #EF6C00;" text="0" />
+             </VBox>
+
+             <VBox alignment="CENTER" spacing="5" style="-fx-background-color: #FCE4EC; -fx-padding: 15px; -fx-border-radius: 10px; -fx-background-radius: 10px;">
+                 <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Total Events" />
+                 <Label fx:id="totalEventsLabel" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #AD1457;" text="0" />
+             </VBox>
+
+            <HBox alignment="CENTER" spacing="20" style="-fx-padding: 15px;" />
+
+             <VBox alignment="CENTER" prefHeight="0.0" prefWidth="274.0" spacing="10" style="-fx-background-color: white; -fx-padding: 10px; -fx-border-color: lightgray; -fx-border-width: 1;" />
+        </VBox>
+    </center>
+
+    <right>
+        <VBox alignment="CENTER" spacing="10" style="-fx-padding: 15px; -fx-background-color: #F5F5F5;">
+            <Label prefHeight="27.0" prefWidth="127.0" style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Notifications" />
+            <ListView fx:id="notificationsList" prefHeight="200.0" prefWidth="220.0" />
+              <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Upcoming Events" />
+              <TableView fx:id="upcomingEventsTable" prefHeight="200.0" prefWidth="280.0">
+                  <columns>
+                      <TableColumn fx:id="colEventName" prefWidth="140.0" text="Event Name" />
+                      <TableColumn fx:id="colEventDate" prefWidth="140.0" text="Date" />
+                  </columns>
+              </TableView>
+              <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Recent Registrations" />
+              <TableView fx:id="recentRegistrationsTable" prefHeight="200.0" prefWidth="280.0">
+                  <columns>
+                      <TableColumn fx:id="colRegStudentName" prefWidth="140.0" text="Student Name" />
+                      <TableColumn fx:id="colRegCourse" prefWidth="140.0" text="Course" />
+                  </columns>
+              </TableView>
+        </VBox>
+    </right>
+
+</BorderPane>
