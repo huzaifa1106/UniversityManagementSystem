@@ -1,8 +1,19 @@
+/**
+ *  File: Course.java
+ *  Description: This class is for the course offerings by UofG,
+ *  we will use this later on when enrolling, removing or viewing
+ *  important information regrading a course.
+ *  Author: Huzaifa A. & Group
+ *  Date: March 2nd, 2025
+ *  */
+
 package Backend;
 
+//Import statements
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class Course {
     private int courseID;
@@ -19,7 +30,7 @@ public class Course {
     private List<Student> enrolledStudents;
     private int grade;
 
-
+    //Constructor for Course Object if Grade Provided
     public Course(int courseID, String courseName, String subjectName, int sectionNumber, String teacherName, int courseCapacity, String location, String lectureDay, int lectureStartTime, int lectureEndTime, LocalDateTime finalExamDate, int grade) {
         this.courseID = courseID;
         this.courseName = courseName;
@@ -35,7 +46,7 @@ public class Course {
         this.enrolledStudents = new ArrayList<>();
         this.grade = grade;
     }
-
+    //Constructor for Course Object if Grade not Provided
     public Course(int courseID, String courseName, String subjectName, int sectionNumber, String teacherName, int courseCapacity, String location, String lectureDay, int lectureStartTime, int lectureEndTime, LocalDateTime finalExamDate) {
         this.courseID = courseID;
         this.courseName = courseName;
@@ -49,10 +60,10 @@ public class Course {
         this.lectureEndTime = lectureEndTime;
         this.finalExamDate = finalExamDate;
         this.enrolledStudents = new ArrayList<>();
-        this.grade = -1;
+        this.grade = -1;//-1 Means ungraded
     }
 
-    // Prevent over-enrollment
+    // Method to Prevent over-enrollment
     public boolean enrollStudent(Student student) {
         if (enrolledStudents.size() >= courseCapacity) {
             System.out.println("Enrollment Failed " + student.getUsername() + ". Course is full!");
@@ -66,6 +77,7 @@ public class Course {
         }
     }
 
+    //Method to remove student from system.
     public void removeStudent(Student student) {
         if (enrolledStudents.remove(student)) {
             System.out.println(student.getUsername() + " has been removed from " + courseName);
@@ -74,11 +86,12 @@ public class Course {
         }
     }
 
+    //Method for removing a course, from a course list.
     public static void deleteCourse(Course newCourse, List<Course> existingCourses) {
         existingCourses.remove(newCourse);
     }
 
-    // Detect schedule conflicts
+    // Method for detecting schedule conflicts
     public static boolean checkConflict(Course newCourse, List<Course> existingCourses) {
         //Looping each course
         for (Course existing : existingCourses) {

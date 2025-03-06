@@ -1,4 +1,15 @@
+/**
+ *  File: UserAuthenticator.java
+ *  Description: This class is used for the authentication for the login
+ *  after the user clicks enters it will retrieve from a temporary array of logins of
+ *  both the admins and the users, and authenticate weather they are users or not.
+ *  Author: Huzaifa A. & Group
+ *  Date: March 2nd, 2025
+ *  */
+
+
 package Backend;
+
 
 public class UserAuthenticator {
     // Admin credentials
@@ -21,11 +32,14 @@ public class UserAuthenticator {
     public String login(String username, String password) {
         // Check Admins
         for (String[] admin : admins) {
+            //First index of the 2D array stores username
             if (admin[0].equals(username)) {
+                //Second index of the 2D array stores password
                 if (admin[1].equals(password)) {
                     System.out.println("Admin login successful: " + username);
                     return "admin"; // Return "admin" if the login is an Admin
                 } else {
+
                     System.out.println("Incorrect password for admin: " + username);
                     return "invalid";
                 }
@@ -34,7 +48,9 @@ public class UserAuthenticator {
 
         // Check Users
         for (String[] user : users) {
+            //First index of the 2D array stores username
             if (user[0].equals(username)) {
+                //Second index of the 2D array stores password
                 if (user[1].equals(password)) {
                     System.out.println("User login successful: " + username);
                     return "user"; // Return "user" if the login is a User
