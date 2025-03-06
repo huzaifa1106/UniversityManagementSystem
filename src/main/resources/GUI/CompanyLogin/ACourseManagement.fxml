@@ -1,4 +1,12 @@
+
 <?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+ File Name: ACourseManagement.fxml
+ Description: This is the AdminCourseManagement FXML file to assist with front end development
+ Date: March 2nd, 2025
+ -->
+
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>

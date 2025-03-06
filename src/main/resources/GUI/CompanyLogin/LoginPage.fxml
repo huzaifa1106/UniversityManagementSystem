@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<!--
+ File Name: LoginPage.fxml
+ Description: This is the Login Page FXML file to assist with front end development
+ Date: March 2nd, 2025
+ -->
+
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>

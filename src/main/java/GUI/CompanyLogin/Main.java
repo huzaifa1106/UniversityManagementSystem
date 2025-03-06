@@ -1,5 +1,12 @@
+/**
+ *  File: Main.java
+ *  Description: This class is used for the launching of the application
+ *  Date: March 2nd, 2025
+ *  */
+
 package GUI.CompanyLogin;
 
+//Import Statements
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -14,7 +21,7 @@ public class Main extends Application {
 
         Parent root = FXMLLoader.load(getClass().getResource("/GUI/CompanyLogin/LoginPage.fxml"));
         primaryStage.setTitle("Login - University Management System");
-        primaryStage.setScene(new Scene(root));
+        primaryStage.setScene(new Scene(root));//Open login screen
         primaryStage.show();
     }
 

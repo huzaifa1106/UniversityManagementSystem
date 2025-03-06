@@ -1,7 +1,17 @@
+/**
+ *  File: Student.java
+ *  Description: This class is for storing important information, personal, academic,
+ *  as well as financial as well, helps us retrieve more effectively through these methods
+ *  when implementing UI components
+ *  Author: Huzaifa A. & Group
+ *  Date: March 2nd, 2025
+ *  */
+
+
 package Backend;
 
+//Important Statements
 import javafx.scene.image.Image;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -56,10 +66,12 @@ public class Student extends User {
         return 1000000000 + rand.nextInt(2147483647 - 1000000000);
     }
 
+    //Method to remove a student from student list
     public static void removeStudent(ArrayList<Student> students, Student s ){
         students.remove(s);
     }
 
+    //Method for printing out all details about the user
     public void viewProfile() {
         System.out.println("=== Profile ===");
         System.out.println("Name: " + fullName);
@@ -73,12 +85,14 @@ public class Student extends User {
         System.out.println("Progress: " + progress + "%");
     }
 
+    //Method to edit the password and the profile picture of the student
     public void editProfile(String newPassword, Image newProfilePicture) {
         setPassword(newPassword);
         this.profilePicture = newProfilePicture;
         System.out.println("Profile updated successfully!");
     }
 
+    //Method for printing out the courses the student is enrolled in
     public void viewEnrolledCourses() {
         System.out.println("=== Enrolled Courses ===");
         if (enrolledCourses.isEmpty()) {
@@ -90,6 +104,7 @@ public class Student extends User {
         }
     }
 
+    //Method for viewing grades
     public void viewGrades() {
         System.out.println("=== Academic Performance ===");
 
@@ -98,6 +113,7 @@ public class Student extends User {
             return;
         }
 
+        //Looping through each course
         for (Course course : enrolledCourses) {
             double grade = course.getGrade();
 
@@ -110,6 +126,7 @@ public class Student extends User {
         }
     }
 
+    //Print out Financial Information
     public void viewTuitionStatus() {
         System.out.println("=== Tuition Information ===");
         System.out.println("Annual Tuition: $" + tuitionAnnual);
