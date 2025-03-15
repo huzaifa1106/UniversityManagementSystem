@@ -8,79 +8,61 @@
  *  Date: March 2nd, 2025
  *  */
 
-
-
 package Backend;
 
-//Import Statements
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class Subject {
+    private static List<Subject> subjects = new ArrayList<>();
 
     private String subjectName;
     private String subjectCode;
+    private List<Course> courses;
 
-    // Constructor
     public Subject(String name, String code) {
         this.subjectName = name;
         this.subjectCode = code;
+        this.courses = new ArrayList<>();
+        subjects.add(this);
     }
 
-    //Verifying if a duplicate exists
-    public static boolean checkDuplicate(String subject, List<Subject> subjects) {
+    public static Subject findSubject(String subjectName) {
+        for (Subject subject : subjects) {
+            if (subject.subjectName.equalsIgnoreCase(subjectName)) {
+                return subject;
+            }
+        }
+        return null;
+    }
 
-        for (Subject s : subjects) {
-            if (s.getSubjectName().equalsIgnoreCase(subject)) {
+    public static boolean checkDuplicateSubject(String subject, ArrayList<Subject> subjects) {
+        for (Subject sub : subjects) {
+            if (sub.getSubjectName().equalsIgnoreCase(subject)) {
                 return true;
             }
         }
         return false;
     }
 
-    //Adding a subject to a subject list
-    public static void addCourse(List<Subject> subjects) {
-        Scanner scanner = new Scanner(System.in);
-        //Temp Subject Name & Code
-        String subjectN;
-        String subjectC;
-
-        // Prompt user until valid inputs are provided
-        while (true) {
-            //Temp untill UI interface is designed
-            System.out.print("Enter course name: ");
-            subjectN = scanner.nextLine();
-
-            //Checks if the courseName is empty as neither field can remain empty
-            if (subjectN.isEmpty()) {
-                System.out.println("Subject name is empty. Please enter Subject name again.");
-                continue;
+    public boolean checkDuplicateCourse(Course course) {
+        for (Course c : this.courses) {
+            if (c.getCourseName().equalsIgnoreCase(course.getCourseName())) {
+                return true;
             }
-            //Checks if the Course Exists
-            if (checkDuplicate(subjectN, subjects)) {
-                System.out.println("This course already exists! Please enter a different course.");
-                continue;
-            }
-            break;
         }
-
-        while (true) {
-            System.out.print("Enter course code: ");
-            subjectC = scanner.nextLine();
-
-            if (subjectC.isEmpty()) {
-                System.out.println("Subject code cannot be empty. Please enter Subject Code again.");
-                continue;
-            }
-            break;
-        }
-
-        // Add new course to the list
-        subjects.add(new Subject(subjectN, subjectC));
-        System.out.println("Course added successfully: " + subjectN + " (" + subjectC + ")");
+        return false;
     }
 
-    //Getter Functions
+    public void addCourse(Course course) {
+        if (checkDuplicateCourse(course)) {
+            System.out.println("Course '" + course.getCourseName() + "' already exists under " + subjectName);
+            return;
+        }
+        courses.add(course);
+        System.out.println("Course '" + course.getCourseName() + "' added under " + this.subjectName);
+    }
+
     public String getSubjectName() {
         return this.subjectName;
     }
@@ -89,7 +71,6 @@ public class Subject {
         return this.subjectCode;
     }
 
-    //Setter Functions
     public void setSubjectName(String name) {
         this.subjectName = name;
     }
@@ -98,10 +79,12 @@ public class Subject {
         this.subjectCode = code;
     }
 
-    //Method to display subject details
+    public List<Course> getCourses() {
+        return courses;
+    }
+
     public void display() {
         System.out.println("Subject Name: " + this.subjectName);
         System.out.println("Subject Code: " + this.subjectCode);
     }
-
 }

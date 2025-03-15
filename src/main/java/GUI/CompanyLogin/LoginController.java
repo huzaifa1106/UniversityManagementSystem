@@ -53,7 +53,7 @@ public class LoginController {
             navigateTo("ADashboard.fxml", "Admin Dashboard");
         //Reroute to Course Management
         } else if ("user".equals(userRole)) {
-            navigateTo("UCourseManagement.fxml", "User Home");
+            navigateTo("USubjectManagement.fxml", "User Home");
         } else {
             showAlert("Login Failed", "Invalid username or password.", Alert.AlertType.ERROR);
         }

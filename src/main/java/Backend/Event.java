@@ -7,13 +7,154 @@
  *  Date: March 2nd, 2025
  *  */
 
-
 package Backend;
+
+//Import Statements
+import java.util.Date;
+import java.util.List;
+import java.awt.Image;
 
 public class Event {
 
-    //Constructor
-    public Event() {
+    // Attributes
+    private String eventName;
+    private String eventCode;
+    private String description;
+    private Image headerImage;
+    private String location;
+    private Date dateTime;
+    private int capacity;
+    private double cost;
+    private List<String> registeredStudents;
+
+    // Constructor
+    public Event(String eventName, String eventCode, String description, Image headerImage,
+                    String location, Date dateTime, int capacity, double cost,
+                        List<String> registeredStudents) {
+        this.eventName = eventName;
+        this.eventCode = eventCode;
+        this.description = description;
+        this.headerImage = headerImage;
+        this.location = location;
+        this.dateTime = dateTime;
+        this.capacity = capacity;
+        this.cost = cost;
+        this.registeredStudents = registeredStudents;
+    }
+
+    // Getter Methods
+    public String getEventName() {
+        return eventName;
+    }
+
+    public String getEventCode() {
+        return eventCode;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public Image getHeaderImage() {
+        return headerImage;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public Date getDateTime() {
+        return dateTime;
+    }
+
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public double getCost() {
+        return cost;
+    }
+
+    public List<String> getRegisteredStudents() {
+        return registeredStudents;
+    }
+
+
+    // Setter Methods
+    public void setEventName(String eventName) {
+        this.eventName = eventName;
+    }
+
+    public void setEventCode(String eventCode) {
+        this.eventCode = eventCode;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setHeaderImage(Image headerImage) {
+        this.headerImage = headerImage;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public void setDateTime(Date dateTime) {
+        this.dateTime = dateTime;
+    }
+
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
+    }
+
+    public void setCost(double cost) {
+        this.cost = cost;
+    }
+
+
+    // Method to add an event.
+    public void addEvent() {
+        //Retreive from UI
 
     }
+
+    //Method to edit an event.
+    public void editEvent(String description, Image headerImage, String location, Date dateTime, int capacity, double cost) {
+        this.description = description;
+        this.headerImage = headerImage;
+        this.location = location;
+        this.dateTime = dateTime;
+        this.capacity = capacity;
+        this.cost = cost;
+    }
+
+
+    //Method to delete an event.
+    public void deleteEvent() {
+        //Retreive from UI
+    }
+
+    //Method to register a student to the event.
+    public void registerStudent(String studentId) {
+        if (registeredStudents.size() < capacity) {
+            registeredStudents.add(studentId);
+        } else {
+            System.out.println("Event is full.");
+        }
+    }
+
+    //Method for displaying event details.
+    public void viewEventDetails() {
+        System.out.println("Event Name: " + eventName);
+        System.out.println("Event Code: " + eventCode);
+        System.out.println("Description: " + description);
+        System.out.println("Location: " + location);
+        System.out.println("Date and Time: " + dateTime);
+        System.out.println("Capacity: " + capacity);
+        System.out.println("Cost: " + (cost == 0 ? "Free" : "$" + cost));
+        System.out.println("Registered Students: " + registeredStudents);
+    }
 }
+
