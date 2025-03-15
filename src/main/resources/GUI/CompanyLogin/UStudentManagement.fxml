@@ -10,9 +10,7 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0"
-            style="-fx-background-color: #f8f9fa;" xmlns="http://javafx.com/javafx/11.0.14-internal"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.CompanyLogin.UStudentManagementController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #f8f9fa;" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.CompanyLogin.UStudentManagementController">
 
     <left>
         <Pane prefHeight="600.0" prefWidth="181.0" style="-fx-background-color: #6A89A7;" BorderPane.alignment="CENTER">
@@ -43,29 +41,29 @@
 
             <Pane prefHeight="130.0" prefWidth="600.0" style="-fx-background-color: #ffffff; -fx-border-color: lightgray; -fx-border-width: 1; -fx-padding: 10px;">
                 <children>
-                    <Label layoutX="14.0" layoutY="14.0" text="Full Name: " style="-fx-font-weight: bold;" />
-                    <Label fx:id="studentNameLabel" layoutX="90.0" layoutY="14.0" text="John Doe" />
+                    <Label layoutX="14.0" layoutY="14.0" style="-fx-font-weight: bold;" text="Full Name: " />
+                    <Label fx:id="studentNameLabel" layoutX="90.0" layoutY="14.0" text="Hello There" />
 
-                    <Label layoutX="14.0" layoutY="34.0" text="Student ID: " style="-fx-font-weight: bold;" />
-                    <Label fx:id="studentIDLabel" layoutX="90.0" layoutY="34.0" text="123456" />
+                    <Label layoutX="14.0" layoutY="34.0" style="-fx-font-weight: bold;" text="Student ID: " />
+                    <Label fx:id="studentIDLabel" layoutX="90.0" layoutY="34.0" text="1234567890" />
 
-                    <Label layoutX="14.0" layoutY="54.0" text="Telephone: " style="-fx-font-weight: bold;" />
-                    <Label fx:id="studentPhoneLabel" layoutX="90.0" layoutY="54.0" text="(123) 456-7890" />
+                    <Label layoutX="14.0" layoutY="54.0" style="-fx-font-weight: bold;" text="Telephone: " />
+                    <Label fx:id="studentPhoneLabel" layoutX="90.0" layoutY="54.0" text="(416) 456-7890" />
 
-                    <Label layoutX="14.0" layoutY="74.0" text="Address: " style="-fx-font-weight: bold;" />
+                    <Label layoutX="14.0" layoutY="74.0" style="-fx-font-weight: bold;" text="Address: " />
                     <Label fx:id="studentAddressLabel" layoutX="90.0" layoutY="74.0" text="123 Main St, City" />
 
-                    <Label layoutX="280.0" layoutY="14.0" text="Progress: " style="-fx-font-weight: bold;" />
-                    <Label fx:id="studentProgressLabel" layoutX="350.0" layoutY="14.0" text="80%" />
+                    <Label layoutX="280.0" layoutY="14.0" style="-fx-font-weight: bold;" text="Progress: " />
+                    <Label fx:id="studentProgressLabel" layoutX="374.0" layoutY="14.0" text="80%" />
 
-                    <Label layoutX="280.0" layoutY="34.0" text="Thesis Title: " style="-fx-font-weight: bold;" />
-                    <Label fx:id="studentThesisLabel" layoutX="350.0" layoutY="34.0" text="AI in Modern Education" />
+                    <Label layoutX="280.0" layoutY="34.0" style="-fx-font-weight: bold;" text="Thesis Title: " />
+                    <Label fx:id="studentThesisLabel" layoutX="374.0" layoutY="34.0" text="Ph.D" />
 
-                    <Label layoutX="280.0" layoutY="54.0" text="Email Address: " style="-fx-font-weight: bold;" />
-                    <Label fx:id="studentEmailLabel" layoutX="390.0" layoutY="54.0" text="johndoe@example.com" />
+                    <Label layoutX="280.0" layoutY="54.0" style="-fx-font-weight: bold;" text="Email Address: " />
+                    <Label fx:id="studentEmailLabel" layoutX="376.0" layoutY="54.0" text="student@guelph.ca" />
 
-                    <Label layoutX="280.0" layoutY="74.0" text="Academic Level: " style="-fx-font-weight: bold;" />
-                    <Label fx:id="studentLevelLabel" layoutX="390.0" layoutY="74.0" text="Undergraduate" />
+                    <Label layoutX="280.0" layoutY="74.0" style="-fx-font-weight: bold;" text="Academic Level: " />
+                    <Label fx:id="studentLevelLabel" layoutX="374.0" layoutY="74.0" text="Undergraduate" />
 
                     <ImageView fitHeight="70.0" fitWidth="70.0" layoutX="510.0" layoutY="20.0">
                         <image>

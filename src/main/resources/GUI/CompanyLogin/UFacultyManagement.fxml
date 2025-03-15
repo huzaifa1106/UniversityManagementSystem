@@ -19,7 +19,6 @@
                     <Image url="@HomeScreen.png" />
                 </image>
             </ImageView>
-            <Button mnemonicParsing="false" prefHeight="63.0" prefWidth="150.0" text="Dashboard" />
             <Button onAction="#loadSubjectManagement" prefHeight="62.0" prefWidth="147.0" text="Subject Management" />
             <Button onAction="#loadCourseManagement" prefHeight="69.0" prefWidth="146.0" text="Course Management" />
             <Button onAction="#loadStudentManagement" prefHeight="68.0" prefWidth="147.0" text="Student Management" />

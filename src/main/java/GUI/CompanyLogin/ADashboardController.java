@@ -17,7 +17,7 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 import java.io.IOException;
 
-public class ADashboardController {
+public class ADashboardController extends ASubjectManagementController {
 
     //Rerouting from window to dashboard
     @FXML
