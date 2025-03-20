@@ -22,7 +22,7 @@ public class Student extends User {
 
     //Load the students when compiled
     static {
-        loadStudents();
+        initializeStudents();
     }
 
     // Constants for tuition fees
@@ -89,6 +89,27 @@ public class Student extends User {
         UserAuthenticator.newUser(this.getUsername(), this.getPassword());
         students.add(this);
 
+    }
+
+
+    public static void initializeStudents() {
+        Student[] studentArray = {
+                new Student("Alice Smith", "password123", null, "123 Maple St", 1234567890, 5000, 2000, "alice@example.edu", 85, "Fall 2025", "Undergraduate", ""),
+                new Student("Bob Johnson", "securePass", null, "456 Oak Ave", 987654321, 4000, 1000, "bob@example.edu", 90, "Spring 2025", "Graduate", "AI Research"),
+                new Student("Carol Williams", "carolPass", null, "789 Pine Rd", 555666777, 4000, 3000, "carol@example.edu", 88, "Winter 2025", "Graduate", "Data Science"),
+                new Student("Lucka Racki", "luckaStrong", null, "321 Birch St", 444555666, 5000, 2500, "lucka@example.edu", 75, "Fall 2025", "Undergraduate", ""),
+                new Student("David Lee", "davidPass", null, "159 Cedar Dr", 777888999, 5000, 0, "lee@example.edu", 92, "Spring 2025", "Undergraduate", ""),
+                new Student("Emily Brown", "emilySecure", null, "753 Elm Blvd", 111222333, 4000, 1200, "brown@example.edu", 89, "Winter 2025", "Graduate", "Machine Learning"),
+                new Student("George Smith", "george123", null, "951 Fir St", 666777888, 5000, 4500, "smith@example.edu", 80, "Fall 2025", "Undergraduate", ""),
+                new Student("Helen Jones", "helenSecure", null, "852 Spruce Ct", 999000111, 4000, 500, "jones@example.edu", 95, "Spring 2025", "Graduate", "Music Theory"),
+                new Student("Isaac Clark", "isaacPass", null, "753 Poplar Ln", 222333444, 5000, 1500, "clark@example.edu", 78, "Winter 2025", "Undergraduate", ""),
+                new Student("Jennifer Davis", "jenniferStrong", null, "654 Redwood Cir", 888999000, 4000, 2300, "davis@example.edu", 87, "Fall 2025", "Graduate", "English Literature")
+        };
+
+        // Add each student to the students list
+        for (Student student : studentArray) {
+            students.add(student);
+        }
     }
 
 

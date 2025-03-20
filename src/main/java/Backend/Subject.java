@@ -20,6 +20,15 @@ public class Subject {
     private String subjectCode;
     private List<Course> courses;
 
+
+    static {
+        subjects.add(new Subject("MATH001", "Mathematics"));
+        subjects.add(new Subject("ENG101", "English"));
+        subjects.add(new Subject("CS201", "Computer Science"));
+        subjects.add(new Subject("CHEM200", "Chemistry"));
+        subjects.add(new Subject("BIO300", "Biology"));
+    }
+
     public Subject(String name, String code) {
         this.subjectName = name;
         this.subjectCode = code;
@@ -61,6 +70,15 @@ public class Subject {
         }
         courses.add(course);
         System.out.println("Course '" + course.getCourseName() + "' added under " + this.subjectName);
+    }
+
+    public static Subject retrieveSubject(String subjectCode) {
+        for (Subject sub : subjects) {
+            if (sub.subjectCode.equals(subjectCode)) {
+                return sub;
+            }
+        }
+        return null; // Return null if not found
     }
 
     public String getSubjectName() {
