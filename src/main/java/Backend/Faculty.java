@@ -1,22 +1,14 @@
-/**
- *  File: Faculty.java
- *  Description: This class is for assigning faculties, checking course
- *  facilitators, more information about themselves such as offices, education and areas of reasearch
- *  Author: Huzaifa A. & Group
- *  Date: March 2nd, 2025
- *  */
-
 package Backend;
 
-//Import Statements
-import java.util.List;
 import java.awt.Image;
 import java.util.ArrayList;
-
+import java.util.List;
 
 public class Faculty {
 
-    // Attributes
+    private static final List<Faculty> facultyList = new ArrayList<>();
+
+    private String facultyID;
     private String name;
     private Image profilePhoto;
     private String degree;
@@ -25,13 +17,9 @@ public class Faculty {
     private String email;
     private String officeLocation;
 
-    //stat array
-    public static List<Faculty> facultyList = new ArrayList<>();
-
-
-    // Constructor
-    public Faculty(String name, Image profilePhoto, String degree, String researchInterest,
+    public Faculty(String facultyID, String name, Image profilePhoto, String degree, String researchInterest,
                    List<String> coursesOffered, String email, String officeLocation) {
+        this.facultyID = facultyID;
         this.name = name;
         this.profilePhoto = profilePhoto;
         this.degree = degree;
@@ -41,80 +29,31 @@ public class Faculty {
         this.officeLocation = officeLocation;
     }
 
-    //add faculty
+    static {
+        facultyList.add(new Faculty("F0001", "Dr. Alan Turing", null, "Ph.D.", "Computational Theory",
+                List.of("Calculus I"), "turing@university.edu", "Room 201"));
+
+        facultyList.add(new Faculty("F0002", "Prof. Emily Brontë", null, "Master's", "English Literature",
+                List.of("Literature Basics", "Introduction to French"), "bronte@university.edu", "Room 202"));
+
+        facultyList.add(new Faculty("F0003", "Dr. Grace Hopper", null, "Ph.D.", "Computer Programming",
+                List.of("Programming Fundamentals", "Operating Systems"), "hopper@university.edu", "Lab 203"));
+    }
+
     public static void addFaculty(Faculty faculty) {
         facultyList.add(faculty);
-        System.out.println("Faculty added: " + faculty.getName()); // Debugging log
     }
 
-    //retrieve all faculty
-    public static List<Faculty> getAllFaculty() {
+    public static void removeFaculty(String facultyID) {
+        facultyList.removeIf(f -> f.getFacultyID().equals(facultyID));
+    }
+
+    public static List<Faculty> getFacultyList() {
         return facultyList;
     }
-    // New method to format courses for JavaFX TableView
+
     public String getCoursesAsString() {
-        //System.out.println("DEBUG: getCoursesAsString() called for " + name);
-        return String.join(", ", coursesOffered); // Converts list to comma-separated string
+        return String.join(", ", coursesOffered);
     }
 
-
-
-    // Getter Methods
-    public String getName() {
-        return name;
-    }
-    public Image getProfilePhoto() {
-        return profilePhoto;
-    }
-    public String getDegree() {
-        return degree;
-    }
-    public String getResearchInterest() {
-        return researchInterest;
-    }
-    public List<String> getCoursesOffered() {
-        return coursesOffered;
-    }
-    public String getEmail() {
-        return email;
-    }
-    public String getOfficeLocation() {
-        return officeLocation;
-    }
-
-
-    // Setters Methods
-    public void setName(String name) {
-        this.name = name;
-    }
-    public void setProfilePhoto(Image profilePhoto) {
-        this.profilePhoto = profilePhoto;
-    }
-    public void setDegree(String degree) {
-        this.degree = degree;
-    }
-    public void setResearchInterest(String researchInterest) {
-        this.researchInterest = researchInterest;
-    }
-    public void setCoursesOffered(List<String> coursesOffered) {
-        this.coursesOffered = coursesOffered;
-    }
-    public void setEmail(String email) {
-        this.email = email;
-    }
-    public void setOfficeLocation(String officeLocation) {
-        this.officeLocation = officeLocation;
-    }
-
-
-    // Method to display details for Faculty
-    public void displayFacultyInfo() {
-        System.out.println("Faculty Name: " + name);
-        System.out.println("Degree: " + degree);
-        System.out.println("Research Interest: " + researchInterest);
-        System.out.println("Courses Offered: " + coursesOffered);
-        System.out.println("Email: " + email);
-        System.out.println("Office Location: " + officeLocation);
-    }
-}
-
+    p

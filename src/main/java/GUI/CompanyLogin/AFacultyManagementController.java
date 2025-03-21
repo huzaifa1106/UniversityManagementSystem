@@ -1,156 +1,111 @@
-/**
- *  File: AFacultyManagementController.java
- *  Description: This class is used for the controlling the flow of the
- *  Admin FacultyManagement Window for the application, we use "@FXML" because these are event handles that
- *  were defined in the FXML file. Helping Route through windows for a seemingless experience
- *  Date: March 2nd, 2025
- *  */
-
-
 package GUI.CompanyLogin;
 
-//Important Statement
-import javafx.fxml.FXML;
 import Backend.Faculty;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.fxml.FXML;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import java.util.Arrays;
 import java.util.List;
 
+public class AFacultyManagementController {
 
-public class AFacultyManagementController extends ASubjectManagementController {
+    @FXML private TextField facultyNameField, facultyEmailField, facultyDegreeField, facultyOfficeField,
+            facultyResearchField, facultyCoursesField;
 
-    //Method to switch window to dashboard
-    @FXML
-    private void loadDashboard() {
-        Router.navigate("ADashboard.fxml", "Admin Dashboard");
-    }
-
-    //textbox
-    @FXML private TextField facultyNameField;
-    @FXML private TextField facultyEmailField;
-    @FXML private TextField facultyDegreeField;
-    @FXML private TextField facultyOfficeField;
-    @FXML private TextField facultyResearchField;
-    @FXML private TextField facultyCoursesField;
     @FXML private TableView<Faculty> facultyTable;
-    @FXML private TableColumn<Faculty, String> colFacultyName;
-    @FXML private TableColumn<Faculty, String> colFacultyEmail;
-    @FXML private TableColumn<Faculty, String> colFacultyDegree;
-    @FXML private TableColumn<Faculty, String> colFacultyCourses;
+    @FXML private TableColumn<Faculty, String> colFacultyID, colFacultyName, colFacultyEmail, colFacultyDegree,
+            colFacultyResearch, colFacultyOffice, colFacultyCourses;
 
+    private Faculty selectedFaculty;
 
     @FXML
-    public void initialize() {
-        colFacultyName.setCellValueFactory(new PropertyValueFactory<>("name"));  // Looks for getName()
-        colFacultyEmail.setCellValueFactory(new PropertyValueFactory<>("email"));  // Looks for getEmail()
-        colFacultyDegree.setCellValueFactory(new PropertyValueFactory<>("degree"));  // Looks for getDegree()
-        colFacultyCourses.setCellValueFactory(new PropertyValueFactory<>("coursesAsString"));  // Looks for getCoursesAsString()
+    private void initialize() {
+        colFacultyID.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getFacultyID()));
+        colFacultyName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        colFacultyEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
+        colFacultyDegree.setCellValueFactory(new PropertyValueFactory<>("degree"));
+        colFacultyResearch.setCellValueFactory(new PropertyValueFactory<>("researchInterest"));
+        colFacultyOffice.setCellValueFactory(new PropertyValueFactory<>("officeLocation"));
+        colFacultyCourses.setCellValueFactory(new PropertyValueFactory<>("coursesAsString"));
 
-        loadFacultyTable();
+        facultyTable.getItems().setAll(Faculty.getFacultyList());
+
+        facultyTable.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+            selectedFaculty = newVal;
+            if (newVal != null) fillFormWithFaculty(newVal);
+        });
     }
 
-
-
-    @FXML
-    private void loadFacultyTable() {
-        facultyTable.getItems().clear();
-        facultyTable.getItems().addAll(Faculty.getAllFaculty());
-        facultyTable.refresh();
+    private void fillFormWithFaculty(Faculty faculty) {
+        facultyNameField.setText(faculty.getName());
+        facultyEmailField.setText(faculty.getEmail());
+        facultyDegreeField.setText(faculty.getDegree());
+        facultyOfficeField.setText(faculty.getOfficeLocation());
+        facultyResearchField.setText(faculty.getResearchInterest());
+        facultyCoursesField.setText(String.join(", ", faculty.getCoursesOffered()));
     }
 
-
-
-    //Add faculty button clicked
-    @FXML
-    private void addFaculty() {
-
-        System.out.println("Add Faculty clicked");
-        String facultyName = facultyNameField.getText();
-        String facultyEmail = facultyEmailField.getText();
-        String facultyDegree = facultyDegreeField.getText();
-        String facultyOffice = facultyOfficeField.getText();
-        String facultyResearchInterest = facultyResearchField.getText();
-        String facultyCoursesAssigned = facultyCoursesField.getText();
-        if (facultyName.isEmpty()) {
-            System.out.println("Error: Faculty name is required!");
-            return; // Stop execution if the field is empty
-        }
-        else if (facultyEmail.isEmpty()) {
-            System.out.println("Error: Faculty email is required!");
-            return; // Stop execution if the field is empty
-        }
-        else if (facultyDegree.isEmpty()) {
-            System.out.println("Error: Faculty degree is required!");
-            return; // Stop execution if the field is empty
-        }
-        else if (facultyOffice.isEmpty()) {
-            System.out.println("Error: Faculty office is required!");
-            return; // Stop execution if the field is empty
-        }
-        else if (facultyResearchInterest.isEmpty()) {
-            System.out.println("Error: Faculty research interest is required!");
-            return; // Stop execution if the field is empty
-        }
-        else if (facultyCoursesAssigned.isEmpty()) {
-            System.out.println("Error: Faculty course assigned is required!");
-            return; // Stop execution if the field is empty
-        }
-
-        List<String> facultyCourses = Arrays.asList(facultyCoursesAssigned.split("\\s*,\\s*"));  // Splits input by comma
-        Faculty newFaculty = new Faculty(facultyName, null, facultyDegree, facultyResearchInterest, facultyCourses, facultyEmail, facultyOffice);
+    @FXML private void addFaculty() {
+        String id = "F" + String.format("%04d", Faculty.getFacultyList().size() + 1);
+        Faculty newFaculty = new Faculty(
+                id,
+                facultyNameField.getText(),
+                null,
+                facultyDegreeField.getText(),
+                facultyResearchField.getText(),
+                Arrays.asList(facultyCoursesField.getText().split(",\\s*")),
+                facultyEmailField.getText(),
+                facultyOfficeField.getText()
+        );
         Faculty.addFaculty(newFaculty);
-        loadFacultyTable();
+        refreshFacultyTable();
+        clearForm();
 
-        // show that it worked, not sure if we want to do it a differet way?
-        Alert alert = new Alert(AlertType.INFORMATION);
-        alert.setTitle("Success");
-        alert.setHeaderText(null);
-        alert.setContentText("Faculty added successfully!");
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Faculty added successfully!");
         alert.showAndWait();
+    }
 
-        //clears textbox after succesfully adds info
+    @FXML private void editFaculty() {
+        if (selectedFaculty != null) {
+            selectedFaculty.setName(facultyNameField.getText());
+            selectedFaculty.setEmail(facultyEmailField.getText());
+            selectedFaculty.setDegree(facultyDegreeField.getText());
+            selectedFaculty.setOfficeLocation(facultyOfficeField.getText());
+            selectedFaculty.setResearchInterest(facultyResearchField.getText());
+            selectedFaculty.setCoursesOffered(Arrays.asList(facultyCoursesField.getText().split(",\\s*")));
+            refreshFacultyTable();
+            clearForm();
+        }
+    }
+
+    @FXML private void deleteFaculty() {
+        if (selectedFaculty != null) {
+            Faculty.removeFaculty(selectedFaculty.getFacultyID());
+            refreshFacultyTable();
+            clearForm();
+        }
+    }
+
+    private void refreshFacultyTable() {
+        facultyTable.getItems().setAll(Faculty.getFacultyList());
+    }
+
+    private void clearForm() {
         facultyNameField.clear();
         facultyEmailField.clear();
         facultyDegreeField.clear();
         facultyOfficeField.clear();
         facultyResearchField.clear();
         facultyCoursesField.clear();
+        selectedFaculty = null;
     }
 
-    //Edit faculty button clicked
-    @FXML
-    private void editFaculty() {
-        System.out.println("Edit Faculty clicked");
-    }
-
-    //Delete faculty button clicked
-    @FXML
-    private void deleteFaculty() {
-        Faculty selectedFaculty = facultyTable.getSelectionModel().getSelectedItem();
-
-        if (selectedFaculty != null) {
-            facultyTable.getItems().remove(selectedFaculty);
-            facultyTable.refresh();
-            System.out.println("Deleted: " + selectedFaculty.getName());
-        } else {
-            System.out.println("No faculty selected!");
-        }
-    }
-
-
-    //View faculty button clicked
-    @FXML
-    private void viewFacultyProfile() {
+    @FXML private void viewFacultyProfile() {
         System.out.println("View Faculty Profile clicked");
     }
-    //Assign faculty a course button clicked
-    @FXML
-    private void assignCourses() {
+
+    @FXML private void assignCourses() {
         System.out.println("Assign Courses clicked");
     }
 }

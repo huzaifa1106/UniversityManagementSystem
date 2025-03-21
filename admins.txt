@@ -1,3 +1,3 @@
-huzaifa,password123
+huz,pass
 abdullah,password1234
 hello,12345

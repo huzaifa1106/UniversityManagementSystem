@@ -6,15 +6,17 @@
  *  Author: Huzaifa A. & Group
  *  Date: March 2nd, 2025
  *  */
-
 package Backend;
 
-//Import Statements
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.awt.Image;
 
 public class Event {
+
+    // Static list of events
+    private static final List<Event> eventList = new ArrayList<>();
 
     // Attributes
     private String eventName;
@@ -27,10 +29,20 @@ public class Event {
     private double cost;
     private List<String> registeredStudents;
 
+    // Static block to initialize sample events
+    static {
+        eventList.add(new Event("Orientation Day", "EVT1001", "Welcome to UofG!", null,
+                "Main Auditorium", new Date(2025 - 1900, 3 - 1, 22), 100, 0.0, new ArrayList<>()));
+        eventList.add(new Event("Career Fair", "EVT1002", "Meet recruiters and explore opportunities.", null,
+                "Conference Hall B", new Date(2025 - 1900, 3 - 1, 25), 200, 0.0, new ArrayList<>()));
+        eventList.add(new Event("Spring Concert", "EVT1003", "Live performances by student bands!", null,
+                "Open Grounds", new Date(2025 - 1900, 3 - 1, 28), 300, 10.0, new ArrayList<>()));
+    }
+
     // Constructor
     public Event(String eventName, String eventCode, String description, Image headerImage,
-                    String location, Date dateTime, int capacity, double cost,
-                        List<String> registeredStudents) {
+                 String location, Date dateTime, int capacity, double cost,
+                 List<String> registeredStudents) {
         this.eventName = eventName;
         this.eventCode = eventCode;
         this.description = description;
@@ -40,6 +52,19 @@ public class Event {
         this.capacity = capacity;
         this.cost = cost;
         this.registeredStudents = registeredStudents;
+    }
+
+    // Static methods to manage the event list
+    public static void addEvent(Event event) {
+        eventList.add(event);
+    }
+
+    public static void removeEvent(String eventCode) {
+        eventList.removeIf(event -> event.getEventCode().equalsIgnoreCase(eventCode));
+    }
+
+    public static List<Event> getEventList() {
+        return eventList;
     }
 
     // Getter Methods
@@ -79,7 +104,6 @@ public class Event {
         return registeredStudents;
     }
 
-
     // Setter Methods
     public void setEventName(String eventName) {
         this.eventName = eventName;
@@ -113,30 +137,7 @@ public class Event {
         this.cost = cost;
     }
 
-
-    // Method to add an event.
-    public void addEvent() {
-        //Retreive from UI
-
-    }
-
-    //Method to edit an event.
-    public void editEvent(String description, Image headerImage, String location, Date dateTime, int capacity, double cost) {
-        this.description = description;
-        this.headerImage = headerImage;
-        this.location = location;
-        this.dateTime = dateTime;
-        this.capacity = capacity;
-        this.cost = cost;
-    }
-
-
-    //Method to delete an event.
-    public void deleteEvent() {
-        //Retreive from UI
-    }
-
-    //Method to register a student to the event.
+    // Register a student to this event
     public void registerStudent(String studentId) {
         if (registeredStudents.size() < capacity) {
             registeredStudents.add(studentId);
@@ -145,7 +146,7 @@ public class Event {
         }
     }
 
-    //Method for displaying event details.
+    // Display details of the event
     public void viewEventDetails() {
         System.out.println("Event Name: " + eventName);
         System.out.println("Event Code: " + eventCode);
@@ -157,4 +158,3 @@ public class Event {
         System.out.println("Registered Students: " + registeredStudents);
     }
 }
-

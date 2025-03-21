@@ -2,7 +2,7 @@
 
 <!--
  File Name: ASubjectManagement.fxml
- Description: This is the ASubjectManagement FXML file  to assist with front end development
+ Description: This is the ASubjectManagement FXML file to assist with front-end development
  Date: March 2nd, 2025
  -->
 
@@ -10,12 +10,14 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0"
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+            prefHeight="600.0" prefWidth="800.0"
             style="-fx-background-color: #f8f9fa;"
             xmlns="http://javafx.com/javafx/11.0.14-internal"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="GUI.CompanyLogin.ASubjectManagementController">
 
+    <!-- Sidebar Menu -->
     <left>
         <VBox spacing="10" style="-fx-background-color: #6A89A7; -fx-padding: 10px;" BorderPane.alignment="CENTER">
             <ImageView fitHeight="70.0" fitWidth="155.0">
@@ -32,29 +34,39 @@
         </VBox>
     </left>
 
+    <!-- Main Content -->
     <center>
-        <BorderPane prefHeight="600.0" prefWidth="619.0" style="-fx-background-color: white; -fx-padding: 10px;">
-            <top>
-                <Label style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-padding: 10px;" text="Admin Subject Management" textAlignment="CENTER" />
-            </top>
+        <VBox alignment="CENTER" spacing="15" style="-fx-padding: 20px;">
+            <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-padding: 5px;" text="Admin Subject Management" />
 
-            <center>
-                <TableView fx:id="subjectTable" prefHeight="400.0" prefWidth="597.0">
-                    <columns>
-                        <TableColumn fx:id="colSubjectCode" prefWidth="150.0" text="Subject Code" />
-                        <TableColumn fx:id="colSubjectName" prefWidth="452.7999572753906" text="Subject Name" />
-                    </columns>
-                </TableView>
-            </center>
+            <!-- 🔹 Subject Input Form (Now Added) -->
+            <GridPane hgap="20" vgap="10" prefHeight="100.0" prefWidth="600.0"
+                      style="-fx-background-color: white; -fx-padding: 15px; -fx-border-color: lightgray; -fx-border-width: 1;">
 
-            <bottom>
-                <HBox alignment="CENTER" spacing="15" style="-fx-padding: 10px;">
-                    <Button fx:id="addButton" onAction="#addSubject" prefHeight="35.0" prefWidth="140.0" text="Add Subject" />
-                    <Button fx:id="editButton" onAction="#editSubject" prefHeight="35.0" prefWidth="140.0" text="Edit Subject" />
-                    <Button fx:id="deleteButton" onAction="#deleteSubject" prefHeight="35.0" prefWidth="140.0" text="Delete Subject" />
-                    <Button fx:id="viewButton" onAction="#viewSubjects" prefHeight="35.0" prefWidth="140.0" text="View Subjects" />
-                </HBox>
-            </bottom>
-        </BorderPane>
+                <Label text="Subject Name:" style="-fx-font-weight: bold;" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                <TextField fx:id="subjectNameField" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+                <Label text="Subject Code (Optional):" style="-fx-font-weight: bold;" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                <TextField fx:id="subjectCodeField" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+            </GridPane>
+
+            <!-- 🔹 Add Subject Button -->
+            <Button fx:id="addButton" onAction="#addSubject" style="-fx-font-weight: bold;" text="Add Subject" />
+
+            <!-- 🔹 Table: Subject List -->
+            <TableView fx:id="subjectTable" prefHeight="300.0" prefWidth="600.0">
+                <columns>
+                    <TableColumn fx:id="colSubjectCode" text="Subject Code" prefWidth="150.0"/>
+                    <TableColumn fx:id="colSubjectName" text="Subject Name" prefWidth="452.8"/>
+                </columns>
+            </TableView>
+
+            <!-- 🔹 Action Buttons -->
+            <HBox alignment="CENTER" spacing="15" style="-fx-padding: 10px;">
+                <Button fx:id="editButton" onAction="#editSubject" prefHeight="35.0" prefWidth="140.0" text="Edit Subject" />
+                <Button fx:id="deleteButton" onAction="#deleteSubject" prefHeight="35.0" prefWidth="140.0" text="Delete Subject" />
+                <Button fx:id="viewButton" onAction="#viewSubjects" prefHeight="35.0" prefWidth="140.0" text="View Subjects" />
+            </HBox>
+        </VBox>
     </center>
 </BorderPane>
