@@ -4,13 +4,17 @@
  File Name: USubjectManagement.fxml
  Description: This is the USubjectManagement FXML file to assist with front end development
  Date: March 2nd, 2025
- -->
+-->
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #f8f9fa;" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.CompanyLogin.USubjectManagementController">
+<BorderPane xmlns="http://javafx.com/javafx/11.0.14-internal"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="GUI.CompanyLogin.USubjectManagementController"
+            prefHeight="600.0" prefWidth="800.0"
+            style="-fx-background-color: #f8f9fa;">
 
     <left>
         <Pane prefHeight="600.0" prefWidth="181.0" style="-fx-background-color: #6A89A7;" BorderPane.alignment="CENTER">
@@ -38,7 +42,10 @@
         <BorderPane prefHeight="600.0" prefWidth="619.0" style="-fx-background-color: white; -fx-padding: 10px;">
 
             <top>
-                <Label style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-padding: 10px;" text="Subject Management" textAlignment="CENTER" />
+                <VBox spacing="5.0">
+                    <Label fx:id="studentNameLabel" text="Welcome!" style="-fx-font-size: 16px; -fx-padding: 5px 0 0 10px; -fx-font-weight: bold;" />
+                    <Label text="Subject Management" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-padding: 0 0 10px 10px;" />
+                </VBox>
             </top>
 
             <center>

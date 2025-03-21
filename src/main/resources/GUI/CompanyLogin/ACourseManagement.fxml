@@ -2,17 +2,19 @@
 
 <!--
  File Name: ACourseManagement.fxml
- Description: This is the AdminCourseManagement FXML file to assist with front end development
+ Description: This is the Admin Course Management FXML file to assist with front-end development.
  Date: March 2nd, 2025
  -->
-
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #f8f9fa;" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.CompanyLogin.ACourseManagementController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0"
+            style="-fx-background-color: #f8f9fa;" xmlns="http://javafx.com/javafx/11.0.14-internal"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.CompanyLogin.ACourseManagementController">
 
+    <!-- Sidebar Menu -->
     <left>
         <VBox spacing="10" style="-fx-background-color: #6A89A7; -fx-padding: 10px;" BorderPane.alignment="CENTER">
             <ImageView fitHeight="70.0" fitWidth="155.0">
@@ -29,33 +31,52 @@
         </VBox>
     </left>
 
+    <!-- Main Content -->
     <center>
         <VBox alignment="CENTER" spacing="15" style="-fx-padding: 20px;">
-
             <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-padding: 5px;" text="Admin Course Management" />
+            <Label text="Manage Courses" style="-fx-font-size: 17px; -fx-font-weight: bold;" />
 
-            <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Enrolled Courses" />
+            <!-- Course Input Form -->
+            <GridPane hgap="20" vgap="10" prefHeight="174.0" prefWidth="600.0"
+                      style="-fx-background-color: white; -fx-padding: 15px; -fx-border-color: lightgray; -fx-border-width: 1;">
 
-            <TableView fx:id="enrolledCoursesTable" prefHeight="200.0" prefWidth="600.0">
-                <columns>
-                    <TableColumn fx:id="colCourseID" prefWidth="100.0" text="Course ID" />
-                    <TableColumn fx:id="colCourseName" prefWidth="200.0" text="Course Name" />
-                    <TableColumn fx:id="colSectionNumber" prefWidth="100.0" text="Section" />
-                    <TableColumn fx:id="colTeacherName" prefWidth="200.0" text="Instructor" />
-                </columns>
-            </TableView>
-         <HBox alignment="CENTER" spacing="15" style="-fx-padding: 10px;">
-            <children>
-                   <Button fx:id="addCourseButton" onAction="#addCourse" prefHeight="35.0" prefWidth="130.0" text="Add Course" />
-                   <Button fx:id="editCourseButton" onAction="#editCourse" prefHeight="35.0" prefWidth="130.0" text="Edit Course" />
-                   <Button fx:id="deleteCourseButton" onAction="#deleteCourse" prefHeight="35.0" prefWidth="130.0" text="Delete Course" />
-            </children>
-         </HBox>
+                <Label text="Course Name:" style="-fx-font-weight: bold;" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                <TextField fx:id="courseNameField" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
-            <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Course Offerings" />
+                <Label text="Course ID:" style="-fx-font-weight: bold;" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                <TextField fx:id="courseIDField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
+                <Label text="Section Number:" style="-fx-font-weight: bold;" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                <TextField fx:id="sectionField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+                <Label text="Instructor:" style="-fx-font-weight: bold;" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                <TextField fx:id="instructorField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
+                <Label text="Subject Name:" style="-fx-font-weight: bold;" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                <TextField fx:id="subjectField" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+
+                <Label text="Location:" style="-fx-font-weight: bold;" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                <TextField fx:id="locationField" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+
+                <Label text="Lecture Day:" style="-fx-font-weight: bold;" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                <TextField fx:id="lectureDayField" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+
+                <Label text="Final Exam Date:" style="-fx-font-weight: bold;" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                <TextField fx:id="finalExamDateField" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+            </GridPane>
+
+            <!-- Buttons for Course Actions -->
+            <Button fx:id="addCourseButton" onAction="#addCourse" style="-fx-font-weight: bold;" text="Add Course" />
+
+            <!-- Table: Course List -->
+            <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Course List" />
             <TableView fx:id="courseDetailsTable" prefHeight="200.0" prefWidth="600.0">
                 <columns>
+                    <TableColumn fx:id="colCourseID" prefWidth="100.0" text="Course ID" />
+                    <TableColumn fx:id="colCourseName" prefWidth="150.0" text="Course Name" />
+                    <TableColumn fx:id="colSectionNumber" prefWidth="100.0" text="Section" />
+                    <TableColumn fx:id="colTeacherName" prefWidth="150.0" text="Instructor" />
                     <TableColumn fx:id="colSubjectName" prefWidth="150.0" text="Subject Name" />
                     <TableColumn fx:id="colLocation" prefWidth="150.0" text="Location" />
                     <TableColumn fx:id="colLectureDay" prefWidth="100.0" text="Lecture Day" />
@@ -64,10 +85,14 @@
                 </columns>
             </TableView>
 
+
+
+            <!-- Action Buttons -->
             <HBox alignment="CENTER" spacing="15" style="-fx-padding: 10px;">
+                <Button fx:id="editCourseButton" onAction="#editCourse" prefHeight="35.0" prefWidth="130.0" text="Edit Course" />
+                <Button fx:id="deleteCourseButton" onAction="#deleteCourse" prefHeight="35.0" prefWidth="130.0" text="Delete Course" />
                 <Button fx:id="viewCoursesButton" onAction="#viewCourses" prefHeight="35.0" prefWidth="130.0" text="View Courses" />
-                <Button fx:id="assignFacultyButton" onAction="#assignFaculty" prefHeight="35.0" prefWidth="130.0" text="Assign Faculty" />
-                <Button fx:id="manageEnrollmentsButton" onAction="#manageEnrollments" prefHeight="35.0" prefWidth="140.0" text="Manage Enrollments" />
+                <Button fx:id="manageEnrollmentsButton" onAction="#manageEnrollments" prefHeight="35.0" prefWidth="150.0" text="Manage Enrollments" />
             </HBox>
         </VBox>
     </center>

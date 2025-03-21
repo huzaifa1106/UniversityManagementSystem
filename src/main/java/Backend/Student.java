@@ -1,452 +1,213 @@
 /**
- *  File: Student.java
- *  Description: This class is for storing important information, personal, academic,
- *  as well as financial as well, helps us retrieve more effectively through these methods
- *  when implementing UI components
- *  Author: Huzaifa A. & Group
- *  Date: March 2nd, 2025
- *  */
+ * File: Student.java
+ * Description: Represents a student user in the university system. Stores full academic and contact details,
+ * enrollment status, tuition information, and provides utility methods for initialization, course enrollment,
+ * and interaction with the course and subject backend.
+ *
+ * Author: Huzaifa A. & Group
+ * Date: March 2nd, 2025
+ */
 
 package Backend;
 
-//Important Statements
+import javafx.beans.property.*;
 import javafx.scene.image.Image;
-
-import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class Student extends User {
 
+    private static List<Student> students = new ArrayList<>();
+    private static final int UGRADFEE = 5000;
+    private static final int GRADFEE = 4000;
 
-    //Load the students when compiled
+    private SimpleStringProperty fullName;
+    private SimpleIntegerProperty studentID;
+    private SimpleObjectProperty<Image> profilePicture;
+    private SimpleStringProperty address;
+    private SimpleLongProperty telephone;
+    private SimpleIntegerProperty tuitionAnnual;
+    private SimpleIntegerProperty tuitionBalance;
+    private SimpleStringProperty emailAddress;
+    private SimpleIntegerProperty average;
+    private SimpleStringProperty semester;
+    private SimpleStringProperty academicLevel;
+    private SimpleStringProperty thesisTitle;
+    private SimpleIntegerProperty progress;
+    private List<Course> enrolledCourses;
+    private List<Subject> enrolledSubjects;
+
     static {
         initializeStudents();
     }
 
-    // Constants for tuition fees
-    private static final int UGRADFEE = 5000;
-    private static final int GRADFEE = 4000;
+    // Manual constructor with ID
+    public Student(int studentID, String fullName, String password, Image profilePicture, String address, long telephone,
+                   int tuitionAnnual, int tuitionBalance, String emailAddress, int average, String semester,
+                   String academicLevel, String thesisTitle) {
 
-    private static final String STUDENT_FILE = "students.txt";
-    //Array to store the students
-    private static List<Student> students = new ArrayList<>();
-
-    // Attributes
-    private String fullName;
-    private int studentID;
-    private Image profilePicture;
-    private String address;
-    private int telephone;
-    private int tuitionAnnual;
-    private int tuitionBalance;
-    private List<Course> enrolledCourses;
-    private String emailAddress;
-    private int average;
-    private String semester;
-    private List<Subject> enrolledSubjects;
-    private String academicLevel;
-    private String thesisTitle;
-    private int progress;
-
-
-    public Student(String hel) {
-        super("","","");
-        this.fullName = "";
-        this.studentID = 0;
-        this.address = "";
-        this.telephone = 0;
-        this.tuitionAnnual = 0;
-        this.tuitionBalance = 0;
+        super(String.valueOf(studentID), password, "student");
+        this.studentID = new SimpleIntegerProperty(studentID);
+        this.fullName = new SimpleStringProperty(fullName);
+        this.profilePicture = new SimpleObjectProperty<>(profilePicture);
+        this.address = new SimpleStringProperty(address);
+        this.telephone = new SimpleLongProperty(telephone);
+        this.tuitionAnnual = new SimpleIntegerProperty(tuitionAnnual);
+        this.tuitionBalance = new SimpleIntegerProperty(tuitionBalance);
+        this.emailAddress = new SimpleStringProperty(emailAddress);
+        this.average = new SimpleIntegerProperty(average);
+        this.semester = new SimpleStringProperty(semester);
+        this.academicLevel = new SimpleStringProperty(academicLevel);
+        this.thesisTitle = new SimpleStringProperty(thesisTitle);
+        this.progress = new SimpleIntegerProperty(-1);
         this.enrolledCourses = new ArrayList<>();
         this.enrolledSubjects = new ArrayList<>();
-        this.academicLevel = "";
-        this.thesisTitle = "";
-        this.progress = 0;
-    }
-    // Constructor
-    public Student(String fullName, String password, Image profilePicture, String address, int telephone,
-                   int tuitionAnnual, int tuitionBalance, String emailAddress, int average, String semester, String academicLevel,
-                   String thesisTitle) {
 
-        super(String.valueOf(generateStudentID()), password, "student");  // Username = Student ID (as String)
-        this.studentID = Integer.parseInt(this.getUsername()); // Convert username back to int
-        this.fullName = fullName;
-        this.profilePicture = profilePicture;
-        this.address = address;
-        this.telephone = telephone;
-        this.tuitionAnnual = tuitionAnnual;
-        this.tuitionBalance = tuitionBalance;
-        this.emailAddress = emailAddress;
-        this.average = average;
-        this.semester = semester;
-        this.enrolledCourses = new ArrayList<>();
-        this.enrolledSubjects = new ArrayList<>();
-        this.academicLevel = academicLevel;
-        this.thesisTitle = thesisTitle;
-        this.progress = -1;
         UserAuthenticator.newUser(this.getUsername(), this.getPassword());
         students.add(this);
-
     }
 
+    // Default constructor
+    public Student() {
+        super("", "", "");
+        this.fullName = new SimpleStringProperty("");
+        this.studentID = new SimpleIntegerProperty(0);
+        this.profilePicture = new SimpleObjectProperty<>(null);
+        this.address = new SimpleStringProperty("");
+        this.telephone = new SimpleLongProperty(0);
+        this.tuitionAnnual = new SimpleIntegerProperty(0);
+        this.tuitionBalance = new SimpleIntegerProperty(0);
+        this.emailAddress = new SimpleStringProperty("");
+        this.average = new SimpleIntegerProperty(0);
+        this.semester = new SimpleStringProperty("");
+        this.academicLevel = new SimpleStringProperty("");
+        this.thesisTitle = new SimpleStringProperty("");
+        this.progress = new SimpleIntegerProperty(0);
+        this.enrolledCourses = new ArrayList<>();
+        this.enrolledSubjects = new ArrayList<>();
+    }
 
+    // Auto-ID Constructor
+    public Student(String fullName, String password, Image profilePicture, String address, long telephone,
+                   int tuitionAnnual, int tuitionBalance, String emailAddress, int average, String semester,
+                   String academicLevel, String thesisTitle) {
+
+        super(String.valueOf(generateStudentID()), password, "student");
+        this.studentID = new SimpleIntegerProperty(Integer.parseInt(this.getUsername()));
+        this.fullName = new SimpleStringProperty(fullName);
+        this.profilePicture = new SimpleObjectProperty<>(profilePicture);
+        this.address = new SimpleStringProperty(address);
+        this.telephone = new SimpleLongProperty(telephone);
+        this.tuitionAnnual = new SimpleIntegerProperty(tuitionAnnual);
+        this.tuitionBalance = new SimpleIntegerProperty(tuitionBalance);
+        this.emailAddress = new SimpleStringProperty(emailAddress);
+        this.average = new SimpleIntegerProperty(average);
+        this.semester = new SimpleStringProperty(semester);
+        this.academicLevel = new SimpleStringProperty(academicLevel);
+        this.thesisTitle = new SimpleStringProperty(thesisTitle);
+        this.progress = new SimpleIntegerProperty(-1);
+        this.enrolledCourses = new ArrayList<>();
+        this.enrolledSubjects = new ArrayList<>();
+
+        UserAuthenticator.newUser(this.getUsername(), this.getPassword());
+        students.add(this);
+    }
+
+    // Enroll student into random courses and update subjects
+    public static void autoEnrollStudentInCourses(Student student) {
+        List<Course> availableCourses = Course.getCourseList();
+        Collections.shuffle(availableCourses);
+
+        List<Course> selected = availableCourses.subList(0, Math.min(5, availableCourses.size()));
+        Set<Subject> subjects = new HashSet<>();
+
+        for (Course c : selected) {
+            student.enrolledCourses.add(c);
+            c.getEnrolledStudents().add(student);
+
+            Subject s = Subject.findSubjectByCode(c.getSubjectName());
+            if (s != null) subjects.add(s);
+        }
+
+        student.enrolledSubjects.addAll(subjects);
+
+        // Debug logging
+        System.out.println("Enrolled " + student.getFullName() + " in subjects:");
+        for (Subject subj : student.getEnrolledSubjects()) {
+            System.out.println(" - " + subj.getSubjectName() + " (" + subj.getSubjectCode() + ")");
+        }
+    }
+
+    // Static initialization of demo students
     public static void initializeStudents() {
-        Student[] studentArray = {
-                new Student("Alice Smith", "password123", null, "123 Maple St", 1234567890, 5000, 2000, "alice@example.edu", 85, "Fall 2025", "Undergraduate", ""),
-                new Student("Bob Johnson", "securePass", null, "456 Oak Ave", 987654321, 4000, 1000, "bob@example.edu", 90, "Spring 2025", "Graduate", "AI Research"),
-                new Student("Carol Williams", "carolPass", null, "789 Pine Rd", 555666777, 4000, 3000, "carol@example.edu", 88, "Winter 2025", "Graduate", "Data Science"),
-                new Student("Lucka Racki", "luckaStrong", null, "321 Birch St", 444555666, 5000, 2500, "lucka@example.edu", 75, "Fall 2025", "Undergraduate", ""),
-                new Student("David Lee", "davidPass", null, "159 Cedar Dr", 777888999, 5000, 0, "lee@example.edu", 92, "Spring 2025", "Undergraduate", ""),
-                new Student("Emily Brown", "emilySecure", null, "753 Elm Blvd", 111222333, 4000, 1200, "brown@example.edu", 89, "Winter 2025", "Graduate", "Machine Learning"),
-                new Student("George Smith", "george123", null, "951 Fir St", 666777888, 5000, 4500, "smith@example.edu", 80, "Fall 2025", "Undergraduate", ""),
-                new Student("Helen Jones", "helenSecure", null, "852 Spruce Ct", 999000111, 4000, 500, "jones@example.edu", 95, "Spring 2025", "Graduate", "Music Theory"),
-                new Student("Isaac Clark", "isaacPass", null, "753 Poplar Ln", 222333444, 5000, 1500, "clark@example.edu", 78, "Winter 2025", "Undergraduate", ""),
-                new Student("Jennifer Davis", "jenniferStrong", null, "654 Redwood Cir", 888999000, 4000, 2300, "davis@example.edu", 87, "Fall 2025", "Graduate", "English Literature")
-        };
+        if (students.isEmpty()) {
+            Student[] studentArray = {
+                    new Student(100001, "Alice Smith", "alicepass", null, "123 Maple St", 1234567890, 5000, 2000, "alice@example.edu", 85, "Fall 2025", "Undergraduate", ""),
+                    new Student(100002, "Bob Johnson", "bobpass", null, "456 Oak Ave", 987654321, 4000, 1000, "bob@example.edu", 90, "Spring 2025", "Graduate", "AI Research"),
+                    new Student(100003, "Carol Williams", "carolpass", null, "789 Pine Rd", 555666777, 4000, 3000, "carol@example.edu", 88, "Winter 2025", "Graduate", "Data Science"),
+                    new Student(100004, "Lucka Racki", "luckapass", null, "321 Birch St", 444555666, 5000, 2500, "lucka@example.edu", 75, "Fall 2025", "Undergraduate", "")
+            };
 
-        // Add each student to the students list
-        for (Student student : studentArray) {
-            students.add(student);
-        }
-    }
-
-
-    //Load the students: Format Written(fullName, password, profilePic, address, telephone, annual tuition, tuitionBalance, email adderess, average)
-    public static void loadStudents() {
-        if (students == null) {
-            students = new ArrayList<>();
-        }
-        students.clear();
-
-        File file = new File(STUDENT_FILE);
-        if (!file.exists()) {
-            System.out.println("Student file not found. Creating new one.");
-            return;
-        }
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(STUDENT_FILE))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] data = line.split(",");
-                if (data.length >= 11) { // Ensure correct data structure
-                    try {
-                        Student student = new Student(
-                                data[0], data[1], null, data[2], Integer.parseInt(data[3]),
-                                Integer.parseInt(data[4]), Integer.parseInt(data[5]), data[6], Integer.parseInt(data[7]),
-                                data[8], data[9], data[10]
-                        );
-
-                        // Load enrolled courses
-                        if (data.length > 11 && !data[11].isEmpty() && !data[11].equals("[]")) {
-                            String courseData = data[11].replace("[", "").replace("]", "");
-                            for (String courseName : courseData.split(";")) {
-                                Course foundCourse = Course.findCourse(courseName);
-                                if (foundCourse != null) {
-                                    student.updateEnrolledCourses(foundCourse);
-                                }
-                            }
-                        }
-
-                        // Load enrolled subjects
-                        if (data.length > 12 && !data[12].isEmpty() && !data[12].equals("[]")) {
-                            String subjectData = data[12].replace("[", "").replace("]", "");
-                            for (String subjectName : subjectData.split(";")) {
-                                Subject foundSubject = Subject.findSubject(subjectName);
-                                if (foundSubject != null) {
-                                    student.updateEnrolledSubjects(foundSubject);
-                                }
-                            }
-                        }
-
-                        students.add(student);
-                    } catch (NumberFormatException e) {
-                        System.err.println("Data formatting error in students.txt, skipping line.");
-                    }
-                }
+            for (Student s : studentArray) {
+                autoEnrollStudentInCourses(s);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
-    // Save all students to file
-    public static void saveAllStudents() {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(STUDENT_FILE))) {
-            for (Student student : students) {
-                writer.write(student.getFullName() + "," + student.getPassword() + "," + student.getAddress() + ","
-                        + student.getTelephone() + "," + student.getTuitionAnnual() + "," + student.getTuitionBalance() + ","
-                        + student.getEmailAddress() + "," + student.getAverage() + "," + student.getSemester() + ","
-                        + student.getAcademicLevel() + "," + student.getThesisTitle() + ","
-                        + student.getCourseNamesAsString() + "," // Use the new method
-                        + student.getSubjectNamesAsString()); // Assuming subjects have a similar method
-
-                writer.newLine();
-            }
-            writer.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    public void printCourses(){
-
-        for(Course courses: this.enrolledCourses){
-
-            System.out.println(courses.getCourseName());
-
-        }
-
-    }
-
-
-    private static void writeStudentToFile(Student student) {
-        saveAllStudents();
-    }
-
-    // Method to generate a random 10-digit student ID
     private static int generateStudentID() {
-        Random rand = new Random();
-        return 1000000000 + rand.nextInt(2147483647 - 1000000000);
-
+        return 100000 + new Random().nextInt(900000);
     }
 
-    //Method to remove a student from student list
-    public static void removeStudent(ArrayList<Student> students, Student s ){
-        students.remove(s);
-    }
-
-    public String getCourseNamesAsString() {
-        if (enrolledCourses.isEmpty()) return "[]"; // Handle empty case
-
-        StringBuilder courseList = new StringBuilder("[");
-        for (int i = 0; i < enrolledCourses.size(); i++) {
-            courseList.append(enrolledCourses.get(i).getCourseName());
-            if (i < enrolledCourses.size() - 1) {
-                courseList.append("; "); // Separate courses properly
-            }
-        }
-        courseList.append("]"); // Close brackets
-
-        return courseList.toString();
-    }
-
-    // Get Subject Names for Saving
-    public String getSubjectNamesAsString() {
-        if (enrolledSubjects.isEmpty()) return "[]"; // Handle empty case
-
-        StringBuilder subjectList = new StringBuilder("[");
-        for (int i = 0; i < enrolledSubjects.size(); i++) {
-            subjectList.append(enrolledSubjects.get(i).getSubjectName());
-            if (i < enrolledSubjects.size() - 1) {
-                subjectList.append("; "); // Separate courses properly
-            }
-        }
-        subjectList.append("]"); // Close brackets
-
-        return subjectList.toString();
-    }
-
-    //Method for printing out all details about the user
-    public void viewProfile() {
-        System.out.println("=== Profile ===");
-        System.out.println("Name: " + fullName);
-        System.out.println("Student ID: " + studentID);
-        System.out.println("Email: " + emailAddress);
-        System.out.println("Address: " + address);
-        System.out.println("Phone: " + telephone);
-        System.out.println("Academic Level: " + academicLevel);
-        System.out.println("Thesis Title: " + thesisTitle);
-        System.out.println("Semester: " + semester);
-        System.out.println("Progress: " + progress + "%");
-    }
-
-    //Method to edit the password and the profile picture of the student
-    public void editProfile(String newPassword, Image newProfilePicture) {
-        setPassword(newPassword);
-        this.profilePicture = newProfilePicture;
-        System.out.println("Profile updated successfully!");
-    }
-
-    public static void addStudent(Student student) {
-        students.add(student);
-        saveAllStudents();  // Save all students instead of just appending one
-        System.out.println("Student added successfully: " + student.getFullName());
-    }
-
-
-    public static void removeStudent(int studentID) {
-        students.removeIf(student -> student.getStudentID() == studentID);
-        saveAllStudents(); // Rewrite the file
-        System.out.println("Student removed successfully.");
-    }
-
+    // Public static utility methods
     public static Student getStudent(int studentID) {
         for (Student student : students) {
-            if (student.getStudentID() == studentID) {
-                return student;
-            }
+            if (student.getStudentID() == studentID) return student;
         }
         return null;
     }
 
-    //Method for printing out the courses the student is enrolled in
-    public void viewEnrolledCourses() {
-        System.out.println("=== Enrolled Courses ===");
-        if (enrolledCourses.isEmpty()) {
-            System.out.println("No courses.");
-        } else {
-            for (Course course : enrolledCourses) {
-                System.out.println(course.getCourseName() + " - " + course.getCourseID());
-            }
-        }
+    public static void addStudent(Student student) {
+        students.add(student);
+        System.out.println("Student added successfully: " + student.getFullName());
     }
 
-    //Method for viewing grades
-    public void viewGrades() {
-        System.out.println("=== Academic Performance ===");
-
-        if (enrolledCourses.isEmpty()) {
-            System.out.println("No courses enrolled.");
-            return;
-        }
-
-        //Looping through each course
-        for (Course course : enrolledCourses) {
-            double grade = course.getGrade();
-
-            // Print course name and grade status
-            if (grade == -1) {
-                System.out.println(course.getCourseName() + " - Not Graded");
-            } else {
-                System.out.println(course.getCourseName() + " - " + grade);
-            }
-        }
+    public static void removeStudent(int studentID) {
+        students.removeIf(student -> student.getStudentID() == studentID);
     }
 
-    public boolean checkDuplicateCourse(Course course) {
-
-        for (Course c : enrolledCourses) {
-            if (c.getCourseName().equalsIgnoreCase(course.getCourseName())) {
-                return true;
-            }
-        }
-        return false;
+    public static List<Student> getStudentList() {
+        return students;
     }
 
-    public static void printStudents() {
-        System.out.println("=== Student List ===");
-        if (students.isEmpty()) {
-            System.out.println("No students registered.");
-            return;
-        }
-        for (Student student : students) {
-            System.out.println("ID: " + student.getStudentID());
-            System.out.println("Name: " + student.getFullName());
-            System.out.println("Email: " + student.getEmailAddress());
-            System.out.println("Address: " + student.getAddress());
-            System.out.println("Phone: " + student.getTelephone());
-            System.out.println("Academic Level: " + student.getAcademicLevel());
-            System.out.println("Thesis Title: " + student.getThesisTitle());
-            System.out.println("Semester: " + student.getSemester());
-            System.out.println("Progress: " + student.getProgress() + "%");
-            System.out.println("Tuition Annual: $" + student.getTuitionAnnual());
-            System.out.println("Tuition Balance: $" + student.getTuitionBalance());
-
-            System.out.print("Enrolled Courses: ");
-            if (student.getEnrolledCourses().isEmpty()) {
-                System.out.println("None");
-            } else {
-                for (Course course : student.getEnrolledCourses()) {
-                    System.out.println("  - " + course.getCourseName());
-                }
-            }
-
-            System.out.print("Enrolled Subjects: ");
-            if (student.getEnrolledSubjects().isEmpty()) {
-                System.out.println("None");
-            } else {
-                for (Subject subject : student.getEnrolledSubjects()) {
-                    System.out.println("  - " + subject.getSubjectName());
-                }
-            }
-            System.out.println("-----------------------------------");
-        }
-    }
-
-
-    public boolean checkDuplicateSubject(Subject subject) {
-
-        for (Subject s : enrolledSubjects) {
-            if (s.getSubjectName().equalsIgnoreCase(subject.getSubjectName())) {
-                return true;
-            }
-        }
-        return false;
-    }
-    public void updateEnrolledCourses(Course c) {
-        if (!checkDuplicateCourse(c)) {  // Only add if not already enrolled
-            this.enrolledCourses.add(c);
-            System.out.println("Added course: " + c.getCourseName());
-        } else {
-            System.out.println("Course already enrolled: " + c.getCourseName());
-        }
-    }
-
-    public void updateEnrolledSubjects(Subject s) {
-        if (!checkDuplicateSubject(s)) { // Fix the logic
-            this.enrolledSubjects.add(s);
-            System.out.println("Added subject: " + s.getSubjectName());
-        } else {
-            System.out.println("Subject already enrolled: " + s.getSubjectName());
-        }
-    }
-
-
-
-    //Print out Financial Information
-    public void viewTuitionStatus() {
-        System.out.println("=== Tuition Information ===");
-        System.out.println("Annual Tuition: $" + tuitionAnnual);
-        System.out.println("Balance Due: $" + tuitionBalance);
-    }
-
-
-
-    // Getter Methods
-    public String getFullName() { return fullName; }
-    public int getStudentID() { return studentID; }
-    public Image getProfilePicture() { return profilePicture; }
-    public String getAddress() { return address; }
-    public int getTelephone() { return telephone; }
-    public int getTuitionAnnual() { return tuitionAnnual; }
-    public int getTuitionBalance() { return tuitionBalance; }
-    public String getEmailAddress() { return emailAddress; }
-    public int getAverage() { return average; }
-    public String getSemester() { return semester; }
+    // Accessors for course & subject lists
     public List<Course> getEnrolledCourses() { return enrolledCourses; }
     public List<Subject> getEnrolledSubjects() { return enrolledSubjects; }
-    public String getAcademicLevel() { return academicLevel; }
-    public String getThesisTitle() { return thesisTitle; }
-    public int getProgress() { return progress; }
-    public static List<Student> getStudentList(){return Student.students;}
 
-    //Setter Methods
-    public void setFullName(String fullName) { this.fullName = fullName; }
-    public void setProfilePicture(Image profilePicture) { this.profilePicture = profilePicture; }
-    public void setAddress(String address) { this.address = address; }
-    public void setTelephone(int telephone) { this.telephone = telephone; }
-    public void setTuitionAnnual(int tuitionAnnual) { this.tuitionAnnual = tuitionAnnual; }
-    public void setTuitionBalance(int tuitionBalance) { this.tuitionBalance = tuitionBalance; }
-    public void setEmailAddress(String emailAddress) { this.emailAddress = emailAddress; }
-    public void setAverage(int average) { this.average = average; }
-    public void setSemester(String semester) { this.semester = semester; }
-    public void setEnrolledCourses(List<Course> enrolledCourses) { this.enrolledCourses = enrolledCourses; }
-    public void setEnrolledSubjects(List<Subject> enrolledSubjects) { this.enrolledSubjects = enrolledSubjects; }
-    public void setAcademicLevel(String academicLevel) { this.academicLevel = academicLevel; }
-    public void setThesisTitle(String thesisTitle) { this.thesisTitle = thesisTitle; }
-    public void setProgress(int progress) { this.progress = progress; }
+    // Getters
+    public String getFullName() { return fullName.get(); }
+    public int getStudentID() { return studentID.get(); }
+    public Image getProfilePicture() { return profilePicture.get(); }
+    public String getAddress() { return address.get(); }
+    public long getTelephone() { return telephone.get(); }
+    public int getTuitionAnnual() { return tuitionAnnual.get(); }
+    public int getTuitionBalance() { return tuitionBalance.get(); }
+    public String getEmailAddress() { return emailAddress.get(); }
+    public int getAverage() { return average.get(); }
+    public String getSemester() { return semester.get(); }
+    public String getAcademicLevel() { return academicLevel.get(); }
+    public String getThesisTitle() { return thesisTitle.get(); }
+    public int getProgress() { return progress.get(); }
 
+    // Setters
+    public void setFullName(String fullName) { this.fullName.set(fullName); }
+    public void setProfilePicture(Image profilePicture) { this.profilePicture.set(profilePicture); }
+    public void setAddress(String address) { this.address.set(address); }
+    public void setTelephone(long telephone) { this.telephone.set(telephone); }
+    public void setTuitionAnnual(int tuitionAnnual) { this.tuitionAnnual.set(tuitionAnnual); }
+    public void setTuitionBalance(int tuitionBalance) { this.tuitionBalance.set(tuitionBalance); }
+    public void setEmailAddress(String emailAddress) { this.emailAddress.set(emailAddress); }
+    public void setAverage(int average) { this.average.set(average); }
+    public void setSemester(String semester) { this.semester.set(semester); }
+    public void setAcademicLevel(String academicLevel) { this.academicLevel.set(academicLevel); }
+    public void setThesisTitle(String thesisTitle) { this.thesisTitle.set(thesisTitle); }
+    public void setProgress(int progress) { this.progress.set(progress); }
 }

@@ -1,10 +1,10 @@
 /**
  *  File: ADashboardController.java
- *  Description: This class is used for the controlling the flow of the
- *  Admin Dashboard Window for the application, we use "@FXML" because these are event handles that
- *  were defined in the FXML file. Helping Route through windows for a seemingless experience
+ *  Description: This controller manages navigation between different admin panels in the system.
+ *  It includes routing to dashboard, course, student, subject, faculty, and event management views.
+ *  Author: Huzaifa A. & Group
  *  Date: March 2nd, 2025
- *  */
+ */
 
 package GUI.CompanyLogin;
 
@@ -17,62 +17,61 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 import java.io.IOException;
 
-public class ADashboardController extends ASubjectManagementController {
+public class ADashboardController {
 
-    //Rerouting from window to dashboard
+    // Navigates to the dashboard view
     @FXML
     private void loadDashboard() {
         navigateTo("ADashboard.fxml");
     }
-    //Rerouting from window to SubjectManagement
+
+    // Navigates to the subject management view
     @FXML
     private void loadSubjectManagement() {
         navigateTo("ASubjectManagement.fxml");
     }
 
-    //Rerouting from window to CourseManagement
+    // Navigates to the course management view
     @FXML
     private void loadCourseManagement() {
         navigateTo("ACourseManagement.fxml");
     }
 
-    //Rerouting from window to StudentManagement
+    // Navigates to the student management view
     @FXML
     private void loadStudentManagement() {
         navigateTo("AStudentManagement.fxml");
     }
 
-    //Rerouting from window to FacultyManagement
+    // Navigates to the faculty management view
     @FXML
     private void loadFacultyManagement() {
         navigateTo("AFacultyManagement.fxml");
     }
 
-    //Rerouting from window to EventManagement
+    // Navigates to the event management view
     @FXML
     private void loadEventManagement() {
         navigateTo("AEventManagement.fxml");
     }
 
-    //Method to switch between windows
+    // Utility method to load and switch scenes between FXML windows
     private void navigateTo(String fxmlFile) {
         try {
-            //Loading the FXML file to wrap window
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/CompanyLogin/" + fxmlFile));
             Parent root = loader.load();
 
-            // Check if window open, and update its scene
             Window currentWindow = Stage.getWindows().stream().filter(Window::isShowing).findFirst().orElse(null);
             if (currentWindow instanceof Stage) {
                 Stage stage = (Stage) currentWindow;
-                stage.setScene(new Scene(root));// Swap Scenes
+                stage.setScene(new Scene(root));
                 stage.setTitle(fxmlFile.replace(".fxml", " - Admin Panel"));
-                stage.show();//Display window
+                stage.show();
             } else {
                 System.out.println("Error: No active window found.");
             }
         } catch (IOException e) {
-            e.printStackTrace(); //Print stack trace in case of an error
+            e.printStackTrace();
         }
     }
 }

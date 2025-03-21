@@ -1,48 +1,168 @@
 /**
  *  File: AFacultyManagementController.java
- *  Description: This class is used for the controlling the flow of the
- *  Admin FacultyManagement Window for the application, we use "@FXML" because these are event handles that
- *  were defined in the FXML file. Helping Route through windows for a seemingless experience
+ *  Description: This controller manages faculty data within the admin panel,
+ *  including adding, editing, and deleting faculty members as well as viewing details.
+ *  Author: Huzaifa A. & Group
  *  Date: March 2nd, 2025
- *  */
-
+ */
 
 package GUI.CompanyLogin;
 
-//Important Statement
+import Backend.Faculty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
 
-public class AFacultyManagementController extends ASubjectManagementController {
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
-    //Method to switch window to dashboard
+public class AFacultyManagementController {
+
+    @FXML private TextField facultyNameField, facultyEmailField, facultyDegreeField, facultyOfficeField,
+            facultyResearchField, facultyCoursesField;
+
+    @FXML private TableView<Faculty> facultyTable;
+    @FXML private TableColumn<Faculty, String> colFacultyID, colFacultyName, colFacultyEmail, colFacultyDegree,
+            colFacultyResearch, colFacultyOffice;
+
+    private Faculty selectedFaculty;
+
+    // Static list of sample faculty members
+    private static final List<Faculty> facultyList = new ArrayList<>();
+
+    // Initialize sample data
+    static {
+        facultyList.add(new Faculty("F0001", "Dr. Alan Turing", null, "Ph.D.",
+                "Computational Theory", List.of("CS101"), "turing@university.edu", "Room 201"));
+        facultyList.add(new Faculty("F0002", "Prof. Emily Brontë",null, "Master's",
+                "English Literature", List.of("ENG101"), "bronte@university.edu", "Room 202"));
+        facultyList.add(new Faculty("F0003", "Dr. Grace Hopper", null, "Ph.D.",
+                "Computer Programming", List.of("CS201"), "hopper@university.edu", "Lab 203"));
+        facultyList.add(new Faculty("F0004", "Dr. Lakyn Copeland", null, "Master's",
+                "English Literature", List.of("ENG102"), "copeland@university.edu", "Room 201"));
+        facultyList.add(new Faculty("F0005", "Albozr Gharabaghi", null, "Ph.D.",
+                "Water and Soil", List.of("ENGG402"), "gharabaghi@university.edu", "Lab 202"));
+    }
+
+    // Initializes the table and selection listeners
     @FXML
-    private void loadDashboard() {
+    private void initialize() {
+        colFacultyID.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getFacultyID()));
+        colFacultyName.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getName()));
+        colFacultyEmail.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getEmail()));
+        colFacultyDegree.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getDegree()));
+        colFacultyResearch.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getResearchInterest()));
+        colFacultyOffice.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getOfficeLocation()));
+
+        facultyTable.getItems().setAll(facultyList);
+
+        facultyTable.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+            selectedFaculty = newVal;
+            if (newVal != null) fillFormWithFaculty(newVal);
+        });
+    }
+
+    // Populates form fields with selected faculty data
+    private void fillFormWithFaculty(Faculty faculty) {
+        facultyNameField.setText(faculty.getName());
+        facultyEmailField.setText(faculty.getEmail());
+        facultyDegreeField.setText(faculty.getDegree());
+        facultyOfficeField.setText(faculty.getOfficeLocation());
+        facultyResearchField.setText(faculty.getResearchInterest());
+        facultyCoursesField.setText(String.join(", ", faculty.getCoursesOffered()));
+    }
+
+    // Adds a new faculty to the list
+    @FXML private void addFaculty() {
+        String id = "F" + String.format("%04d", facultyList.size() + 1);
+        Faculty newFaculty = new Faculty(
+                id,
+                facultyNameField.getText(),
+                null,
+                facultyDegreeField.getText(),
+                facultyResearchField.getText(),
+                List.of(facultyCoursesField.getText().split(",\\s*")),
+                facultyEmailField.getText(),
+                facultyOfficeField.getText()
+        );
+        Faculty.addFaculty(newFaculty);
+        refreshFacultyTable();
+        clearForm();
+    }
+
+    // Edits selected faculty member's details
+    @FXML private void editFaculty() {
+        if (selectedFaculty != null) {
+            selectedFaculty.setName(facultyNameField.getText());
+            selectedFaculty.setEmail(facultyEmailField.getText());
+            selectedFaculty.setDegree(facultyDegreeField.getText());
+            selectedFaculty.setOfficeLocation(facultyOfficeField.getText());
+            selectedFaculty.setResearchInterest(facultyResearchField.getText());
+            selectedFaculty.setCoursesOffered(List.of(facultyCoursesField.getText().split(",\\s*")));
+            refreshFacultyTable();
+            clearForm();
+        }
+    }
+
+    // Deletes selected faculty member
+    @FXML private void deleteFaculty() {
+        if (selectedFaculty != null) {
+            Faculty.removeFaculty(selectedFaculty.getFacultyID());
+            refreshFacultyTable();
+            clearForm();
+        }
+    }
+
+    // Refreshes the table view with the latest faculty list
+    private void refreshFacultyTable() {
+        facultyTable.getItems().setAll(Faculty.getFacultyList());
+    }
+
+    // Clears input form fields
+    private void clearForm() {
+        facultyNameField.clear();
+        facultyEmailField.clear();
+        facultyDegreeField.clear();
+        facultyOfficeField.clear();
+        facultyResearchField.clear();
+        facultyCoursesField.clear();
+        selectedFaculty = null;
+    }
+
+    // Placeholder for viewing profile
+    @FXML private void viewFacultyProfile() {
+        System.out.println("View Faculty Profile clicked");
+    }
+
+    // Placeholder for assigning courses
+    @FXML private void assignCourses() {
+        System.out.println("Assign Courses clicked");
+    }
+
+    // Navigation methods
+    @FXML private void loadDashboard() {
         Router.navigate("ADashboard.fxml", "Admin Dashboard");
     }
 
-    //Add faculty button clicked
-    @FXML
-    private void addFaculty() {
-        System.out.println("Add Faculty clicked");
+    @FXML private void loadSubjectManagement() {
+        Router.navigate("ASubjectManagement.fxml", "Subject Management");
     }
-    //Edit faculty button clicked
-    @FXML
-    private void editFaculty() {
-        System.out.println("Edit Faculty clicked");
+
+    @FXML private void loadCourseManagement() {
+        Router.navigate("ACourseManagement.fxml", "Course Management");
     }
-    //Delete faculty button clicked
-    @FXML
-    private void deleteFaculty() {
-        System.out.println("Delete Faculty clicked");
+
+    @FXML private void loadStudentManagement() {
+        Router.navigate("AStudentManagement.fxml", "Student Management");
     }
-    //View faculty button clicked
-    @FXML
-    private void viewFacultyProfile() {
-        System.out.println("View Faculty Profile clicked");
+
+    @FXML private void loadFacultyManagement() {
+        Router.navigate("AFacultyManagement.fxml", "Faculty Management");
     }
-    //Assign faculty a course button clicked
-    @FXML
-    private void assignCourses() {
-        System.out.println("Assign Courses clicked");
+
+    @FXML private void loadEventManagement() {
+        Router.navigate("AEventManagement.fxml", "Event Management");
     }
 }

@@ -76,12 +76,14 @@
             <Button fx:id="addFacultyButton" onAction="#addFaculty" style="-fx-font-weight: bold;" text="Register Faculty" />
 
             <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Faculty List" />
-            <TableView fx:id="facultyTable" prefHeight="200.0" prefWidth="600.0">
+            <TableView fx:id="facultyTable">
                 <columns>
-                    <TableColumn fx:id="colFacultyName" prefWidth="122.4000244140625" text="Full Name" />
-                    <TableColumn fx:id="colFacultyEmail" prefWidth="123.79998779296875" text="Email Address" />
-                    <TableColumn fx:id="colFacultyDegree" prefWidth="130.79998779296875" text="Degree" />
-                    <TableColumn fx:id="colFacultyCourses" prefWidth="256.39996337890625" text="Courses Assigned" />
+                    <TableColumn fx:id="colFacultyID" text="Faculty ID" />
+                    <TableColumn fx:id="colFacultyName" text="Full Name" />
+                    <TableColumn fx:id="colFacultyEmail" text="Email" />
+                    <TableColumn fx:id="colFacultyDegree" text="Degree" />
+                    <TableColumn fx:id="colFacultyResearch" text="Research Interest" />
+                    <TableColumn fx:id="colFacultyOffice" text="Office Location" />
                 </columns>
             </TableView>
 
