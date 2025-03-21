@@ -5,4 +5,8 @@ module GuelphLoginPage {
 
     opens GUI.CompanyLogin to javafx.fxml;
     exports GUI.CompanyLogin;
+
+    //lets javafx have access to backend.faculty
+    opens Backend to javafx.base, javafx.fxml;
+
 }
