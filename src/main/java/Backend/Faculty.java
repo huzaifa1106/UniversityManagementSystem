@@ -11,6 +11,8 @@ package Backend;
 //Import Statements
 import java.util.List;
 import java.awt.Image;
+import java.util.ArrayList;
+
 
 public class Faculty {
 
@@ -23,6 +25,10 @@ public class Faculty {
     private String email;
     private String officeLocation;
 
+    //stat array
+    public static List<Faculty> facultyList = new ArrayList<>();
+
+
     // Constructor
     public Faculty(String name, Image profilePhoto, String degree, String researchInterest,
                    List<String> coursesOffered, String email, String officeLocation) {
@@ -34,6 +40,24 @@ public class Faculty {
         this.email = email;
         this.officeLocation = officeLocation;
     }
+
+    //add faculty
+    public static void addFaculty(Faculty faculty) {
+        facultyList.add(faculty);
+        System.out.println("Faculty added: " + faculty.getName()); // Debugging log
+    }
+
+    //retrieve all faculty
+    public static List<Faculty> getAllFaculty() {
+        return facultyList;
+    }
+    // New method to format courses for JavaFX TableView
+    public String getCoursesAsString() {
+        //System.out.println("DEBUG: getCoursesAsString() called for " + name);
+        return String.join(", ", coursesOffered); // Converts list to comma-separated string
+    }
+
+
 
     // Getter Methods
     public String getName() {
@@ -57,6 +81,7 @@ public class Faculty {
     public String getOfficeLocation() {
         return officeLocation;
     }
+
 
     // Setters Methods
     public void setName(String name) {
