@@ -49,6 +49,34 @@ public class Subject {
         int count = subjects.size() + 1;
         return "SUBJ" + count; // e.g., SUBJ6
     }
+    /**
+     * Adds a new subject if it's not a duplicate.
+     */
+    public static boolean addSubject(String name, String code) {
+        if (isDuplicate(name, code)) {
+            return false;
+        }
+        subjects.add(new Subject(name, code));
+        System.out.println("Subject added successfully.");
+        return true;
+    }
+
+    /**
+     * Validates if a subject with the same name or code already exists.
+     */
+    private static boolean isDuplicate(String name, String code) {
+        for (Subject subject : subjects) {
+            if (subject.getSubjectName().equalsIgnoreCase(name)) {
+                System.out.println("Error: A subject with the name '" + name + "' already exists.");
+                return true;
+            }
+            if (subject.getSubjectCode().equalsIgnoreCase(code)) {
+                System.out.println("Error: A subject with the code '" + code + "' already exists.");
+                return true;
+            }
+        }
+        return false;
+    }
 
     // Find subject by name
     public static Subject findSubject(String subjectName) {
