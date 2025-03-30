@@ -32,7 +32,7 @@ public class Course {
     private List<Student> enrolledStudents;
     private int grade;
 
-    // 🔹 Static Initialization Block: Preloads demo courses
+    //  Static Initialization Block: Preloads demo courses
     static {
         Course[] courses = {
                 new Course(1, "Calculus I", "MATH001", 1, "Dr. Alan Turing", 30, "Room 101", "Mon/Wed", 900, 1100, LocalDateTime.of(2025, 12, 15, 9, 0)),
@@ -51,7 +51,7 @@ public class Course {
         }
     }
 
-    // 🔹 Full Constructor with course ID
+    //  Full Constructor with course ID
     public Course(int courseID, String courseName, String subjectName, int sectionNumber,
                   String teacherName, int courseCapacity, String location, String lectureDay,
                   int lectureStartTime, int lectureEndTime, LocalDateTime finalExamDate) {
@@ -70,7 +70,7 @@ public class Course {
         this.grade = -1;
     }
 
-    // 🔹 Auto-incremented constructor for new courses
+    //  Auto-incremented constructor for new courses
     public Course(String courseName, String subjectName, int sectionNumber,
                   String teacherName, int courseCapacity, String location, String lectureDay,
                   int lectureStartTime, int lectureEndTime, LocalDateTime finalExamDate) {
@@ -79,7 +79,7 @@ public class Course {
                 lectureStartTime, lectureEndTime, finalExamDate);
     }
 
-    // 🔹 Check if a new course conflicts with any existing one
+    //  Check if a new course conflicts with any existing one
     public static boolean checkConflict(Course newCourse) {
         for (Course existing : courseList) {
             if (existing.lectureDay.equalsIgnoreCase(newCourse.lectureDay)) {
@@ -93,7 +93,31 @@ public class Course {
         return false;
     }
 
-    // 🔍 Find course by name
+    //  Add course if not duplicate
+    public static boolean Course(Course newCourse) {
+        if (isDuplicate(newCourse.getCourseName(), newCourse.getSectionNumber())) {
+            return false;
+        }
+        courseList.add(newCourse);
+        System.out.println("Course added successfully.");
+        return true;
+    }
+
+    /**
+     * Validates if course with same name and section exists..
+     */
+    private static boolean isDuplicate(String name, int section) {
+        for (Course course : courseList) {
+            if (course.getCourseName().equalsIgnoreCase(name) &&
+                    course.getSectionNumber() == section) {
+                System.out.println("Course already exists with same name and section.");
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Find course by name
     public static Course findCourse(String courseName) {
         for (Course course : courseList) {
             if (course.getCourseName().equalsIgnoreCase(courseName.trim())) {
@@ -103,7 +127,7 @@ public class Course {
         return null;
     }
 
-    // 🔍 Find course by ID
+    //  Find course by ID
     public static Course findCourseByID(int courseID) {
         for (Course course : courseList) {
             if (course.getCourseID() == courseID) {
@@ -113,7 +137,7 @@ public class Course {
         return null;
     }
 
-    // 📋 Print course details (console)
+    //  Print course details (console)
     public void displayCourse() {
         System.out.println("Course ID: " + courseID);
         System.out.println("Course Name: " + courseName);
@@ -127,7 +151,7 @@ public class Course {
         System.out.println("Enrolled: " + enrolledStudents.size());
     }
 
-    // 📚 Course list operations
+    //  Course list operations
     public static List<Course> getCourseList() {
         return courseList;
     }
@@ -142,7 +166,7 @@ public class Course {
         System.out.println("Course removed: " + courseID);
     }
 
-    // 🔸 Getters
+    //  Getters
     public int getCourseID() { return courseID; }
     public String getCourseName() { return courseName; }
     public String getSubjectName() { return subjectName; }
@@ -157,7 +181,7 @@ public class Course {
     public List<Student> getEnrolledStudents() { return enrolledStudents; }
     public int getGrade() { return grade; }
 
-    // 🔸 Setters
+    //  Setters
     public void changeCourseName(String courseName) { this.courseName = courseName; }
     public void changeTeacherName(String teacherName) { this.teacherName = teacherName; }
     public void changeCourseCapacity(int courseCapacity) { this.courseCapacity = courseCapacity; }

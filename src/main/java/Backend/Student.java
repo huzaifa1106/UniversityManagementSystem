@@ -178,6 +178,22 @@ public class Student extends User {
         return students;
     }
 
+// code to check student valadationn
+    public static void Student(Student student) {
+        students.add(student);
+        System.out.println("Student added successfully: " + student.getFullName());
+    }
+
+    public static boolean isDuplicate(Student student) {
+        for (Student s : students) {
+            if (s.getStudentID() == student.getStudentID() ||
+                    s.getEmailAddress().equalsIgnoreCase(student.getEmailAddress())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     // Accessors for course & subject lists
     public List<Course> getEnrolledCourses() { return enrolledCourses; }
     public List<Subject> getEnrolledSubjects() { return enrolledSubjects; }
