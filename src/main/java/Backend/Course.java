@@ -104,7 +104,7 @@ public class Course {
     }
 
     /**
-     * Validates if course with same name and section exists.
+     * Validates if course with same name and section exists..
      */
     private static boolean isDuplicate(String name, int section) {
         for (Course course : courseList) {

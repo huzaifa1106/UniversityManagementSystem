@@ -62,7 +62,7 @@ public class Subject {
     }
 
     /**
-     * Validates if a subject with the same name or code already exists.
+     * Validates if a subject with the same name or code already exists..
      */
     private static boolean isDuplicate(String name, String code) {
         for (Subject subject : subjects) {
