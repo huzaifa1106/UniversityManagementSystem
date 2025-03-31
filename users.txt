@@ -1,4 +1,0 @@
-100001,alicepass
-100002,bobpass
-100003,carolpass
-100004,luckapass
