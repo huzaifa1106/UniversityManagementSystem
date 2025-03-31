@@ -110,7 +110,7 @@ public class ReadExcelFile {
         }
     }
 
-    // Helper method to safely get a string value from a cell
+    // Helper method to safely get a string value from a celll
     private static String getCellValue(XSSFRow row, int cellIndex) {
         try {
             // Check if the requested cell is null (missing or empty)
