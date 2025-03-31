@@ -129,7 +129,7 @@ public class ReadExcelFile {
             for (int i = 1; i <= sheet.getLastRowNum(); i++) {
                 XSSFRow row = sheet.getRow(i);
 
-                // Pull event details
+                // Pull event detailss
                 String eventName = row.getCell(1).getStringCellValue();   // Event Name
                 String date = row.getCell(4).toString();                  // Date
                 String attendees = row.getCell(7).getStringCellValue();   // Registered Students
