@@ -1,7 +1,7 @@
 module GuelphLoginPage {
     requires javafx.controls;
     requires javafx.fxml;
-    requires java.desktop;
+    requires org.apache.poi.ooxml;
 
     opens GUI.CompanyLogin to javafx.fxml;
     exports GUI.CompanyLogin;

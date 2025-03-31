@@ -5,9 +5,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-import org.apache.poi.xssf.usermodel.XSSFRow;       // Represents a row in Excel
-import org.apache.poi.xssf.usermodel.XSSFSheet;     // Represents a sheet in Excel
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;  // Represents the whole workbook (Excel file)
+// Apache POI classes for Excel
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+
+import org.apache.poi.xssf.usermodel.XSSFRow;// Represents the whole workbook (Excel file)
 
 public class ReadExcelFile {
 
@@ -25,7 +27,7 @@ public class ReadExcelFile {
     }
 
     // Method to read from the "Subjects" sheet
-    public static void readSubjectsSheet(File xlsxFile) {
+    public static <XSSFWorkbook> void readSubjectsSheet(File xlsxFile) {
         // Try-with-resources ensures the file and workbook are automatically closed
         try (XSSFWorkbook workbook = new XSSFWorkbook(new FileInputStream(xlsxFile))) {
             // Grab the "Subjects" sheet by name
