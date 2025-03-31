@@ -21,6 +21,13 @@ public class AFacultyManagementController {
 
     @FXML
     private void initialize() {
+        System.out.println("colFacultyCourses: " + colFacultyCourses);
+
+        if (colFacultyCourses == null) {
+            System.out.println("ERROR: colFacultyCourses is NULL! Check your FXML.");
+            return;
+        }
+
         colFacultyID.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getFacultyID()));
         colFacultyName.setCellValueFactory(new PropertyValueFactory<>("name"));
         colFacultyEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
@@ -36,6 +43,7 @@ public class AFacultyManagementController {
             if (newVal != null) fillFormWithFaculty(newVal);
         });
     }
+
 
     private void fillFormWithFaculty(Faculty faculty) {
         facultyNameField.setText(faculty.getName());
@@ -108,4 +116,31 @@ public class AFacultyManagementController {
     @FXML private void assignCourses() {
         System.out.println("Assign Courses clicked");
     }
+
+    // Navigation methods
+    @FXML private void loadDashboard() {
+        Router.navigate("ADashboard.fxml", "Admin Dashboard");
+    }
+
+    @FXML private void loadSubjectManagement() {
+        Router.navigate("ASubjectManagement.fxml", "Subject Management");
+    }
+
+    @FXML private void loadCourseManagement() {
+        Router.navigate("ACourseManagement.fxml", "Course Management");
+    }
+
+    @FXML private void loadStudentManagement() {
+        Router.navigate("AStudentManagement.fxml", "Student Management");
+    }
+
+    @FXML private void loadFacultyManagement() {
+        Router.navigate("AFacultyManagement.fxml", "Faculty Management");
+    }
+
+    @FXML private void loadEventManagement() {
+        Router.navigate("AEventManagement.fxml", "Event Management");
+    }
+
+
 }
