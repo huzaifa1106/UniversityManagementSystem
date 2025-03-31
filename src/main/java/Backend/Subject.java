@@ -1,12 +1,11 @@
 /**
- *  File: Subject.java
- *  Description: This class is for storing information regarding a subjeect for course offering
- *  such as subject names, and subject codes, this is helpful when we'd like to register a
- *  series of courses under a Subject.
- *  when implementing UI components
- *  Author: Huzaifa A. & Group
- *  Date: March 2nd, 2025
- *  */
+ * File: Subject.java
+ * Description: Represents a university subject (e.g., Math, Chemistry) and stores metadata such as
+ * its name, code, and associated course offerings. Supports lookup by name or code, and auto-generates codes if needed.
+ *
+ * Author: Huzaifa A. & Group
+ * Date: March 2nd, 2025
+ */
 
 package Backend;
 
@@ -20,15 +19,16 @@ public class Subject {
     private String subjectCode;
     private List<Course> courses;
 
-
+    // Static block to preload some subjects
     static {
-        subjects.add(new Subject("MATH001", "Mathematics"));
-        subjects.add(new Subject("ENG101", "English"));
-        subjects.add(new Subject("CS201", "Computer Science"));
-        subjects.add(new Subject("CHEM200", "Chemistry"));
-        subjects.add(new Subject("BIO300", "Biology"));
+        subjects.add(new Subject("Mathematics", "MATH001"));
+        subjects.add(new Subject("English", "ENG101"));
+        subjects.add(new Subject("Computer Science", "CS201"));
+        subjects.add(new Subject("Chemistry", "CHEM200"));
+        subjects.add(new Subject("Biology", "BIO300"));
     }
 
+    // Constructor with provided subject name and code
     public Subject(String name, String code) {
         this.subjectName = name;
         this.subjectCode = code;
@@ -36,6 +36,49 @@ public class Subject {
         subjects.add(this);
     }
 
+    // Constructor with only name, auto-generates subject code
+    public Subject(String name) {
+        this.subjectName = name;
+        this.subjectCode = generateUniqueSubjectCode();
+        this.courses = new ArrayList<>();
+        subjects.add(this);
+    }
+
+    // Generate a unique subject code
+    private static String generateUniqueSubjectCode() {
+        int count = subjects.size() + 1;
+        return "SUBJ" + count; // e.g., SUBJ6
+    }
+    /**
+     * Adds a new subject if it's not a duplicate.
+     */
+    public static boolean addSubject(String name, String code) {
+        if (isDuplicate(name, code)) {
+            return false;
+        }
+        subjects.add(new Subject(name, code));
+        System.out.println("Subject added successfully.");
+        return true;
+    }
+
+    /**
+     * Validates if a subject with the same name or code already exists..
+     */
+    private static boolean isDuplicate(String name, String code) {
+        for (Subject subject : subjects) {
+            if (subject.getSubjectName().equalsIgnoreCase(name)) {
+                System.out.println("Error: A subject with the name '" + name + "' already exists.");
+                return true;
+            }
+            if (subject.getSubjectCode().equalsIgnoreCase(code)) {
+                System.out.println("Error: A subject with the code '" + code + "' already exists.");
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Find subject by name
     public static Subject findSubject(String subjectName) {
         for (Subject subject : subjects) {
             if (subject.subjectName.equalsIgnoreCase(subjectName)) {
@@ -45,42 +88,22 @@ public class Subject {
         return null;
     }
 
-    public static boolean checkDuplicateSubject(String subject, ArrayList<Subject> subjects) {
-        for (Subject sub : subjects) {
-            if (sub.getSubjectName().equalsIgnoreCase(subject)) {
-                return true;
+    // Find subject by code
+    public static Subject findSubjectByCode(String subjectCode) {
+        for (Subject subject : subjects) {
+            if (subject.subjectCode.equalsIgnoreCase(subjectCode)) {
+                return subject;
             }
         }
-        return false;
+        return null;
     }
 
-    public boolean checkDuplicateCourse(Course course) {
-        for (Course c : this.courses) {
-            if (c.getCourseName().equalsIgnoreCase(course.getCourseName())) {
-                return true;
-            }
-        }
-        return false;
+    // Return all registered subjects
+    public static List<Subject> getSubjectList() {
+        return subjects;
     }
 
-    public void addCourse(Course course) {
-        if (checkDuplicateCourse(course)) {
-            System.out.println("Course '" + course.getCourseName() + "' already exists under " + subjectName);
-            return;
-        }
-        courses.add(course);
-        System.out.println("Course '" + course.getCourseName() + "' added under " + this.subjectName);
-    }
-
-    public static Subject retrieveSubject(String subjectCode) {
-        for (Subject sub : subjects) {
-            if (sub.subjectCode.equals(subjectCode)) {
-                return sub;
-            }
-        }
-        return null; // Return null if not found
-    }
-
+    // Getters
     public String getSubjectName() {
         return this.subjectName;
     }
@@ -89,6 +112,11 @@ public class Subject {
         return this.subjectCode;
     }
 
+    public List<Course> getCourses() {
+        return courses;
+    }
+
+    // Setters
     public void setSubjectName(String name) {
         this.subjectName = name;
     }
@@ -97,12 +125,8 @@ public class Subject {
         this.subjectCode = code;
     }
 
-    public List<Course> getCourses() {
-        return courses;
-    }
-
-    public void display() {
-        System.out.println("Subject Name: " + this.subjectName);
-        System.out.println("Subject Code: " + this.subjectCode);
+    // Add a course to this subject
+    public void addCourse(Course course) {
+        courses.add(course);
     }
 }

@@ -73,13 +73,19 @@
             <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Student List" />
             <TableView fx:id="studentTable" prefHeight="200.0" prefWidth="600.0">
                 <columns>
-                    <TableColumn fx:id="colStudentID" prefWidth="100.0" text="Student ID" />
-                    <TableColumn fx:id="colName" prefWidth="93.4000244140625" text="Full Name" />
-                    <TableColumn fx:id="colEmail" prefWidth="116.0" text="Email Address" />
-                    <TableColumn fx:id="colGrade" prefWidth="116.0" text="Grade" />
-                    <TableColumn fx:id="colTuition" prefWidth="176.0" text="Tuition Status" />
+                    <TableColumn fx:id="colStudentID" text="Student ID" prefWidth="100.0"/>
+                    <TableColumn fx:id="colName" text="Full Name" prefWidth="150.0"/>
+                    <TableColumn fx:id="colEmail" text="Email" prefWidth="150.0"/>
+                    <TableColumn fx:id="colPhone" text="Telephone" prefWidth="150.0"/>
+                    <TableColumn fx:id="colAddress" text="Address" prefWidth="200.0"/>
+                    <TableColumn fx:id="colSemester" text="Semester" prefWidth="120.0"/>
+                    <TableColumn fx:id="colAcademicLevel" text="Academic Level" prefWidth="150.0"/>
+                    <TableColumn fx:id="colTuitionAnnual" text="Annual Tuition" prefWidth="120.0"/>
+                    <TableColumn fx:id="colTuitionBalance" text="Tuition Balance" prefWidth="120.0"/>
+                    <TableColumn fx:id="colProgress" text="Progress (%)" prefWidth="100.0"/>
                 </columns>
             </TableView>
+
 
             <HBox alignment="CENTER" spacing="15" style="-fx-padding: 10px;">
                 <Button fx:id="editStudentButton" onAction="#editStudent" prefHeight="35.0" prefWidth="130.0" text="Edit Student" />
