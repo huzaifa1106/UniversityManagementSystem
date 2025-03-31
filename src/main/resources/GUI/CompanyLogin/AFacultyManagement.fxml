@@ -84,8 +84,10 @@
                     <TableColumn fx:id="colFacultyDegree" text="Degree" />
                     <TableColumn fx:id="colFacultyResearch" text="Research Interest" />
                     <TableColumn fx:id="colFacultyOffice" text="Office Location" />
+                    <TableColumn fx:id="colFacultyCourses" text="Courses Assigned" />
                 </columns>
             </TableView>
+
 
             <HBox alignment="CENTER" spacing="15" style="-fx-padding: 10px;">
                 <Button fx:id="editFacultyButton" onAction="#editFaculty" prefHeight="35.0" prefWidth="130.0" text="Edit Faculty" />
