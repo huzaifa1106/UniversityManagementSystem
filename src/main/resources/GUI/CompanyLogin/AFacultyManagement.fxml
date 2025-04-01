@@ -3,7 +3,7 @@
 <!--
  File Name: AFacultyManagement.fxml
  Description: This is the AFacultyManagement FXML file  to assist with front end development
- Date: March 2nd, 2025
+ Date: March 2nd, 20255
  -->
 
 <?import javafx.scene.control.*?>
@@ -92,6 +92,7 @@
             <HBox alignment="CENTER" spacing="15" style="-fx-padding: 10px;">
                 <Button fx:id="editFacultyButton" onAction="#editFaculty" prefHeight="35.0" prefWidth="130.0" text="Edit Faculty" />
                 <Button fx:id="deleteFacultyButton" onAction="#deleteFaculty" prefHeight="35.0" prefWidth="130.0" text="Delete Faculty" />
+                <Button fx:id="viewFacultyProfileButton" onAction="#viewFacultyProfile" prefHeight="35.0" prefWidth="150.0" text="View Faculty Profile" />
                 <Button fx:id="assignCoursesButton" onAction="#assignCourses" prefHeight="35.0" prefWidth="150.0" text="Assign Courses" />
             </HBox>
         </VBox>

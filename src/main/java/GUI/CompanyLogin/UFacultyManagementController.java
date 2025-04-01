@@ -2,7 +2,7 @@
  *  File: UFacultyManagementController.java
  *  Description: Controls the User Faculty Management Window. Displays a list of Facultors .
  *  Author: Huzaifa A. & Group
- *  Date: March 2nd, 2025
+ *  Date: March 2nd, 20255
  */
 package GUI.CompanyLogin;
 
