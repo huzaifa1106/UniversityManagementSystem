@@ -3,8 +3,14 @@ package GUI.CompanyLogin;
 import Backend.Faculty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -43,7 +49,6 @@ public class AFacultyManagementController {
             if (newVal != null) fillFormWithFaculty(newVal);
         });
     }
-
 
     private void fillFormWithFaculty(Faculty faculty) {
         facultyNameField.setText(faculty.getName());
@@ -114,7 +119,29 @@ public class AFacultyManagementController {
     }
 
     @FXML private void assignCourses() {
-        System.out.println("Assign Courses clicked");
+        if (selectedFaculty == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Please select a faculty member first.");
+            alert.showAndWait();
+            return;
+        }
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("AAssignCourses.fxml"));
+            Parent root = loader.load();
+
+            AAssignCoursesController controller = loader.getController();
+            controller.setFaculty(selectedFaculty);
+
+            Stage stage = new Stage();
+            stage.setTitle("Assign Courses");
+            stage.setScene(new Scene(root));
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Failed to load Assign Courses screen.");
+            alert.showAndWait();
+        }
     }
 
     // Navigation methods
@@ -141,6 +168,5 @@ public class AFacultyManagementController {
     @FXML private void loadEventManagement() {
         Router.navigate("AEventManagement.fxml", "Event Management");
     }
-
 
 }
