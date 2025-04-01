@@ -1,4 +1,3 @@
-// AFacultyManagementController.java (Merged Version)
 package GUI.CompanyLogin;
 
 import Backend.Faculty;
@@ -50,7 +49,6 @@ public class AFacultyManagementController {
             if (newVal != null) fillFormWithFaculty(newVal);
         });
     }
-
 
     private void fillFormWithFaculty(Faculty faculty) {
         facultyNameField.setText(faculty.getName());
@@ -145,6 +143,7 @@ public class AFacultyManagementController {
             alert.showAndWait();
         }
     }
+
     // Navigation methods
     @FXML private void loadDashboard() {
         Router.navigate("ADashboard.fxml", "Admin Dashboard");
@@ -169,6 +168,5 @@ public class AFacultyManagementController {
     @FXML private void loadEventManagement() {
         Router.navigate("AEventManagement.fxml", "Event Management");
     }
-
 
 }
