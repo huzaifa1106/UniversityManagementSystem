@@ -12,7 +12,14 @@ import Backend.Course;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class ACourseManagementController extends ASubjectManagementController {
 
@@ -155,10 +162,24 @@ public class ACourseManagementController extends ASubjectManagementController {
         }
     }
 
-    // Placeholder for managing enrollments
+    // Loads up the Manage Enrollment screen
     @FXML
     private void manageEnrollments() {
-        showAlert("Info", "Manage enrollments clicked.", Alert.AlertType.INFORMATION);
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/CompanyLogin/ACourseManageEnrollment.fxml"));
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.setTitle("Manage Course Enrollments");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+
+            // Refresh after window closes
+            loadCoursesIntoTable();
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert("Error", "Failed to load enrollment screen.", Alert.AlertType.ERROR);
+        }
     }
 
     // Clears all input fields
