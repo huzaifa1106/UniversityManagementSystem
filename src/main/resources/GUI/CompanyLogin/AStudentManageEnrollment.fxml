@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="GUI.CompanyLogin.AStudentManageEnrollmentController"
+            prefWidth="700" prefHeight="400">
+
+    <left>
+        <VBox spacing="10" style="-fx-padding: 10;">
+            <Label text="Students:" style="-fx-font-weight: bold;" />
+            <ListView fx:id="studentListView" prefWidth="200" />
+        </VBox>
+    </left>
+
+    <center>
+        <VBox spacing="10" style="-fx-padding: 10;">
+            <Label text="Selected Student Info" style="-fx-font-weight: bold; -fx-font-size: 16px;" />
+            <Label fx:id="studentNameLabel" text="Name: " />
+            <Label fx:id="studentIDLabel" text="ID: " />
+            <Label text="Enrolled Courses:" style="-fx-font-weight: bold;" />
+            <TextArea fx:id="coursesTextArea" editable="false" prefHeight="150" wrapText="true" />
+
+            <Label text="Add Course:" style="-fx-font-weight: bold;" />
+            <ComboBox fx:id="addCourseComboBox" prefWidth="200" />
+
+            <Label text="Remove Course:" style="-fx-font-weight: bold;" />
+            <ComboBox fx:id="removeCourseComboBox" prefWidth="200" />
+
+            <HBox spacing="10">
+                <Button text="Add Course" onAction="#addCourse" />
+                <Button text="Remove Course" onAction="#removeCourse" />
+                <Button text="Close" onAction="#closeWindow" />
+            </HBox>
+        </VBox>
+    </center>
+</BorderPane>

@@ -13,7 +13,14 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class AStudentManagementController extends ASubjectManagementController {
 
@@ -169,7 +176,20 @@ public class AStudentManagementController extends ASubjectManagementController {
     // Handles clicking the manage enrollments button (placeholder)
     @FXML
     private void manageEnrollments() {
-        showAlert("Info", "Manage enrollments clicked.", Alert.AlertType.INFORMATION);
+        System.out.println("Manage Enrollments clicked");
+        // Load and show the Manage Enrollment window as a modal dialog
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/CompanyLogin/AStudentManageEnrollment.fxml"));
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.setTitle("Manage Enrollments");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Could not load enrollment screen.").showAndWait();
+        }
     }
 
     // Clears all input fields in the form
