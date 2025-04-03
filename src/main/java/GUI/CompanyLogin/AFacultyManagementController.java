@@ -145,9 +145,8 @@ public class AFacultyManagementController {
     }
 
     // Navigation methods
-    @FXML private void loadDashboard() {
-        Router.navigate("ADashboard.fxml", "Admin Dashboard");
-    }
+    @FXML private void loadDashboard() { Router.navigate("ADashboard.fxml", "Admin Dashboard"); }
+
 
     @FXML private void loadSubjectManagement() {
         Router.navigate("ASubjectManagement.fxml", "Subject Management");
