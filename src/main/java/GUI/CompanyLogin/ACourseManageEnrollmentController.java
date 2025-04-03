@@ -59,7 +59,7 @@ public class ACourseManageEnrollmentController {
                 .filter(s -> s.getFullName().equalsIgnoreCase(selectedName))
                 .findFirst().orElse(null);
 
-        if (student != null && !selectedCourse.getEnrolledStudents().contains(student)) {
+        if (student != null && !student.getEnrolledCourses().contains(selectedCourse)) {
             selectedCourse.getEnrolledStudents().add(student);
             student.getEnrolledCourses().add(selectedCourse);
             updateCourseInfo();
