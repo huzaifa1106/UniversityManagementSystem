@@ -32,10 +32,8 @@ public class Faculty {
 
 
     public static void addFaculty(Faculty faculty) {
-
         facultyList.add(faculty);
         ReadExcelFile.writeToExcel();
-
     }
 
     public static void removeFaculty(String facultyID) {
