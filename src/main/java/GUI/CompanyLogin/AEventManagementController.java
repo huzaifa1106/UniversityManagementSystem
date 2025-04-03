@@ -9,6 +9,7 @@
 package GUI.CompanyLogin;
 
 import Backend.Event;
+import Backend.ReadExcelFile;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
@@ -97,6 +98,7 @@ public class AEventManagementController {
 
             Event newEvent = new Event(name, code, "", null, location, date, capacity, cost, new ArrayList<>());
             Event.addEvent(newEvent);
+            ReadExcelFile.writeToExcel();
             clearForm();
             populateCalendarWithEvents();
             showAlert("Success", "Event added successfully!", Alert.AlertType.INFORMATION);
@@ -116,7 +118,7 @@ public class AEventManagementController {
                 selectedEvent.setDateTime(formatter.parse(eventDateTimeField.getText()));
                 selectedEvent.setCapacity(Integer.parseInt(eventCapacityField.getText()));
                 selectedEvent.setCost(Double.parseDouble(eventCostField.getText()));
-
+                ReadExcelFile.writeToExcel();
                 populateCalendarWithEvents();
                 clearForm();
                 selectedEvent = null;
@@ -135,6 +137,7 @@ public class AEventManagementController {
     private void deleteEvent() {
         if (selectedEvent != null) {
             Event.removeEvent(selectedEvent.getEventCode());
+            ReadExcelFile.writeToExcel();
             populateCalendarWithEvents();
             clearForm();
             selectedEvent = null;

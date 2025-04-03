@@ -8,6 +8,7 @@
 
 package GUI.CompanyLogin;
 
+import Backend.ReadExcelFile;
 import Backend.Subject;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -71,6 +72,8 @@ public class ASubjectManagementController {
         }
 
         Subject newSubject = new Subject(code, name);
+        Subject.addSubject(newSubject);  // <-- This is what's missing
+        ReadExcelFile.writeToExcel();
         loadSubjectsIntoTable();
         clearFields();
         showAlert("Success", "Subject added successfully.", Alert.AlertType.INFORMATION);
@@ -95,6 +98,7 @@ public class ASubjectManagementController {
         selectedSubject.setSubjectName(newName);
         if (!newCode.isEmpty()) selectedSubject.setSubjectCode(newCode);
 
+        ReadExcelFile.writeToExcel();
         loadSubjectsIntoTable();
         clearFields();
         showAlert("Success", "Subject updated successfully.", Alert.AlertType.INFORMATION);
@@ -109,6 +113,7 @@ public class ASubjectManagementController {
         }
 
         Subject.getSubjectList().remove(selectedSubject);
+        ReadExcelFile.writeToExcel();
         loadSubjectsIntoTable();
         clearFields();
         showAlert("Success", "Subject deleted successfully.", Alert.AlertType.INFORMATION);

@@ -16,7 +16,7 @@ import java.awt.Image;
 public class Event {
 
     // Static list of events
-    private static final List<Event> eventList = new ArrayList<>();
+    private static  List<Event> eventList = new ArrayList<>();
 
     // Attributes
     private String eventName;
@@ -30,14 +30,7 @@ public class Event {
     private List<String> registeredStudents;
 
     // Static block to initialize sample events
-    static {
-        eventList.add(new Event("Orientation Day", "EVT1001", "Welcome to UofG!", null,
-                "Main Auditorium", new Date(2025 - 1900, 3 - 1, 22), 100, 0.0, new ArrayList<>()));
-        eventList.add(new Event("Career Fair", "EVT1002", "Meet recruiters and explore opportunities.", null,
-                "Conference Hall B", new Date(2025 - 1900, 3 - 1, 25), 200, 0.0, new ArrayList<>()));
-        eventList.add(new Event("Spring Concert", "EVT1003", "Live performances by student bands!", null,
-                "Open Grounds", new Date(2025 - 1900, 3 - 1, 28), 300, 10.0, new ArrayList<>()));
-    }
+
 
     // Constructor
     public Event(String eventName, String eventCode, String description, Image headerImage,
@@ -57,6 +50,8 @@ public class Event {
     // Static methods to manage the event list
     public static void addEvent(Event event) {
         eventList.add(event);
+        ReadExcelFile.eventList.add(event);
+        ReadExcelFile.writeToExcel();
     }
 
     public static void removeEvent(String eventCode) {
@@ -78,6 +73,10 @@ public class Event {
 
     public String getDescription() {
         return description;
+    }
+
+    public static void setEventList(List<Event> events) {
+        eventList = events;
     }
 
     public Image getHeaderImage() {

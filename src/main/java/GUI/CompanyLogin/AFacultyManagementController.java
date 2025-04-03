@@ -1,6 +1,7 @@
 package GUI.CompanyLogin;
 
 import Backend.Faculty;
+import Backend.ReadExcelFile;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -67,6 +68,7 @@ public class AFacultyManagementController {
                 facultyOfficeField.getText()
         );
         Faculty.addFaculty(newFaculty);
+        ReadExcelFile.writeToExcel();
         refreshFacultyTable();
         clearForm();
 
@@ -82,6 +84,7 @@ public class AFacultyManagementController {
             selectedFaculty.setOfficeLocation(facultyOfficeField.getText());
             selectedFaculty.setResearchInterest(facultyResearchField.getText());
             selectedFaculty.setCoursesOffered(Arrays.asList(facultyCoursesField.getText().split(",\\s*")));
+            ReadExcelFile.writeToExcel();
             refreshFacultyTable();
             clearForm();
         }
@@ -90,6 +93,7 @@ public class AFacultyManagementController {
     @FXML private void deleteFaculty() {
         if (selectedFaculty != null) {
             Faculty.removeFaculty(selectedFaculty.getFacultyID());
+            ReadExcelFile.writeToExcel();
             refreshFacultyTable();
             clearForm();
         }
