@@ -59,6 +59,25 @@ public class Event {
         eventList.add(event);
     }
 
+    // Method to check if an event already exists
+    public static boolean isEventDuplicate(String eventCode, String eventName) {
+        for (Event event : eventList) {
+            if (event.eventCode.equals(eventCode) || event.eventName.equals(eventName)) {
+                return true; // Event is a duplicate
+            }
+        }
+        return false; // Event is not a duplicate
+    }
+
+    // Method to add a new event with duplication check
+    public static boolean addEventWithValidation(Event newEvent) {
+        if (!isEventDuplicate(newEvent.eventCode, newEvent.eventName)) {
+            eventList.add(newEvent); // Add the event if it's not a duplicate
+            return true; // Event added successfully
+        }
+        return false; // Event is a duplicate and not added
+    }
+
     public static void removeEvent(String eventCode) {
         eventList.removeIf(event -> event.getEventCode().equalsIgnoreCase(eventCode));
     }

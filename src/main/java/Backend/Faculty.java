@@ -40,6 +40,25 @@ public class Faculty {
                 List.of("Programming Fundamentals", "Operating Systems"), "hopper@university.edu", "Lab 203"));
     }
 
+    // Method to check if a faculty already exists
+    public static boolean isFacultyDuplicate(String facultyID, String email) {
+        for (Faculty faculty : facultyList) {
+            if (faculty.facultyID.equals(facultyID) || faculty.email.equals(email)) {
+                return true; // Faculty is a duplicate
+            }
+        }
+        return false; // Faculty is not a duplicate
+    }
+
+    // Method to add a new faculty with duplication check
+    public static boolean addFacultyWithValidation(Faculty newFaculty) {
+        if (!isFacultyDuplicate(newFaculty.facultyID, newFaculty.email)) {
+            facultyList.add(newFaculty); // Add the faculty if not a duplicate
+            return true; // Faculty added successfully
+        }
+        return false; // Faculty is a duplicate and not added
+    }
+
     public static void addFaculty(Faculty faculty) {
         facultyList.add(faculty);
     }
