@@ -1,3 +1,11 @@
+/*
+ * File: AEventManagementController.java
+ * Purpose: Admin-side controller for managing university events.
+ * Features: Calendar view, event creation, editing, deletion, and enrollment management.
+ * Author: Group 10
+ * Date: April 2025
+ */
+
 package GUI.CompanyLogin;
 
 import Backend.Event;
@@ -18,25 +26,18 @@ import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.ZoneId;
 import java.time.format.TextStyle;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 public class AEventManagementController {
 
     @FXML private Label monthYearLabel;
     @FXML private GridPane calendarGrid;
 
-    @FXML private TextField eventNameField;
-    @FXML private TextField eventCodeField;
-    @FXML private TextField eventLocationField;
+    @FXML private TextField eventNameField, eventCodeField, eventLocationField, eventCapacityField, eventCostField;
     @FXML private DatePicker eventDatePicker;
-    @FXML private TextField eventCapacityField;
-    @FXML private TextField eventCostField;
 
     private YearMonth currentYearMonth;
-    private Event selectedEvent = null;
+    private Event selectedEvent;
 
     @FXML
     public void initialize() {
@@ -44,37 +45,35 @@ public class AEventManagementController {
         updateCalendar();
     }
 
+    // Renders calendar grid with day cells
     private void updateCalendar() {
         calendarGrid.getChildren().clear();
 
-        LocalDate firstDayOfMonth = currentYearMonth.atDay(1);
+        LocalDate firstDay = currentYearMonth.atDay(1);
         int daysInMonth = currentYearMonth.lengthOfMonth();
-        int startDayOfWeek = firstDayOfMonth.getDayOfWeek().getValue(); // 1 = Monday
+        int startDay = firstDay.getDayOfWeek().getValue();
 
         monthYearLabel.setText(currentYearMonth.getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault()) + " " + currentYearMonth.getYear());
 
         int dayCounter = 1;
-        int colCount = 5;
+        int columns = 5;
+
         for (int row = 0; row < 7; row++) {
-            for (int col = 0; col < colCount; col++) {
+            for (int col = 0; col < columns; col++) {
                 if (dayCounter > daysInMonth) return;
 
                 LocalDate date = currentYearMonth.atDay(dayCounter);
-                Date javaDate = Date.from(date.atStartOfDay(ZoneId.systemDefault()).toInstant());
+                Date convertedDate = Date.from(date.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
                 StackPane dayCell = new StackPane();
                 dayCell.setPrefSize(80, 80);
                 dayCell.setStyle("-fx-border-color: lightgray; -fx-background-color: white;");
-                Text dayText = new Text(String.valueOf(dayCounter));
-                dayCell.getChildren().add(dayText);
+                dayCell.getChildren().add(new Text(String.valueOf(dayCounter)));
 
                 for (Event event : Event.getEventList()) {
-                    if (isSameDay(event.getDateTime(), javaDate)) {
+                    if (isSameDay(event.getDateTime(), convertedDate)) {
                         dayCell.setStyle("-fx-background-color: #d4edda; -fx-border-color: gray;");
-                        Tooltip tooltip = new Tooltip(event.getEventName() + " @ " + event.getLocation());
-                        Tooltip.install(dayCell, tooltip);
-
-                        // Add click action to load form with event details
+                        Tooltip.install(dayCell, new Tooltip(event.getEventName() + " @ " + event.getLocation()));
                         dayCell.setOnMouseClicked(e -> loadEventToForm(event));
                         break;
                     }
@@ -86,6 +85,11 @@ public class AEventManagementController {
         }
     }
 
+    private boolean isSameDay(Date d1, Date d2) {
+        return d1.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+                .equals(d2.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+    }
+
     private void loadEventToForm(Event event) {
         selectedEvent = event;
         eventNameField.setText(event.getEventName());
@@ -94,11 +98,6 @@ public class AEventManagementController {
         eventDatePicker.setValue(event.getDateTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
         eventCapacityField.setText(String.valueOf(event.getCapacity()));
         eventCostField.setText(String.valueOf(event.getCost()));
-    }
-
-    private boolean isSameDay(Date d1, Date d2) {
-        return d1.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
-                .equals(d2.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
     }
 
     @FXML
@@ -115,105 +114,88 @@ public class AEventManagementController {
 
     @FXML
     private void addEvent() {
-        String name = eventNameField.getText();
-        String code = eventCodeField.getText();
-        String location = eventLocationField.getText();
-        LocalDate localDate = eventDatePicker.getValue();
-        String capacityStr = eventCapacityField.getText();
-        String costStr = eventCostField.getText();
-
-        if (name.isEmpty() || code.isEmpty() || location.isEmpty() || localDate == null || capacityStr.isEmpty() || costStr.isEmpty()) {
-            System.out.println("Please fill all fields before adding an event.");
-            return;
-        }
+        if (!validateFields()) return;
 
         try {
-            Date dateTime = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-            int capacity = Integer.parseInt(capacityStr);
-            double cost = Double.parseDouble(costStr);
-
             Event newEvent = new Event(
-                    name, code, "Auto-added via GUI", null,
-                    location, dateTime, capacity, cost,
+                    eventNameField.getText(),
+                    eventCodeField.getText(),
+                    "Added via UI",
+                    null,
+                    eventLocationField.getText(),
+                    Date.from(eventDatePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()),
+                    Integer.parseInt(eventCapacityField.getText()),
+                    Double.parseDouble(eventCostField.getText()),
                     new ArrayList<>()
             );
 
             Event.addEvent(newEvent);
             ReadExcelFile.writeToExcel();
-            System.out.println("Event added.");
             updateCalendar();
             clearForm();
+            showAlert("Success", "Event added successfully.", Alert.AlertType.INFORMATION);
 
         } catch (NumberFormatException e) {
-            System.out.println("Invalid number input.");
+            showAlert("Invalid Input", "Capacity and cost must be numeric.", Alert.AlertType.ERROR);
         }
     }
 
     @FXML
     private void editEvent() {
-        if (selectedEvent != null) {
-            try {
-                selectedEvent.setEventName(eventNameField.getText());
-                selectedEvent.setEventCode(eventCodeField.getText());
-                selectedEvent.setLocation(eventLocationField.getText());
-                selectedEvent.setDateTime(formatter.parse(eventDateTimeField.getText()));
-                selectedEvent.setCapacity(Integer.parseInt(eventCapacityField.getText()));
-                selectedEvent.setCost(Double.parseDouble(eventCostField.getText()));
-                ReadExcelFile.writeToExcel();
-                populateCalendarWithEvents();
-                clearForm();
-                selectedEvent = null;
-
-                showAlert("Success", "Event updated successfully!", Alert.AlertType.INFORMATION);
-            } catch (Exception e) {
-                showAlert("Error", "Invalid input. Please check values.", Alert.AlertType.ERROR);
-            }
-        } else {
-            showAlert("No Event Selected", "Click a date with an event to edit.", Alert.AlertType.WARNING);
         if (selectedEvent == null) {
-            System.out.println("No event selected to edit.");
+            showAlert("No Selection", "Click a calendar day with an event to edit.", Alert.AlertType.WARNING);
             return;
         }
 
-        selectedEvent.setEventName(eventNameField.getText());
-        selectedEvent.setEventCode(eventCodeField.getText());
-        selectedEvent.setLocation(eventLocationField.getText());
-        selectedEvent.setDateTime(Date.from(eventDatePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
-        selectedEvent.setCapacity(Integer.parseInt(eventCapacityField.getText()));
-        selectedEvent.setCost(Double.parseDouble(eventCostField.getText()));
+        try {
+            selectedEvent.setEventName(eventNameField.getText());
+            selectedEvent.setEventCode(eventCodeField.getText());
+            selectedEvent.setLocation(eventLocationField.getText());
+            selectedEvent.setDateTime(Date.from(eventDatePicker.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+            selectedEvent.setCapacity(Integer.parseInt(eventCapacityField.getText()));
+            selectedEvent.setCost(Double.parseDouble(eventCostField.getText()));
 
-        System.out.println("Event updated.");
-        updateCalendar();
-        clearForm();
+            ReadExcelFile.writeToExcel();
+            updateCalendar();
+            clearForm();
+            selectedEvent = null;
+            showAlert("Success", "Event updated.", Alert.AlertType.INFORMATION);
+
+        } catch (Exception e) {
+            showAlert("Error", "Could not update event. Check input values.", Alert.AlertType.ERROR);
+        }
     }
 
     @FXML
     private void deleteEvent() {
-        if (selectedEvent != null) {
-            Event.removeEvent(selectedEvent.getEventCode());
-            ReadExcelFile.writeToExcel();
-            populateCalendarWithEvents();
-            clearForm();
-            selectedEvent = null;
-            showAlert("Deleted", "Event removed from calendar.", Alert.AlertType.INFORMATION);
-        } else {
-            showAlert("No Event Selected", "Click a date with an event to delete.", Alert.AlertType.WARNING);
         if (selectedEvent == null) {
-            System.out.println("No event selected to delete.");
+            showAlert("No Selection", "Click a calendar day with an event to delete.", Alert.AlertType.WARNING);
             return;
         }
 
         Event.removeEvent(selectedEvent.getEventCode());
-        selectedEvent = null;
-        System.out.println("Event deleted.");
+        ReadExcelFile.writeToExcel();
         updateCalendar();
         clearForm();
+        selectedEvent = null;
+        showAlert("Deleted", "Event successfully removed.", Alert.AlertType.INFORMATION);
     }
 
+
     @FXML
-    private void viewEvents() {
-        for (Event e : Event.getEventList()) {
-            e.viewEventDetails();
+    private void openStudentEnrollment() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/CompanyLogin/AEventEnrollment.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = new Stage();
+            stage.setTitle("Manage Event Enrollment");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+        } catch (IOException e) {
+            showAlert("Error", "Could not load enrollment view.", Alert.AlertType.ERROR);
+            e.printStackTrace();
         }
     }
 
@@ -226,28 +208,50 @@ public class AEventManagementController {
         eventCostField.clear();
         selectedEvent = null;
     }
-    @FXML
-    private void openStudentEnrollment() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/CompanyLogin/AEventEnrollment.fxml"));
-            Parent root = loader.load();
 
-            Stage stage = new Stage();
-            stage.setTitle("Manage Event Enrollment");
-            stage.setScene(new Scene(root));
-            stage.initModality(Modality.APPLICATION_MODAL); // Prevents interacting with the main window until closed
-            stage.showAndWait();
-        } catch (IOException e) {
-            e.printStackTrace();
+    private boolean validateFields() {
+        if (eventNameField.getText().isEmpty() ||
+                eventCodeField.getText().isEmpty() ||
+                eventLocationField.getText().isEmpty() ||
+                eventDatePicker.getValue() == null ||
+                eventCapacityField.getText().isEmpty() ||
+                eventCostField.getText().isEmpty()) {
+            showAlert("Missing Fields", "Please complete all fields.", Alert.AlertType.WARNING);
+            return false;
         }
+        return true;
     }
 
+    private void showAlert(String title, String message, Alert.AlertType type) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 
-    // Navigation stubs
-    @FXML private void loadDashboard() { Router.navigate("ADashboard.fxml", "Admin Dashboard"); }
-    @FXML private void loadSubjectManagement() { Router.navigate("ASubjectManagement.fxml", "Admin Subject Management"); }
-    @FXML private void loadCourseManagement() { Router.navigate("ACourseManagement.fxml", "Admin Course Management"); }
-    @FXML private void loadStudentManagement() { Router.navigate("AStudentManagement.fxml", "Admin Student Management"); }
-    @FXML private void loadFacultyManagement() { Router.navigate("AFacultyManagement.fxml", "Admin Faculty Management"); }
-    @FXML private void loadEventManagement() { Router.navigate("AEventManagement.fxml", "Admin Event Management"); }
+    // Navigation buttons (admin sidebar)
+    @FXML private void loadDashboard() {
+        Router.navigate("ADashboard.fxml", "Admin Dashboard");
+    }
+
+    @FXML private void loadSubjectManagement() {
+        Router.navigate("ASubjectManagement.fxml", "Admin Subject Management");
+    }
+
+    @FXML private void loadCourseManagement() {
+        Router.navigate("ACourseManagement.fxml", "Admin Course Management");
+    }
+
+    @FXML private void loadStudentManagement() {
+        Router.navigate("AStudentManagement.fxml", "Admin Student Management");
+    }
+
+    @FXML private void loadFacultyManagement() {
+        Router.navigate("AFacultyManagement.fxml", "Admin Faculty Management");
+    }
+
+    @FXML private void loadEventManagement() {
+        Router.navigate("AEventManagement.fxml", "Admin Event Management");
+    }
 }

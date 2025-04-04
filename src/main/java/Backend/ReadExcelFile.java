@@ -8,153 +8,178 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.text.*;
 
-
+/**
+ * ReadExcelFile is responsible for reading and writing data to and from an Excel file.
+ * It initializes static lists with the data of various entities such as Students, Courses, Subjects, Faculties, and Events.
+ */
 public class ReadExcelFile {
 
+    // Static lists to store data loaded from the Excel file
     public static ArrayList<Student> studentList = new ArrayList<>();
     public static ArrayList<Course> courseList = new ArrayList<>();
     public static ArrayList<Subject> subjectList = new ArrayList<>();
     public static ArrayList<Faculty> facultyList = new ArrayList<>();
     public static ArrayList<Event> eventList = new ArrayList<>();
 
+    // Path to the Excel file
     public static String path = "src/UMS_Data.xlsx";
 
-
-
-
-
+    /**
+     * Main method which initiates the data loading process and performs a quick data read test.
+     * @param args Command line arguments
+     */
     public static void main(String[] args) {
+        // Initialize data from the Excel file (if it exists) or create new data
+        initializeData();
 
+        // Output the sizes of the loaded lists
+        System.out.println("Faculties loaded: " + facultyList.size());
+        System.out.println("Events loaded: " + eventList.size());
 
-            initializeData(); // <-- Handles writing if the file doesn't exist
-
-            System.out.println("📊 Faculties loaded: " + facultyList.size());
-            System.out.println("📊 Events loaded: " + eventList.size());
-
-            testDataRead();
-
+        // Test and print the data to verify successful loading
+        testDataRead();
     }
 
+    /**
+     * Reads the "Subjects" sheet from the Excel workbook and returns a list of Subject objects.
+     * @param workbook The workbook containing the Excel file
+     * @return A list of Subject objects populated from the "Subjects" sheet
+     */
     public static ArrayList<Subject> readSubjectsSheet(XSSFWorkbook workbook) {
         ArrayList<Subject> subjects = new ArrayList<>();
         XSSFSheet sheet = workbook.getSheet("Subjects");
+
+        // If the "Subjects" sheet doesn't exist, return an empty list
         if (sheet == null) return subjects;
+
+        // Iterate over the rows in the "Subjects" sheet and extract the subject name and code
         for (int i = 1; i <= sheet.getLastRowNum(); i++) {
             XSSFRow row = sheet.getRow(i);
-            if (row != null)
-                subjects.add(new Subject(getCellValue(row, 0), getCellValue(row, 1)));
-        }
-        return subjects;
-    }public static void testDataRead() {
-        System.out.println("\n===== ✅ FULL DATA FROM EXCEL =====");
+            if (row != null) {
+                String name = getCellValue(row, 0).trim(); // Subject name
+                String code = getCellValue(row, 1).trim(); // Subject code
 
-        // 📘 Subjects
-        System.out.println("\n--- 📘 Subjects ---");
+                // Create a new Subject object and add it to the list
+                Subject subject = new Subject(name, code);
+                subjects.add(subject);
+
+                // Print each subject loaded for debugging purposes
+                System.out.println("Loaded Subject: [" + code + "] (" + name + ")");
+            }
+        }
+
+        return subjects;
+    }
+
+    /**
+     * Prints the full data read from the Excel file to the console for verification purposes.
+     */
+    public static void testDataRead() {
+        System.out.println("\n===== FULL DATA FROM EXCEL =====");
+
+        // Output all the subjects
+        System.out.println("\n--- Subjects ---");
         for (Subject s : subjectList) {
             System.out.println("Subject Code: " + s.getSubjectCode() + ", Name: " + s.getSubjectName());
         }
 
-        // 📕 Courses
-        System.out.println("\n--- 📕 Courses ---");
+        // Output all the courses
+        System.out.println("\n--- Courses ---");
         for (Course c : courseList) {
-            System.out.println("ID: " + c.getCourseID() +
-                    ", Name: " + c.getCourseName() +
-                    ", Subject: " + c.getSubjectName() +
-                    ", Section: " + c.getSectionNumber() +
-                    ", Instructor: " + c.getTeacherName() +
-                    ", Capacity: " + c.getCourseCapacity() +
-                    ", Room: " + c.getLocation() +
-                    ", Schedule: " + c.getLectureDay() +
-                    ", Start: " + c.getLectureStartTime() +
-                    ", End: " + c.getLectureEndTime() +
+            System.out.println("ID: " + c.getCourseID() + ", Name: " + c.getCourseName() +
+                    ", Subject: " + c.getSubjectName() + ", Section: " + c.getSectionNumber() +
+                    ", Instructor: " + c.getTeacherName() + ", Capacity: " + c.getCourseCapacity() +
+                    ", Room: " + c.getLocation() + ", Schedule: " + c.getLectureDay() +
+                    ", Start: " + c.getLectureStartTime() + ", End: " + c.getLectureEndTime() +
                     ", Exam: " + c.getFinalExamDate());
         }
 
-        // 📗 Students
-        System.out.println("\n--- 📗 Students ---");
+        // Output all the students
+        System.out.println("\n--- Students ---");
         for (Student s : studentList) {
-            System.out.println("ID: " + s.getStudentID() +
-                    ", Name: " + s.getFullName() +
-                    ", Email: " + s.getEmailAddress() +
-                    ", Phone: " + s.getTelephone() +
-                    ", Address: " + s.getAddress() +
-                    ", Password: " + s.getPassword() +
-                    ", Tuition Annual: $" + s.getTuitionAnnual() +
-                    ", Balance: $" + s.getTuitionBalance() +
-                    ", Average: " + s.getAverage() +
-                    ", Semester: " + s.getSemester() +
-                    ", Level: " + s.getAcademicLevel() +
-                    ", Thesis: " + s.getThesisTitle() +
+            System.out.println("ID: " + s.getStudentID() + ", Name: " + s.getFullName() +
+                    ", Email: " + s.getEmailAddress() + ", Phone: " + s.getTelephone() +
+                    ", Address: " + s.getAddress() + ", Password: " + s.getPassword() +
+                    ", Tuition Annual: $" + s.getTuitionAnnual() + ", Balance: $" + s.getTuitionBalance() +
+                    ", Average: " + s.getAverage() + ", Semester: " + s.getSemester() +
+                    ", Level: " + s.getAcademicLevel() + ", Thesis: " + s.getThesisTitle() +
                     ", Progress: " + s.getProgress());
 
-            System.out.println("   Enrolled Subjects: " +
-                    s.getEnrolledSubjects().stream().map(Subject::getSubjectCode).toList());
-
-            System.out.println("   Enrolled Courses: " +
-                    s.getEnrolledCourses().stream().map(Course::getCourseID).toList());
+            // Output the subjects and courses enrolled by the student
+            System.out.println("Enrolled Subjects: " + s.getEnrolledSubjects());
+            System.out.println("Enrolled Courses: " + s.getEnrolledCourses());
         }
 
-        // 📙 Faculties
-        System.out.println("\n--- 📙 Faculties ---");
+        // Output all the faculties
+        System.out.println("\n--- Faculties ---");
         for (Faculty f : facultyList) {
-            System.out.println("ID: " + f.getFacultyID() +
-                    ", Name: " + f.getName() +
-                    ", Degree: " + f.getDegree() +
-                    ", Specialty: " + f.getResearchInterest() +
-                    ", Email: " + f.getEmail() +
-                    ", Office: " + f.getOfficeLocation() +
+            System.out.println("ID: " + f.getFacultyID() + ", Name: " + f.getName() +
+                    ", Degree: " + f.getDegree() + ", Specialty: " + f.getResearchInterest() +
+                    ", Email: " + f.getEmail() + ", Office: " + f.getOfficeLocation() +
                     ", Courses: " + f.getCoursesOffered());
         }
 
-        // 📓 Events
-        System.out.println("\n--- 📓 Events ---");
+        // Output all the events
+        System.out.println("\n--- Events ---");
         for (Event e : eventList) {
-            System.out.println("Code: " + e.getEventCode() +
-                    ", Name: " + e.getEventName() +
-                    ", Description: " + e.getDescription() +
-                    ", Location: " + e.getLocation() +
+            System.out.println("Code: " + e.getEventCode() + ", Name: " + e.getEventName() +
+                    ", Description: " + e.getDescription() + ", Location: " + e.getLocation() +
                     ", Date: " + (e.getDateTime() != null ? e.getDateTime().toString() : "N/A") +
-                    ", Capacity: " + e.getCapacity() +
-                    ", Fee: $" + e.getCost() +
+                    ", Capacity: " + e.getCapacity() + ", Fee: $" + e.getCost() +
                     ", Attendees: " + e.getRegisteredStudents());
         }
 
-        System.out.println("\n===== ✅ END OF DATA TEST =====\n");
+        System.out.println("\n===== END OF DATA TEST =====");
     }
 
+    /**
+     * Initializes the data by reading it from the Excel file if it exists, or writing default data if not.
+     */
     public static void initializeData() {
-
-
         File file = new File("src/UMS_Data.xlsx");
+
         if (file.exists()) {
             try (XSSFWorkbook workbook = new XSSFWorkbook(new FileInputStream("src/UMS_Data.xlsx"))) {
+                // Read the data from the Excel file
                 subjectList = readSubjectsSheet(workbook);
+                for (Subject s : subjectList) {
+                    Subject.addSubject(s); // Add each subject to the static list
+                }
+
                 courseList = readCoursesSheet(workbook);
                 studentList = readStudentsSheet(workbook, subjectList, courseList);
                 facultyList = readFacultiesSheet(workbook);
                 eventList = readEventsSheet(workbook);
 
-                Subject.setSubjectList(subjectList);
+                // Set the static lists in their respective classes
                 Course.setCourseList(courseList);
                 Student.setStudentList(studentList);
                 Faculty.setFacultyList(facultyList);
                 Event.setEventList(eventList);
 
-
-                System.out.println("📥 Excel data loaded successfully.");
+                System.out.println("Excel data loaded successfully.");
             } catch (IOException e) {
-                System.err.println("❌ Failed to load Excel file.");
+                System.err.println("Failed to load Excel file.");
                 e.printStackTrace();
             }
         } else {
-            System.out.println("📄 Excel file not found. Writing default data.");
-            writeToExcel();
+            System.out.println("Excel file not found. Writing default data.");
+            writeToExcel(); // Write default data to the Excel file if the file doesn't exist
         }
     }
+
+    /**
+     * Reads the "Courses" sheet from the Excel file and returns a list of Course objects.
+     * @param workbook The workbook containing the Excel file
+     * @return A list of Course objects loaded from the "Courses" sheet
+     */
     public static ArrayList<Course> readCoursesSheet(XSSFWorkbook workbook) {
         ArrayList<Course> courses = new ArrayList<>();
         XSSFSheet sheet = workbook.getSheet("Courses");
-        if (sheet == null) return courses;
+
+        if (sheet == null) return courses; // Return an empty list if the "Courses" sheet doesn't exist
+
+        // Iterate over the rows of the "Courses" sheet to extract course details
         for (int i = 1; i <= sheet.getLastRowNum(); i++) {
             XSSFRow row = sheet.getRow(i);
             if (row != null) {
@@ -164,10 +189,11 @@ public class ReadExcelFile {
                     try {
                         finalExamDate = LocalDateTime.parse(examDateString);
                     } catch (Exception e) {
-                        System.err.println("⚠️ Invalid exam date format in row " + i + ": " + examDateString);
+                        System.err.println("Invalid exam date format in row " + i + ": " + examDateString);
                     }
                 }
 
+                // Create a new Course object and add it to the list
                 courses.add(new Course(
                         (int) Double.parseDouble(getCellValue(row, 0)),
                         getCellValue(row, 1),
@@ -185,116 +211,166 @@ public class ReadExcelFile {
         }
         return courses;
     }
-
+    /**
+     * Reads the "Students" sheet from the provided Excel workbook and returns a list of Student objects.
+     * This method maps the relevant data from the sheet into Student, Subject, and Course objects.
+     *
+     * @param workbook The Excel workbook containing the data.
+     * @param subjects The list of all available subjects to map codes to actual subjects.
+     * @param courses  The list of all available courses to map course IDs to actual courses.
+     * @return A list of Student objects populated with data from the Excel sheet.
+     */
     public static ArrayList<Student> readStudentsSheet(XSSFWorkbook workbook, ArrayList<Subject> subjects, ArrayList<Course> courses) {
-        ArrayList<Student> students = new ArrayList<>();
-        XSSFSheet sheet = workbook.getSheet("Students");
+        ArrayList<Student> students = new ArrayList<>(); // List to store student data
+        XSSFSheet sheet = workbook.getSheet("Students"); // Fetch the "Students" sheet from the workbook
+
+        // If the sheet is not found, return an empty list
         if (sheet == null) return students;
 
+        // Iterate over all rows in the "Students" sheet (starting from row 1, skipping header)
         for (int i = 1; i <= sheet.getLastRowNum(); i++) {
             XSSFRow row = sheet.getRow(i);
-            if (row == null) continue;
+            if (row == null) continue; // Skip if the row is null
 
+            // Extract enrolled subjects from the row (comma-separated codes in column 13)
             String rawSubjectCodes = getCellValue(row, 13);
-            System.out.println("\n🔍 Reading Row " + i + " | Raw Subject Codes: " + rawSubjectCodes);
-
             ArrayList<Subject> enrolledSubjects = new ArrayList<>();
+
+            // Split the subject codes by commas, find the corresponding Subject objects, and add them to the list
             for (String code : rawSubjectCodes.split(",\\s*")) {
-                code = code.trim();
-                Subject found = Subject.findSubjectByCode(code);
+                code = code.trim(); // Trim leading/trailing spaces from the code
+                Subject found = Subject.findSubjectByCode(code); // Try to find subject by code
+                if (found == null) {
+                    found = Subject.findSubject(code); // Fallback to find by name if not found by code
+                }
                 if (found != null) {
-                    enrolledSubjects.add(found);
-                    System.out.println(" ✅ Matched subject: " + code);
-                } else {
-                    System.out.println(" ⚠️ Subject not found: " + code);
+                    enrolledSubjects.add(found); // Add the subject to the list
                 }
             }
 
+            // Extract enrolled courses from the row (comma-separated course IDs in column 14)
             ArrayList<Course> enrolledCourses = new ArrayList<>();
             for (String id : getCellValue(row, 14).split(",\\s*")) {
                 if (!id.isEmpty()) {
                     try {
+                        // Try to parse the course ID from the string
                         int courseId = (int) Double.parseDouble(id);
+                        // Find the course by ID and add to enrolled courses
                         courses.stream()
                                 .filter(c -> c.getCourseID() == courseId)
                                 .findFirst()
                                 .ifPresent(enrolledCourses::add);
                     } catch (NumberFormatException e) {
-                        System.err.println("⚠️ Invalid course ID format: " + id);
+                        System.err.println("Invalid course ID format: " + id); // Log invalid course ID format
                     }
                 }
             }
 
-            students.add(new Student(
-                    (int) Double.parseDouble(getCellValue(row, 0)),
-                    getCellValue(row, 1),
-                    getCellValue(row, 2),
-                    null,
-                    getCellValue(row, 3),
-                    (long) Double.parseDouble(getCellValue(row, 4)),
-                    (int) Double.parseDouble(getCellValue(row, 5)),
-                    (int) Double.parseDouble(getCellValue(row, 6)),
-                    getCellValue(row, 7),
-                    (int) Double.parseDouble(getCellValue(row, 8)),
-                    getCellValue(row, 9),
-                    getCellValue(row, 10),
-                    getCellValue(row, 11),
-                    (int) Double.parseDouble(getCellValue(row, 12)),
-                    enrolledCourses,
-                    enrolledSubjects,
-                    false // <--- don't register to static list again
-            ));
+            // Create a new Student object from the data extracted from the row
+            Student student = new Student(
+                    (int) Double.parseDouble(getCellValue(row, 0)), // Student ID
+                    getCellValue(row, 1), // Full Name
+                    getCellValue(row, 2), // Password (though sensitive information)
+                    null, // Profile photo (not provided in the sheet)
+                    getCellValue(row, 3), // Address
+                    (long) Double.parseDouble(getCellValue(row, 4)), // Telephone
+                    (int) Double.parseDouble(getCellValue(row, 5)), // Annual Tuition
+                    (int) Double.parseDouble(getCellValue(row, 6)), // Balance
+                    getCellValue(row, 7), // Email Address
+                    (int) Double.parseDouble(getCellValue(row, 8)), // Average grade
+                    getCellValue(row, 9), // Semester
+                    getCellValue(row, 10), // Academic Level
+                    getCellValue(row, 11), // Thesis title (if applicable)
+                    (int) Double.parseDouble(getCellValue(row, 12)), // Progress (if applicable)
+                    enrolledCourses, // List of enrolled courses
+                    enrolledSubjects, // List of enrolled subjects
+                    false // Flag for enrollment status (initially false)
+            );
 
+            // Sync: Add this student to the enrolled courses' enrolled student lists
+            for (Course course : enrolledCourses) {
+                if (!course.getEnrolledStudents().contains(student)) {
+                    course.getEnrolledStudents().add(student); // Add student to the course's enrolled students
+                }
+            }
+
+            students.add(student); // Add the newly created student to the students list
         }
 
-        return students;
+        return students; // Return the list of students
     }
 
-
-
+    /**
+     * Reads the "Faculties" sheet from the provided Excel workbook and returns a list of Faculty objects.
+     * This method maps the relevant data from the sheet into Faculty objects.
+     *
+     * @param workbook The Excel workbook containing the data.
+     * @return A list of Faculty objects populated with data from the Excel sheet.
+     */
     public static ArrayList<Faculty> readFacultiesSheet(XSSFWorkbook workbook) {
         ArrayList<Faculty> faculties = new ArrayList<>();
         XSSFSheet sheet = workbook.getSheet("Faculties");
-        if (sheet == null) return faculties;
-        for (int i = 1; i <= sheet.getLastRowNum(); i++) {
-            XSSFRow row = sheet.getRow(i);
-            if (row != null)
-                faculties.add(new Faculty(
-                        getCellValue(row, 0),
-                        getCellValue(row, 1),
-                        null,
-                        getCellValue(row, 2),
-                        getCellValue(row, 3),
-                        List.of(getCellValue(row, 4).split(",\\s*")),
-                        getCellValue(row, 5),
-                        getCellValue(row, 6)
-                ));
-        }
-        return faculties;
-    }
 
-    public static ArrayList<Event> readEventsSheet(XSSFWorkbook workbook) {
-        ArrayList<Event> events = new ArrayList<>();
-        XSSFSheet sheet = workbook.getSheet("Events");
-        if (sheet == null) return events;
+        // If the sheet is not found, return an empty list
+        if (sheet == null) return faculties;
+
+        // Iterate over all rows in the "Faculties" sheet (starting from row 1, skipping header)
         for (int i = 1; i <= sheet.getLastRowNum(); i++) {
             XSSFRow row = sheet.getRow(i);
             if (row != null) {
-                events.add(new Event(
-                        getCellValue(row, 0),
-                        getCellValue(row, 1),
-                        getCellValue(row, 2),
-                        null,
-                        getCellValue(row, 3),
-                        createDate(getCellValue(row, 4)),
-                        (int) Double.parseDouble(getCellValue(row, 5)),
-                        Double.parseDouble(getCellValue(row, 6)),
-                        new ArrayList<>(List.of(getCellValue(row, 7).split(",\\s*")))
+                // Create a new Faculty object and populate with data from the row
+                faculties.add(new Faculty(
+                        getCellValue(row, 0), // Faculty ID
+                        getCellValue(row, 1), // Name
+                        null, // Profile photo (not provided in the sheet)
+                        getCellValue(row, 2), // Degree
+                        getCellValue(row, 3), // Research Interest
+                        List.of(getCellValue(row, 4).split(",\\s*")), // Courses taught (split by comma)
+                        getCellValue(row, 5), // Email
+                        getCellValue(row, 6) // Office location
                 ));
             }
         }
-        return events;
+
+        return faculties; // Return the list of faculties
     }
+
+    /**
+     * Reads the "Events" sheet from the provided Excel workbook and returns a list of Event objects.
+     * This method maps the relevant data from the sheet into Event objects.
+     *
+     * @param workbook The Excel workbook containing the data.
+     * @return A list of Event objects populated with data from the Excel sheet.
+     */
+    public static ArrayList<Event> readEventsSheet(XSSFWorkbook workbook) {
+        ArrayList<Event> events = new ArrayList<>();
+        XSSFSheet sheet = workbook.getSheet("Events");
+
+        // If the sheet is not found, return an empty list
+        if (sheet == null) return events;
+
+        // Iterate over all rows in the "Events" sheet (starting from row 1, skipping header)
+        for (int i = 1; i <= sheet.getLastRowNum(); i++) {
+            XSSFRow row = sheet.getRow(i);
+            if (row != null) {
+                // Create a new Event object and populate with data from the row
+                events.add(new Event(
+                        getCellValue(row, 0), // Event Name
+                        getCellValue(row, 1), // Event Code
+                        getCellValue(row, 2), // Description
+                        null, // Header image (not provided in the sheet)
+                        getCellValue(row, 3), // Location
+                        createDate(getCellValue(row, 4)), // Event date
+                        (int) Double.parseDouble(getCellValue(row, 5)), // Capacity
+                        Double.parseDouble(getCellValue(row, 6)), // Fee
+                        new ArrayList<>(List.of(getCellValue(row, 7).split(",\\s*"))) // Registered students
+                ));
+            }
+        }
+
+        return events; // Return the list of events
+    }
+
     public static void writeToExcel() {
         try (XSSFWorkbook workbook = new XSSFWorkbook()) {
 

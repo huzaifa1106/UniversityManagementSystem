@@ -11,7 +11,6 @@ package GUI.CompanyLogin;
 import Backend.ReadExcelFile;
 import Backend.Student;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -25,25 +24,19 @@ import java.io.IOException;
 
 public class AStudentManagementController extends ASubjectManagementController {
 
-    @FXML
-    private TableView<Student> studentTable;
+    @FXML private TableView<Student> studentTable;
 
-    @FXML
-    private TableColumn<Student, Integer> colStudentID, colTuitionAnnual, colTuitionBalance, colProgress;
+    @FXML private TableColumn<Student, Integer> colStudentID, colTuitionAnnual, colTuitionBalance, colProgress;
+    @FXML private TableColumn<Student, String> colName, colEmail, colPhone, colAddress, colSemester, colAcademicLevel;
 
-    @FXML
-    private TableColumn<Student, String> colName, colEmail, colPhone, colAddress, colSemester, colAcademicLevel;
-
-    @FXML
-    private TextField studentNameField, studentIDField, studentEmailField, studentPhoneField,
+    @FXML private TextField studentNameField, studentIDField, studentEmailField, studentPhoneField,
             studentAddressField, studentSemesterField, studentLevelField;
 
-    @FXML
-    private Button addStudentButton, editStudentButton, deleteStudentButton, viewStudentProfileButton, manageEnrollmentButton;
+    @FXML private Button addStudentButton, editStudentButton, deleteStudentButton, viewStudentProfileButton, manageEnrollmentButton;
 
     private Student selectedStudent = null;
 
-    // Initializes table bindings and selection logic
+    // Setup column-cell bindings and row selection
     @FXML
     private void initialize() {
         colStudentID.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getStudentID()).asObject());
@@ -59,18 +52,19 @@ public class AStudentManagementController extends ASubjectManagementController {
 
         loadStudentsIntoTable();
 
+        // When a row is selected, populate form fields
         studentTable.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
             selectedStudent = newVal;
             if (newVal != null) fillFormWithStudentData(newVal);
         });
     }
 
-    // Loads all students into the table
+    // Load students into the table view
     private void loadStudentsIntoTable() {
         studentTable.getItems().setAll(Student.getStudentList());
     }
 
-    // Fills the input form with selected student data
+    // Populate the form with the selected student's data
     private void fillFormWithStudentData(Student student) {
         studentNameField.setText(student.getFullName());
         studentIDField.setText(String.valueOf(student.getStudentID()));
@@ -81,7 +75,7 @@ public class AStudentManagementController extends ASubjectManagementController {
         studentLevelField.setText(student.getAcademicLevel());
     }
 
-    // Adds a new student to the table
+    // Add a new student (uses fields from form)
     @FXML
     private void addStudent() {
         try {
@@ -129,7 +123,7 @@ public class AStudentManagementController extends ASubjectManagementController {
         }
     }
 
-    // Edits selected student data
+    // Edit the selected student record
     @FXML
     private void editStudent() {
         if (selectedStudent != null) {
@@ -140,9 +134,11 @@ public class AStudentManagementController extends ASubjectManagementController {
                 selectedStudent.setAddress(studentAddressField.getText());
                 selectedStudent.setSemester(studentSemesterField.getText());
                 selectedStudent.setAcademicLevel(studentLevelField.getText());
+
                 ReadExcelFile.writeToExcel();
                 loadStudentsIntoTable();
                 clearFields();
+
                 showAlert("Success", "Student updated successfully!", Alert.AlertType.INFORMATION);
             } catch (NumberFormatException e) {
                 showAlert("Invalid Input", "Phone number must be numeric.", Alert.AlertType.ERROR);
@@ -152,7 +148,7 @@ public class AStudentManagementController extends ASubjectManagementController {
         }
     }
 
-    // Deletes the selected student from the list
+    // Remove the selected student
     @FXML
     private void deleteStudent() {
         if (selectedStudent != null) {
@@ -167,21 +163,10 @@ public class AStudentManagementController extends ASubjectManagementController {
         }
     }
 
-    // Shows selected student's profile (placeholder)
-    @FXML
-    private void viewStudentProfile() {
-        if (selectedStudent != null) {
-            showAlert("Student Selected", selectedStudent.getFullName() + "'s profile selected.", Alert.AlertType.INFORMATION);
-        } else {
-            showAlert("No Selection", "Please select a student to view.", Alert.AlertType.WARNING);
-        }
-    }
 
-    // Handles clicking the manage enrollments button (placeholder)
+    // Open student enrollment management screen
     @FXML
     private void manageEnrollments() {
-        System.out.println("Manage Enrollments clicked");
-        // Load and show the Manage Enrollment window as a modal dialog
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/CompanyLogin/AStudentManageEnrollment.fxml"));
             Parent root = loader.load();
@@ -196,7 +181,7 @@ public class AStudentManagementController extends ASubjectManagementController {
         }
     }
 
-    // Clears all input fields in the form
+    // Reset the form fields
     private void clearFields() {
         studentNameField.clear();
         studentIDField.clear();
@@ -207,7 +192,7 @@ public class AStudentManagementController extends ASubjectManagementController {
         studentLevelField.clear();
     }
 
-    // 🔔 Show alerts
+    // Reusable method to show alerts
     private void showAlert(String title, String message, Alert.AlertType type) {
         Alert alert = new Alert(type);
         alert.setTitle(title);

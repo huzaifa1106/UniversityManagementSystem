@@ -1,3 +1,11 @@
+/*
+ * File: AFacultyManagementController.java
+ * Description: Admin controller for managing faculty members.
+ * Features: Add, edit, delete, and assign courses to faculty.
+ * Author: Group 10
+ * Date: April 2025
+ */
+
 package GUI.CompanyLogin;
 
 import Backend.Course;
@@ -22,8 +30,8 @@ public class AFacultyManagementController {
             facultyOfficeField, facultyResearchField;
 
     @FXML private MenuButton courseMenuButton;
-
     @FXML private TableView<Faculty> facultyTable;
+
     @FXML private TableColumn<Faculty, String> colFacultyID, colFacultyName, colFacultyEmail,
             colFacultyDegree, colFacultyResearch, colFacultyOffice, colFacultyCourses;
 
@@ -31,7 +39,7 @@ public class AFacultyManagementController {
 
     @FXML
     private void initialize() {
-        // Table setup
+        // Setup table columns
         colFacultyID.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getFacultyID()));
         colFacultyName.setCellValueFactory(new PropertyValueFactory<>("name"));
         colFacultyEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
@@ -40,21 +48,21 @@ public class AFacultyManagementController {
         colFacultyOffice.setCellValueFactory(new PropertyValueFactory<>("officeLocation"));
         colFacultyCourses.setCellValueFactory(new PropertyValueFactory<>("coursesAsString"));
 
-        facultyTable.getItems().setAll(Faculty.getFacultyList());
+        // Load all faculty into table
+        refreshFacultyTable();
 
+        // Handle row selection
         facultyTable.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
             selectedFaculty = newVal;
             if (newVal != null) fillFormWithFaculty(newVal);
         });
 
-        // Populate course menu with checkboxes
+        // Load courses into course menu dropdown
+        courseMenuButton.getItems().clear();
         for (Course course : Course.getCourseList()) {
             String label = course.getCourseName() + " (Sec " + course.getSectionNumber() + ")";
             CheckMenuItem item = new CheckMenuItem(label);
-
-            // Optional: Update display text when selection changes
             item.setOnAction(e -> updateSelectedCoursesText());
-
             courseMenuButton.getItems().add(item);
         }
     }
@@ -66,12 +74,13 @@ public class AFacultyManagementController {
         facultyOfficeField.setText(faculty.getOfficeLocation());
         facultyResearchField.setText(faculty.getResearchInterest());
 
-        // Deselect all, then re-select what's assigned
+        // Select assigned courses in menu
         for (MenuItem mi : courseMenuButton.getItems()) {
             if (mi instanceof CheckMenuItem cmi) {
                 cmi.setSelected(faculty.getCoursesOffered().contains(cmi.getText()));
             }
         }
+
         updateSelectedCoursesText();
     }
 
@@ -83,7 +92,7 @@ public class AFacultyManagementController {
         Faculty newFaculty = new Faculty(
                 id,
                 facultyNameField.getText(),
-                null,
+                null, // Image optional or unused
                 facultyDegreeField.getText(),
                 facultyResearchField.getText(),
                 selectedCourses,
@@ -96,34 +105,43 @@ public class AFacultyManagementController {
         refreshFacultyTable();
         clearForm();
 
-        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Faculty added successfully!");
-        alert.showAndWait();
+        showAlert("Success", "Faculty added successfully.", Alert.AlertType.INFORMATION);
     }
 
     @FXML
     private void editFaculty() {
-        if (selectedFaculty != null) {
-            selectedFaculty.setName(facultyNameField.getText());
-            selectedFaculty.setEmail(facultyEmailField.getText());
-            selectedFaculty.setDegree(facultyDegreeField.getText());
-            selectedFaculty.setOfficeLocation(facultyOfficeField.getText());
-            selectedFaculty.setResearchInterest(facultyResearchField.getText());
-            selectedFaculty.setCoursesOffered(Arrays.asList(facultyCoursesField.getText().split(",\\s*")));
-            ReadExcelFile.writeToExcel();
-            selectedFaculty.setCoursesOffered(getSelectedCourses());
-            refreshFacultyTable();
-            clearForm();
+        if (selectedFaculty == null) {
+            showAlert("No Selection", "Please select a faculty member to edit.", Alert.AlertType.WARNING);
+            return;
         }
+
+        selectedFaculty.setName(facultyNameField.getText());
+        selectedFaculty.setEmail(facultyEmailField.getText());
+        selectedFaculty.setDegree(facultyDegreeField.getText());
+        selectedFaculty.setOfficeLocation(facultyOfficeField.getText());
+        selectedFaculty.setResearchInterest(facultyResearchField.getText());
+        selectedFaculty.setCoursesOffered(getSelectedCourses());
+
+        ReadExcelFile.writeToExcel();
+        refreshFacultyTable();
+        clearForm();
+
+        showAlert("Success", "Faculty updated successfully.", Alert.AlertType.INFORMATION);
     }
 
     @FXML
     private void deleteFaculty() {
-        if (selectedFaculty != null) {
-            Faculty.removeFaculty(selectedFaculty.getFacultyID());
-            ReadExcelFile.writeToExcel();
-            refreshFacultyTable();
-            clearForm();
+        if (selectedFaculty == null) {
+            showAlert("No Selection", "Please select a faculty member to delete.", Alert.AlertType.WARNING);
+            return;
         }
+
+        Faculty.removeFaculty(selectedFaculty.getFacultyID());
+        ReadExcelFile.writeToExcel();
+        refreshFacultyTable();
+        clearForm();
+
+        showAlert("Deleted", "Faculty removed from system.", Alert.AlertType.INFORMATION);
     }
 
     private List<String> getSelectedCourses() {
@@ -148,25 +166,29 @@ public class AFacultyManagementController {
         facultyDegreeField.clear();
         facultyOfficeField.clear();
         facultyResearchField.clear();
+
         for (MenuItem mi : courseMenuButton.getItems()) {
             if (mi instanceof CheckMenuItem cmi) {
                 cmi.setSelected(false);
             }
         }
+
         courseMenuButton.setText("Select Courses");
         selectedFaculty = null;
     }
 
-    @FXML
-    private void viewFacultyProfile() {
-        System.out.println("View Faculty Profile clicked");
+    private void showAlert(String title, String message, Alert.AlertType type) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
     @FXML
     private void assignCourses() {
         if (selectedFaculty == null) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Please select a faculty member first.");
-            alert.showAndWait();
+            showAlert("No Selection", "Please select a faculty member first.", Alert.AlertType.WARNING);
             return;
         }
 
@@ -181,19 +203,17 @@ public class AFacultyManagementController {
             stage.setTitle("Assign Courses");
             stage.setScene(new Scene(root));
             stage.show();
-
         } catch (IOException e) {
             e.printStackTrace();
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Failed to load Assign Courses screen.");
-            alert.showAndWait();
+            showAlert("Error", "Failed to load the course assignment screen.", Alert.AlertType.ERROR);
         }
     }
 
-    // Navigation methods
-    @FXML private void loadDashboard() { Router.navigate("ADashboard.fxml", "Admin Dashboard"); }
-    @FXML private void loadSubjectManagement() { Router.navigate("ASubjectManagement.fxml", "Subject Management"); }
-    @FXML private void loadCourseManagement() { Router.navigate("ACourseManagement.fxml", "Course Management"); }
-    @FXML private void loadStudentManagement() { Router.navigate("AStudentManagement.fxml", "Student Management"); }
-    @FXML private void loadFacultyManagement() { Router.navigate("AFacultyManagement.fxml", "Faculty Management"); }
-    @FXML private void loadEventManagement() { Router.navigate("AEventManagement.fxml", "Event Management"); }
+    // Navigation
+    @FXML private void loadDashboard()           { Router.navigate("ADashboard.fxml", "Admin Dashboard"); }
+    @FXML private void loadSubjectManagement()   { Router.navigate("ASubjectManagement.fxml", "Subject Management"); }
+    @FXML private void loadCourseManagement()    { Router.navigate("ACourseManagement.fxml", "Course Management"); }
+    @FXML private void loadStudentManagement()   { Router.navigate("AStudentManagement.fxml", "Student Management"); }
+    @FXML private void loadFacultyManagement()   { Router.navigate("AFacultyManagement.fxml", "Faculty Management"); }
+    @FXML private void loadEventManagement()     { Router.navigate("AEventManagement.fxml", "Event Management"); }
 }

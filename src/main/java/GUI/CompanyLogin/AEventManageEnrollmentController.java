@@ -1,6 +1,15 @@
+/*
+ * File: AEventManageEnrollmentController.java
+ * Description: Controller class for managing student enrollments in events (Admin-side).
+ *              Allows the admin to view, add, or remove students from event participation.
+ * Author: Group 10
+ * Date: April 2025
+ */
+
 package GUI.CompanyLogin;
 
 import Backend.Event;
+import Backend.ReadExcelFile;
 import Backend.Student;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -18,19 +27,17 @@ public class AEventManageEnrollmentController {
 
     @FXML
     private void initialize() {
-        // Populate event names into list view
+        // Fill the event list with existing event names
         for (Event event : Event.getEventList()) {
             eventListView.getItems().add(event.getEventName());
-            System.out.println("HERE");
         }
 
-        // Populate student combo box for adding
+        // Prepare the add combo box with all students
         for (Student student : Student.getStudentList()) {
-            String display = student.getFullName() + " (" + student.getStudentID() + ")";
-            addStudentComboBox.getItems().add(display);
+            addStudentComboBox.getItems().add(formatStudentDisplay(student));
         }
 
-        // Event selection logic
+        // Listen for event selection
         eventListView.getSelectionModel().selectedIndexProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal.intValue() >= 0) {
                 selectedEvent = Event.getEventList().get(newVal.intValue());
@@ -39,6 +46,7 @@ public class AEventManageEnrollmentController {
         });
     }
 
+    // Refresh the UI with selected event's info
     private void updateEventInfo() {
         if (selectedEvent == null) return;
 
@@ -49,24 +57,21 @@ public class AEventManageEnrollmentController {
         for (String studentId : selectedEvent.getRegisteredStudents()) {
             Student student = findStudentById(studentId);
             if (student != null) {
-                String display = student.getFullName() + " (" + student.getStudentID() + ")";
+                String display = formatStudentDisplay(student);
                 studentsTextArea.appendText("- " + display + "\n");
                 removeStudentComboBox.getItems().add(display);
             }
         }
     }
 
+    // Attempts to find a student from ID string
     private Student findStudentById(String id) {
         try {
-            int sid = Integer.parseInt(id);
+            int studentId = Integer.parseInt(id);
             for (Student s : Student.getStudentList()) {
-                if (s.getStudentID() == sid) {
-                    return s;
-                }
+                if (s.getStudentID() == studentId) return s;
             }
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid student ID: " + id);
-        }
+        } catch (NumberFormatException ignored) {}
         return null;
     }
 
@@ -74,13 +79,14 @@ public class AEventManageEnrollmentController {
     private void addStudent() {
         if (selectedEvent == null) return;
 
-        String selection = addStudentComboBox.getValue();
-        if (selection == null || !selection.contains("(")) return;
+        String selected = addStudentComboBox.getValue();
+        if (selected == null || !selected.contains("(")) return;
 
-        String studentId = selection.substring(selection.indexOf("(") + 1, selection.indexOf(")"));
+        String id = selected.substring(selected.indexOf("(") + 1, selected.indexOf(")"));
 
-        if (!selectedEvent.getRegisteredStudents().contains(studentId)) {
-            selectedEvent.registerStudent(studentId);
+        if (!selectedEvent.getRegisteredStudents().contains(id)) {
+            selectedEvent.registerStudent(id);
+            ReadExcelFile.writeToExcel();
             updateEventInfo();
         }
     }
@@ -89,12 +95,12 @@ public class AEventManageEnrollmentController {
     private void removeStudent() {
         if (selectedEvent == null) return;
 
-        String selection = removeStudentComboBox.getValue();
-        if (selection == null || !selection.contains("(")) return;
+        String selected = removeStudentComboBox.getValue();
+        if (selected == null || !selected.contains("(")) return;
 
-        String studentId = selection.substring(selection.indexOf("(") + 1, selection.indexOf(")"));
-
-        selectedEvent.getRegisteredStudents().remove(studentId);
+        String id = selected.substring(selected.indexOf("(") + 1, selected.indexOf(")"));
+        selectedEvent.getRegisteredStudents().remove(id);
+        ReadExcelFile.writeToExcel();
         updateEventInfo();
     }
 
@@ -102,5 +108,10 @@ public class AEventManageEnrollmentController {
     private void closeWindow() {
         Stage stage = (Stage) eventListView.getScene().getWindow();
         stage.close();
+    }
+
+    // Builds a readable string like Alice Smith (100001)
+    private String formatStudentDisplay(Student s) {
+        return s.getFullName() + " (" + s.getStudentID() + ")";
     }
 }

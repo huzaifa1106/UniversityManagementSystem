@@ -1,13 +1,18 @@
 package Backend;
-//hi
+
 import java.awt.Image;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Faculty {
 
+    // Static list of all faculty members
     private static List<Faculty> facultyList = new ArrayList<>();
 
+    // Property to store courses as a concatenated string
+    private String coursesAsString;
+
+    // Faculty attributes
     private String facultyID;
     private String name;
     private Image profilePhoto;
@@ -17,6 +22,7 @@ public class Faculty {
     private String email;
     private String officeLocation;
 
+    // Constructor
     public Faculty(String facultyID, String name, Image profilePhoto, String degree, String researchInterest,
                    List<String> coursesOffered, String email, String officeLocation) {
         this.facultyID = facultyID;
@@ -27,49 +33,31 @@ public class Faculty {
         this.coursesOffered = coursesOffered;
         this.email = email;
         this.officeLocation = officeLocation;
+        this.coursesAsString = String.join(", ", coursesOffered);  // Initialize coursesAsString with a concatenated string
     }
 
-
-
-    // Method to check if a faculty already exists
-    public static boolean isFacultyDuplicate(String facultyID, String email) {
-        for (Faculty faculty : facultyList) {
-            if (faculty.facultyID.equals(facultyID) || faculty.email.equals(email)) {
-                return true; // Faculty is a duplicate
-            }
-        }
-        return false; // Faculty is not a duplicate
-    }
-
-    // Method to add a new faculty with duplication check
-    public static boolean addFacultyWithValidation(Faculty newFaculty) {
-        if (!isFacultyDuplicate(newFaculty.facultyID, newFaculty.email)) {
-            facultyList.add(newFaculty); // Add the faculty if not a duplicate
-            return true; // Faculty added successfully
-        }
-        return false; // Faculty is a duplicate and not added
-    }
-
+    // Add faculty directly and save to file
     public static void addFaculty(Faculty faculty) {
         facultyList.add(faculty);
         ReadExcelFile.writeToExcel();
     }
 
+    // Remove faculty by ID
     public static void removeFaculty(String facultyID) {
         facultyList.removeIf(f -> f.getFacultyID().equals(facultyID));
     }
 
+    // Retrieve all faculty records
     public static List<Faculty> getFacultyList() {
         return facultyList;
     }
 
-    public String getCoursesAsString() {
-        return String.join(", ", coursesOffered);
+    // Replace entire faculty list
+    public static void setFacultyList(List<Faculty> faculties) {
+        facultyList = faculties;
     }
 
-    public String getEmail() {
-        return email;
-    }
+    // Find faculty by name
     public static Faculty findByName(String name) {
         for (Faculty f : facultyList) {
             if (f.getName().equalsIgnoreCase(name.trim())) {
@@ -78,82 +66,39 @@ public class Faculty {
         }
         return null;
     }
-    public String getOfficeLocation() {
-        return officeLocation;
+
+    // Getter for coursesAsString
+    public String getCoursesAsString() {
+        return coursesAsString;
     }
 
-    // Setters
-    public void setFacultyID(String facultyID) {
-        this.facultyID = facultyID;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setProfilePhoto(Image profilePhoto) {
-        this.profilePhoto = profilePhoto;
-    }
-
-    public void setDegree(String degree) {
-        this.degree = degree;
-    }
-
-    public void setResearchInterest(String researchInterest) {
-        this.researchInterest = researchInterest;
-    }
-
-    public void setCoursesOffered(List<String> coursesOffered) {
-        this.coursesOffered = coursesOffered;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setOfficeLocation(String officeLocation) {
-        this.officeLocation = officeLocation;
+    // Setter for coursesAsString (although not usually needed if it's derived from coursesOffered)
+    public void setCoursesAsString(String coursesAsString) {
+        this.coursesAsString = coursesAsString;
     }
 
 
-
+    // -------------------------------
     // Getters
-    public String getFacultyID() {
-        return facultyID;
-    }
+    // -------------------------------
+    public String getFacultyID() { return facultyID; }
+    public String getName() { return name; }
+    public Image getProfilePhoto() { return profilePhoto; }
+    public String getDegree() { return degree; }
+    public String getResearchInterest() { return researchInterest; }
+    public List<String> getCoursesOffered() { return coursesOffered; }
+    public String getEmail() { return email; }
+    public String getOfficeLocation() { return officeLocation; }
 
-    public String getName() {
-        return name;
-    }
-
-    public Image getProfilePhoto() {
-        return profilePhoto;
-    }
-
-    public String getDegree() {
-        return degree;
-    }
-
-    public List<String> getCoursesOffered() {
-        return coursesOffered;}
-
-
-    public String getResearchInterest() {
-        return researchInterest;
-    }
-
-    public static void setFacultyList(List<Faculty> faculties) {
-        facultyList = faculties;
-    }
-
-    // Display method
-    public void displayFacultyInfo() {
-        System.out.println("Faculty ID: " + facultyID);
-        System.out.println("Faculty Name: " + name);
-        System.out.println("Degree: " + degree);
-        System.out.println("Research Interest: " + researchInterest);
-        System.out.println("Courses Offered: " + coursesOffered);
-        System.out.println("Email: " + email);
-        System.out.println("Office Location: " + officeLocation);
-    }
+    // -------------------------------
+    // Setters
+    // -------------------------------
+    public void setFacultyID(String facultyID) { this.facultyID = facultyID; }
+    public void setName(String name) { this.name = name; }
+    public void setProfilePhoto(Image profilePhoto) { this.profilePhoto = profilePhoto; }
+    public void setDegree(String degree) { this.degree = degree; }
+    public void setResearchInterest(String researchInterest) { this.researchInterest = researchInterest; }
+    public void setCoursesOffered(List<String> coursesOffered) { this.coursesOffered = coursesOffered; }
+    public void setEmail(String email) { this.email = email; }
+    public void setOfficeLocation(String officeLocation) { this.officeLocation = officeLocation; }
 }

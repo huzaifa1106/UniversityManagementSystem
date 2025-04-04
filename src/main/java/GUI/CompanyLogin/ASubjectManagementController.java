@@ -26,7 +26,7 @@ public class ASubjectManagementController {
 
     private Subject selectedSubject = null;
 
-    // Initializes the table and selection logic
+    // Setup table column bindings and selection handling
     @FXML
     private void initialize() {
         colSubjectCode.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getSubjectCode()));
@@ -34,24 +34,25 @@ public class ASubjectManagementController {
 
         loadSubjectsIntoTable();
 
+        // Populate form fields when a subject is selected
         subjectTable.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
             selectedSubject = newVal;
             if (newVal != null) fillFormWithSubjectData(newVal);
         });
     }
 
-    // Loads all subjects into the table
+    // Load subject list into the table
     private void loadSubjectsIntoTable() {
         subjectTable.setItems(FXCollections.observableArrayList(Subject.getSubjectList()));
     }
 
-    // Fills the form with selected subject data
+    // Fill form fields with selected subject data
     private void fillFormWithSubjectData(Subject subject) {
         subjectNameField.setText(subject.getSubjectName());
         subjectCodeField.setText(subject.getSubjectCode());
     }
 
-    // Adds a new subject to the list
+    // Add a new subject based on form inputs
     @FXML
     private void addSubject() {
         String name = subjectNameField.getText().trim();
@@ -62,24 +63,26 @@ public class ASubjectManagementController {
             return;
         }
 
+        // Auto-generate subject code if not provided
         if (code.isEmpty()) {
             code = generateSubjectCode(name);
         }
 
+        // Prevent duplicates
         if (Subject.findSubject(name) != null) {
             showAlert("Duplicate", "Subject already exists.", Alert.AlertType.ERROR);
             return;
         }
 
         Subject newSubject = new Subject(code, name);
-        Subject.addSubject(newSubject);  // <-- This is what's missing
+        Subject.addSubject(newSubject);
         ReadExcelFile.writeToExcel();
         loadSubjectsIntoTable();
         clearFields();
         showAlert("Success", "Subject added successfully.", Alert.AlertType.INFORMATION);
     }
 
-    // Edits the selected subject's data
+    // Edit the currently selected subject
     @FXML
     private void editSubject() {
         if (selectedSubject == null) {
@@ -95,8 +98,10 @@ public class ASubjectManagementController {
             return;
         }
 
-        selectedSubject.setSubjectName(newName);
-        if (!newCode.isEmpty()) selectedSubject.setSubjectCode(newCode);
+        // Replace old subject with updated info
+        Subject.getSubjectList().remove(selectedSubject);
+        Subject updatedSubject = new Subject(newName, newCode.isEmpty() ? selectedSubject.getSubjectCode() : newCode);
+        Subject.addSubject(updatedSubject);
 
         ReadExcelFile.writeToExcel();
         loadSubjectsIntoTable();
@@ -104,7 +109,7 @@ public class ASubjectManagementController {
         showAlert("Success", "Subject updated successfully.", Alert.AlertType.INFORMATION);
     }
 
-    // Deletes the selected subject
+    // Delete selected subject
     @FXML
     private void deleteSubject() {
         if (selectedSubject == null) {
@@ -119,31 +124,22 @@ public class ASubjectManagementController {
         showAlert("Success", "Subject deleted successfully.", Alert.AlertType.INFORMATION);
     }
 
-    // Displays information about the selected subject
-    @FXML
-    private void viewSubjects() {
-        if (selectedSubject != null) {
-            showAlert("Subject Info", "Subject: " + selectedSubject.getSubjectName(), Alert.AlertType.INFORMATION);
-        } else {
-            showAlert("No Selection", "Please select a subject to view.", Alert.AlertType.WARNING);
-        }
-    }
 
-    // Clears all input fields in the form
+    // Clear all form fields
     private void clearFields() {
         subjectNameField.clear();
         subjectCodeField.clear();
         selectedSubject = null;
     }
 
-    // Generates a random subject code based on the name
+    // Generates a subject code using first 3 letters of name + random number
     private String generateSubjectCode(String subjectName) {
         String base = subjectName.replaceAll("\\s+", "").substring(0, Math.min(3, subjectName.length())).toUpperCase();
         int randomNum = (int) (Math.random() * 900 + 100);
         return base + randomNum;
     }
 
-    // Utility to show alerts
+    // Utility for showing alerts
     private void showAlert(String title, String message, Alert.AlertType type) {
         Alert alert = new Alert(type);
         alert.setTitle(title);
@@ -152,11 +148,11 @@ public class ASubjectManagementController {
         alert.showAndWait();
     }
 
-    // Navigation Handlers
-    @FXML private void loadDashboard() { Router.navigate("ADashboard.fxml", "Admin Dashboard"); }
-    @FXML private void loadSubjectManagement() { Router.navigate("ASubjectManagement.fxml", "Admin Subject Management"); }
-    @FXML private void loadCourseManagement() { Router.navigate("ACourseManagement.fxml", "Admin Course Management"); }
-    @FXML private void loadStudentManagement() { Router.navigate("AStudentManagement.fxml", "Admin Student Management"); }
-    @FXML private void loadFacultyManagement() { Router.navigate("AFacultyManagement.fxml", "Admin Faculty Management"); }
-    @FXML private void loadEventManagement() { Router.navigate("AEventManagement.fxml", "Admin Event Management"); }
+    // Navigation
+    @FXML private void loadDashboard()            { Router.navigate("ADashboard.fxml", "Admin Dashboard"); }
+    @FXML private void loadSubjectManagement()    { Router.navigate("ASubjectManagement.fxml", "Admin Subject Management"); }
+    @FXML private void loadCourseManagement()     { Router.navigate("ACourseManagement.fxml", "Admin Course Management"); }
+    @FXML private void loadStudentManagement()    { Router.navigate("AStudentManagement.fxml", "Admin Student Management"); }
+    @FXML private void loadFacultyManagement()    { Router.navigate("AFacultyManagement.fxml", "Admin Faculty Management"); }
+    @FXML private void loadEventManagement()      { Router.navigate("AEventManagement.fxml", "Admin Event Management"); }
 }

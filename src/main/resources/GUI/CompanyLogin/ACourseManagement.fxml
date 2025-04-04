@@ -1,26 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<!--
- File Name: ACourseManagement.fxml
- Description: This is the Admin Course Management FXML file to assist with front-end development.
- Date: March 2nd, 2025
- -->
-
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #f8f9fa;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.CompanyLogin.ACourseManagementController">
+<BorderPane prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #f8f9fa;"
+            xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="GUI.CompanyLogin.ACourseManagementController">
 
-    <!-- Sidebar Menu -->
+
     <left>
-        <VBox spacing="10" style="-fx-background-color: #6A89A7; -fx-padding: 10px;" BorderPane.alignment="CENTER">
+        <VBox spacing="12" style="-fx-background-color: #6A89A7; -fx-padding: 10px;" BorderPane.alignment="CENTER">
             <ImageView fitHeight="70.0" fitWidth="155.0">
                 <image>
                     <Image url="@HomeScreen.png" />
                 </image>
             </ImageView>
-            <Button mnemonicParsing="false" onAction="#loadDashboard" prefHeight="63.0" prefWidth="150.0" text="Dashboard" />
+            <Button onAction="#loadDashboard" prefHeight="62.0" prefWidth="147.0" text="Dashboard" />
             <Button onAction="#loadSubjectManagement" prefHeight="62.0" prefWidth="147.0" text="Subject Management" />
             <Button onAction="#loadCourseManagement" prefHeight="69.0" prefWidth="146.0" text="Course Management" />
             <Button onAction="#loadStudentManagement" prefHeight="68.0" prefWidth="147.0" text="Student Management" />
@@ -32,75 +27,69 @@
     <!-- Main Content -->
     <center>
         <VBox alignment="CENTER" spacing="15" style="-fx-padding: 20px;">
-            <Label style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-padding: 5px;" text="Admin Course Management" />
-            <Label style="-fx-font-size: 17px; -fx-font-weight: bold;" text="Manage Courses" />
+            <Label text="Admin Course Management" style="-fx-font-size: 24px; -fx-font-weight: bold;" />
+            <Label text="Manage Courses" style="-fx-font-size: 17px; -fx-font-weight: bold;" />
 
-            <!-- Course Input Form -->
-            <GridPane hgap="20" prefHeight="174.0" prefWidth="600.0" style="-fx-background-color: white; -fx-padding: 15px; -fx-border-color: lightgray; -fx-border-width: 1;" vgap="10">
+            <!-- Scrollable Form -->
+            <ScrollPane fitToWidth="true" prefHeight="300">
+                <content>
+                    <GridPane fx:id="courseForm" hgap="20" vgap="10"
+                              style="-fx-background-color: white; -fx-padding: 15px; -fx-border-color: lightgray; -fx-border-width: 1;"
+                              prefWidth="600.0">
+                        <Label text="Course Name:" GridPane.columnIndex="0" GridPane.rowIndex="0" style="-fx-font-weight: bold;" />
+                        <TextField fx:id="courseNameField" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
 
-                <Label style="-fx-font-weight: bold;" text="Course Name:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                <TextField fx:id="courseNameField" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                        <Label text="Course ID:" GridPane.columnIndex="0" GridPane.rowIndex="1" style="-fx-font-weight: bold;" />
+                        <TextField fx:id="courseIDField" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
 
-                <Label style="-fx-font-weight: bold;" text="Course ID:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                <TextField fx:id="courseIDField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label text="Section Number:" GridPane.columnIndex="0" GridPane.rowIndex="2" style="-fx-font-weight: bold;" />
+                        <TextField fx:id="sectionField" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
 
-                <Label style="-fx-font-weight: bold;" text="Section Number:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                <TextField fx:id="sectionField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Label text="Instructor:" GridPane.columnIndex="0" GridPane.rowIndex="3" style="-fx-font-weight: bold;" />
+                        <ComboBox fx:id="instructorComboBox" promptText="Select Instructor" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
 
-                <Label style="-fx-font-weight: bold;" text="Instructor:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                        <Label text="Subject Name:" GridPane.columnIndex="2" GridPane.rowIndex="0" style="-fx-font-weight: bold;" />
+                        <ComboBox fx:id="subjectComboBox" promptText="Select Subject" GridPane.columnIndex="3" GridPane.rowIndex="0"/>
 
-                <Label style="-fx-font-weight: bold;" text="Subject Name:" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                        <Label text="Location:" GridPane.columnIndex="2" GridPane.rowIndex="1" style="-fx-font-weight: bold;" />
+                        <TextField fx:id="locationField" GridPane.columnIndex="3" GridPane.rowIndex="1"/>
 
-                <Label style="-fx-font-weight: bold;" text="Location:" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                <TextField fx:id="locationField" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                        <Label text="Lecture Day:" GridPane.columnIndex="2" GridPane.rowIndex="2" style="-fx-font-weight: bold;" />
+                        <ComboBox fx:id="lectureDayComboBox" promptText="Select Lecture Day(s)" GridPane.columnIndex="3" GridPane.rowIndex="2"/>
 
-                <Label style="-fx-font-weight: bold;" text="Lecture Day:" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                        <Label text="Final Exam Date:" GridPane.columnIndex="2" GridPane.rowIndex="3" style="-fx-font-weight: bold;" />
+                        <DatePicker fx:id="finalExamDatePicker" GridPane.columnIndex="3" GridPane.rowIndex="3"/>
 
-                <Label style="-fx-font-weight: bold;" text="Final Exam Date:" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-            <ComboBox fx:id="instructorComboBox" prefWidth="150.0" promptText="Select Instructor" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <ComboBox fx:id="lectureDayComboBox" prefWidth="150.0" promptText="Select Lecture Day(s)" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-            <DatePicker fx:id="finalExamDatePicker" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-            <ComboBox fx:id="subjectComboBox" prefWidth="150.0" GridPane.columnIndex="3" />
-            <columnConstraints>
-               <ColumnConstraints />
-               <ColumnConstraints />
-               <ColumnConstraints />
-               <ColumnConstraints />
-            </columnConstraints>
-            <rowConstraints>
-               <RowConstraints />
-               <RowConstraints />
-               <RowConstraints />
-               <RowConstraints />
-            </rowConstraints>
-            </GridPane>
+                        <Label text="Start Time (HHMM):" GridPane.columnIndex="0" GridPane.rowIndex="4" style="-fx-font-weight: bold;" />
+                        <TextField fx:id="startTimeField" promptText="e.g. 900" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
 
-            <!-- Buttons for Course Actions -->
-            <Button fx:id="addCourseButton" onAction="#addCourse" style="-fx-font-weight: bold;" text="Add Course" />
+                        <Label text="End Time (HHMM):" GridPane.columnIndex="2" GridPane.rowIndex="4" style="-fx-font-weight: bold;" />
+                        <TextField fx:id="endTimeField" promptText="e.g. 1100" GridPane.columnIndex="3" GridPane.rowIndex="4"/>
+                    </GridPane>
+                </content>
+            </ScrollPane>
 
-            <!-- Table: Course List -->
-            <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Course List" />
+            <Button fx:id="addCourseButton" text="Add Course" onAction="#addCourse" style="-fx-font-weight: bold;" />
+
+            <Label text="Course List" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
             <TableView fx:id="courseDetailsTable" prefHeight="200.0" prefWidth="600.0">
                 <columns>
-                    <TableColumn fx:id="colCourseID" prefWidth="100.0" text="Course ID" />
-                    <TableColumn fx:id="colCourseName" prefWidth="150.0" text="Course Name" />
-                    <TableColumn fx:id="colSectionNumber" prefWidth="100.0" text="Section" />
-                    <TableColumn fx:id="colTeacherName" prefWidth="150.0" text="Instructor" />
-                    <TableColumn fx:id="colSubjectName" prefWidth="150.0" text="Subject Name" />
-                    <TableColumn fx:id="colLocation" prefWidth="150.0" text="Location" />
-                    <TableColumn fx:id="colLectureDay" prefWidth="100.0" text="Lecture Day" />
-                    <TableColumn fx:id="colLectureTime" prefWidth="150.0" text="Time" />
-                    <TableColumn fx:id="colFinalExamDate" prefWidth="150.0" text="Final Exam" />
+                    <TableColumn fx:id="colCourseID" text="Course ID" prefWidth="100.0"/>
+                    <TableColumn fx:id="colCourseName" text="Course Name" prefWidth="150.0"/>
+                    <TableColumn fx:id="colSectionNumber" text="Section" prefWidth="100.0"/>
+                    <TableColumn fx:id="colTeacherName" text="Instructor" prefWidth="150.0"/>
+                    <TableColumn fx:id="colSubjectName" text="Subject Name" prefWidth="150.0"/>
+                    <TableColumn fx:id="colLocation" text="Location" prefWidth="150.0"/>
+                    <TableColumn fx:id="colLectureDay" text="Lecture Day" prefWidth="100.0"/>
+                    <TableColumn fx:id="colLectureTime" text="Time" prefWidth="150.0"/>
+                    <TableColumn fx:id="colFinalExamDate" text="Final Exam" prefWidth="150.0"/>
                 </columns>
             </TableView>
 
-
-
-            <!-- Action Buttons -->
             <HBox alignment="CENTER" spacing="15" style="-fx-padding: 10px;">
-                <Button fx:id="editCourseButton" onAction="#editCourse" prefHeight="35.0" prefWidth="130.0" text="Edit Course" />
-                <Button fx:id="deleteCourseButton" onAction="#deleteCourse" prefHeight="35.0" prefWidth="130.0" text="Delete Course" />
-                <Button fx:id="manageEnrollmentsButton" onAction="#manageEnrollments" prefHeight="35.0" prefWidth="150.0" text="Manage Enrollments" />
+                <Button fx:id="editCourseButton" text="Edit Course" onAction="#editCourse" prefWidth="130.0"/>
+                <Button fx:id="deleteCourseButton" text="Delete Course" onAction="#deleteCourse" prefWidth="130.0"/>
+                <Button fx:id="manageEnrollmentsButton" text="Manage Enrollments" onAction="#manageEnrollments" prefWidth="150.0"/>
             </HBox>
         </VBox>
     </center>

@@ -1,9 +1,7 @@
 /**
- * File: Student.java
- * Description: Represents a student user in the university system. Stores full academic and contact details,
- * enrollment status, tuition information, and provides utility methods for initialization, course enrollment,
- * and interaction with the course and subject backend.
- *
+ * This class represents a student in the university system. It stores various personal, academic, and contact details,
+ * as well as information about the courses and subjects the student is enrolled in. The class also includes methods
+ * for enrollment, course management, and interacting with backend components like the course and subject management systems.
  * Author: Huzaifa A. & Group
  * Date: March 2nd, 2025
  */
@@ -13,15 +11,21 @@ package Backend;
 import javafx.beans.property.*;
 import javafx.scene.image.Image;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
+/**
+ * The Student class inherits from User and represents a student entity in the university system.
+ */
 public class Student extends User {
 
+    // Static list to keep track of all students in the system
     private static List<Student> students = new ArrayList<>();
+
+    // Constants for undergraduate and graduate tuition fees
     private static final int UGRADFEE = 5000;
     private static final int GRADFEE = 4000;
 
+    // Properties for student's information
     private SimpleStringProperty fullName;
     private SimpleIntegerProperty studentID;
     private SimpleObjectProperty<Image> profilePicture;
@@ -35,20 +39,22 @@ public class Student extends User {
     private SimpleStringProperty academicLevel;
     private SimpleStringProperty thesisTitle;
     private SimpleIntegerProperty progress;
-    private List<Course> enrolledCourses;
-    private List<Subject> enrolledSubjects;
-
+    private List<Course> enrolledCourses;  // List of courses the student is enrolled in
+    private List<Subject> enrolledSubjects; // List of subjects the student is enrolled in
 
     static {
+        // Initialize demo students when the class is loaded
         initializeStudents();
     }
 
-    // Manual constructor with ID
+    /**
+     * Constructor with manual student details including an ID.
+     */
     public Student(int studentID, String fullName, String password, Image profilePicture, String address, long telephone,
                    int tuitionAnnual, int tuitionBalance, String emailAddress, int average, String semester,
                    String academicLevel, String thesisTitle) {
 
-        super(String.valueOf(studentID), password, "student");
+        super(String.valueOf(studentID), password, "student");  // Initialize parent class (User)
         this.studentID = new SimpleIntegerProperty(studentID);
         this.fullName = new SimpleStringProperty(fullName);
         this.profilePicture = new SimpleObjectProperty<>(profilePicture);
@@ -61,15 +67,18 @@ public class Student extends User {
         this.semester = new SimpleStringProperty(semester);
         this.academicLevel = new SimpleStringProperty(academicLevel);
         this.thesisTitle = new SimpleStringProperty(thesisTitle);
-        this.progress = new SimpleIntegerProperty(-1);
+        this.progress = new SimpleIntegerProperty(-1);  // Progress is initially undefined
         this.enrolledCourses = new ArrayList<>();
         this.enrolledSubjects = new ArrayList<>();
 
+        // Register the new user in the UserAuthenticator and add to the student list
         UserAuthenticator.newUser(this.getUsername(), this.getPassword());
         students.add(this);
     }
 
-    // Default constructor
+    /**
+     * Default constructor for a Student with empty values.
+     */
     public Student() {
         super("", "", "");
         this.fullName = new SimpleStringProperty("");
@@ -89,42 +98,14 @@ public class Student extends User {
         this.enrolledSubjects = new ArrayList<>();
     }
 
-    // Auto-ID Constructor
-    public Student(int studentID, String fullName, String password, Image profilePicture, String address, long telephone,
-                   int tuitionAnnual, int tuitionBalance, String emailAddress, int average, String semester,
-                   String academicLevel, String thesisTitle, int progress,
-                   ArrayList<Course> enrolledCourses, ArrayList<Subject> enrolledSubjects,
-                   boolean register) {
-        super(String.valueOf(studentID), password, "student");
-        this.studentID = new SimpleIntegerProperty(studentID);
-        this.fullName = new SimpleStringProperty(fullName);
-        this.profilePicture = new SimpleObjectProperty<>(profilePicture);
-        this.address = new SimpleStringProperty(address);
-        this.telephone = new SimpleLongProperty(telephone);
-        this.tuitionAnnual = new SimpleIntegerProperty(tuitionAnnual);
-        this.tuitionBalance = new SimpleIntegerProperty(tuitionBalance);
-        this.emailAddress = new SimpleStringProperty(emailAddress);
-        this.average = new SimpleIntegerProperty(average);
-        this.semester = new SimpleStringProperty(semester);
-        this.academicLevel = new SimpleStringProperty(academicLevel);
-        this.thesisTitle = new SimpleStringProperty(thesisTitle);
-        this.progress = new SimpleIntegerProperty(progress);
-        this.enrolledCourses = enrolledCourses;
-        this.enrolledSubjects = enrolledSubjects;
-
-        if (register) {
-            UserAuthenticator.newUser(this.getUsername(), this.getPassword());
-            students.add(this);
-        }
-    }
-
-
-
+    /**
+     * Constructor with auto-generated student ID. Also enrolls the student in courses if needed.
+     */
     public Student(String fullName, String password, Image profilePicture, String address, long telephone,
                    int tuitionAnnual, int tuitionBalance, String emailAddress, int average, String semester,
                    String academicLevel, String thesisTitle) {
 
-        super(String.valueOf(generateStudentID()), password, "student");
+        super(String.valueOf(generateStudentID()), password, "student");  // Initialize parent class (User)
         this.studentID = new SimpleIntegerProperty(Integer.parseInt(this.getUsername()));
         this.fullName = new SimpleStringProperty(fullName);
         this.profilePicture = new SimpleObjectProperty<>(profilePicture);
@@ -137,40 +118,95 @@ public class Student extends User {
         this.semester = new SimpleStringProperty(semester);
         this.academicLevel = new SimpleStringProperty(academicLevel);
         this.thesisTitle = new SimpleStringProperty(thesisTitle);
-        this.progress = new SimpleIntegerProperty(-1);
+        this.progress = new SimpleIntegerProperty(-1);  // Progress is initially undefined
         this.enrolledCourses = new ArrayList<>();
         this.enrolledSubjects = new ArrayList<>();
 
+        // Register the new user in the UserAuthenticator and add to the student list
         UserAuthenticator.newUser(this.getUsername(), this.getPassword());
         students.add(this);
     }
 
-    // Enroll student into random courses and update subjects
+
+    public Student(int studentID, String fullName, String password, Image profilePicture, String address, long telephone,
+                   int tuitionAnnual, int tuitionBalance, String emailAddress, int average, String semester,
+                   String academicLevel, String thesisTitle, int progress,
+                   ArrayList<Course> enrolledCourses, ArrayList<Subject> enrolledSubjects,
+                   boolean register) {
+
+        super(String.valueOf(studentID), password, "student");  // Initialize parent class (User)
+
+        this.studentID = new SimpleIntegerProperty(studentID);
+        this.fullName = new SimpleStringProperty(fullName);
+        this.profilePicture = new SimpleObjectProperty<>(new Image("file:src/main/resources/GUI/CompanyLogin/ProfilePicture.jpg"));  // Handle null profilePicture by assigning a default image.
+        this.address = new SimpleStringProperty(address);
+        this.telephone = new SimpleLongProperty(telephone);
+        this.tuitionAnnual = new SimpleIntegerProperty(tuitionAnnual);
+        this.tuitionBalance = new SimpleIntegerProperty(tuitionBalance);
+        this.emailAddress = new SimpleStringProperty(emailAddress);
+        this.average = new SimpleIntegerProperty(average);
+        this.semester = new SimpleStringProperty(semester);
+        this.academicLevel = new SimpleStringProperty(academicLevel);
+        this.thesisTitle = new SimpleStringProperty(thesisTitle);
+        this.progress = new SimpleIntegerProperty(progress);
+        this.enrolledCourses = enrolledCourses != null ? enrolledCourses : new ArrayList<>();
+        this.enrolledSubjects = enrolledSubjects != null ? enrolledSubjects : new ArrayList<>();
+
+        if (register) {
+            // Check for username uniqueness before adding the student
+            if (!isUsernameTaken(this.getUsername())) {
+                UserAuthenticator.newUser(this.getUsername(), this.getPassword());
+                students.add(this);
+            } else {
+                System.out.println("Error: Username already exists.");
+            }
+        }
+    }
+
+    // Check if username already exists
+    private boolean isUsernameTaken(String username) {
+        for (Student student : students) {
+            if (student.getUsername().equals(username)) {
+                return true;  // Username already exists
+            }
+        }
+        return false;
+    }
+
+
+
+    /**
+     * This method enrolls the student in a set of randomly selected courses and updates the enrolled subjects list.
+     * It also logs the enrollment details for debugging purposes.
+     */
     public static void autoEnrollStudentInCourses(Student student) {
         List<Course> availableCourses = Course.getCourseList();
-        Collections.shuffle(availableCourses);
+        Collections.shuffle(availableCourses);  // Shuffle courses to select random ones
 
-        List<Course> selected = availableCourses.subList(0, Math.min(5, availableCourses.size()));
+        List<Course> selected = availableCourses.subList(0, Math.min(5, availableCourses.size()));  // Select up to 5 courses
         Set<Subject> subjects = new HashSet<>();
 
+        // Enroll the student in the selected courses and add corresponding subjects
         for (Course c : selected) {
             student.enrolledCourses.add(c);
-            c.getEnrolledStudents().add(student);
+            c.getEnrolledStudents().add(student);  // Add student to course's enrolled list
 
             Subject s = Subject.findSubjectByCode(c.getSubjectName());
             if (s != null) subjects.add(s);
         }
 
-        student.enrolledSubjects.addAll(subjects);
+        student.enrolledSubjects.addAll(subjects);  // Update the student's enrolled subjects
 
-        // Debug logging
+        // Log the enrolled subjects for the student
         System.out.println("Enrolled " + student.getFullName() + " in subjects:");
         for (Subject subj : student.getEnrolledSubjects()) {
             System.out.println(" - " + subj.getSubjectName() + " (" + subj.getSubjectCode() + ")");
         }
     }
 
-    // Static initialization of demo students
+    /**
+     * Static method to initialize a set of demo students if the student list is empty.
+     */
     public static void initializeStudents() {
         if (students.isEmpty()) {
             Student[] studentArray = {
@@ -180,57 +216,72 @@ public class Student extends User {
                     new Student(100004, "Lucka Racki", "luckapass", null, "321 Birch St", 444555666, 5000, 2500, "lucka@example.edu", 75, "Fall 2025", "Undergraduate", "")
             };
 
+            // Auto-enroll demo students in random courses
             for (Student s : studentArray) {
                 autoEnrollStudentInCourses(s);
             }
         }
     }
 
+    /**
+     * Generates a random student ID for new students.
+     */
     private static int generateStudentID() {
-        return 100000 + new Random().nextInt(900000);
+        return 100000 + new Random().nextInt(900000);  // Random 6-digit ID
     }
 
-    // Public static utility methods
+    // Public methods for managing students and enrollment
+
+    /**
+     * Retrieves a student based on their ID.
+     */
     public static Student getStudent(int studentID) {
         for (Student student : students) {
             if (student.getStudentID() == studentID) return student;
         }
-        return null;
+        return null;  // Return null if student is not found
     }
 
+    /**
+     * Adds a student to the system.
+     */
     public static void addStudent(Student student) {
         System.out.println("Student added successfully: " + student.getFullName());
     }
 
+    /**
+     * Removes a student from the system by their student ID.
+     */
     public static void removeStudent(int studentID) {
         students.removeIf(student -> student.getStudentID() == studentID);
     }
 
+    /**
+     * Gets the list of all students.
+     */
     public static List<Student> getStudentList() {
         return students;
     }
 
-// code to check student valadationn
-    public static void Student(Student student) {
-        students.add(student);
-        System.out.println("Student added successfully: " + student.getFullName());
-    }
 
-    public static void saveAllStudents() {
-        // Example logic to simulate saving
-        System.out.println("Saving all student data...");
-        for (Student s : students) {
-            System.out.println(" - " + s.getFullName() + " (" + s.getStudentID() + ")");}
-    }
-    public static boolean isDuplicate(Student student) {
-        for (Student s : students) {
-            if (s.getStudentID() == student.getStudentID() ||
-                    s.getEmailAddress().equalsIgnoreCase(student.getEmailAddress())) {
-                return true;
+    /**
+     * Checks if enrolling in a new course would cause a scheduling conflict.
+     */
+    public boolean hasTimeConflictWith(Course newCourse) {
+        for (Course enrolled : this.getEnrolledCourses()) {
+            if (enrolled.getLectureDay().equalsIgnoreCase(newCourse.getLectureDay())) {
+                boolean overlaps =
+                        (newCourse.getLectureStartTime() >= enrolled.getLectureStartTime() && newCourse.getLectureStartTime() < enrolled.getLectureEndTime()) ||
+                                (newCourse.getLectureEndTime() > enrolled.getLectureStartTime() && newCourse.getLectureEndTime() <= enrolled.getLectureEndTime()) ||
+                                (newCourse.getLectureStartTime() <= enrolled.getLectureStartTime() && newCourse.getLectureEndTime() >= enrolled.getLectureEndTime());
+                if (overlaps) {
+                    return true;  // Return true if there's a time conflict
+                }
             }
         }
-        return false;
+        return false;  // No conflict
     }
+
 
     // Accessors for course & subject lists
     public List<Course> getEnrolledCourses() { return enrolledCourses; }
