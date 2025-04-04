@@ -4,7 +4,7 @@ University Management System (UMS) - How to Run the Code and What It Does
    This project implements a University Management System (UMS) with backend functionality and a GUI for user interaction.
    The system helps manage various aspects of a university's administration, including student and faculty management, courses, and events.
 
-2. Prerequisites:
+2. Prerequisites:;
    - Java Development Kit (JDK) 8 or higher must be installed.
    - Apache Maven must be installed for building the project.
    - Ensure you have the necessary dependencies configured through the 'pom.xml' file.
