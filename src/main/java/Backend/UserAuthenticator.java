@@ -4,7 +4,7 @@
  * Stores credentials in memory and reads/writes to `users.txt` and `admins.txt`.
  *
  * Author: Huzaifa A. & Group
- * Date: March 2nd, 2025
+ * Date: April 2025
  */
 
 package Backend;
@@ -16,14 +16,17 @@ import java.util.List;
 public class UserAuthenticator {
     private static final String USER_FILE = "users.txt";
     private static final String ADMIN_FILE = "admins.txt";
+    private static final String FACULTY_FILE = "faculty.txt";
 
     private static List<String[]> users = new ArrayList<>();
     private static List<String[]> admins = new ArrayList<>();
+    private static List<String[]> facultors = new ArrayList<>();
 
-    // 🔹 Load saved credentials on startup
+    // Load credentials on startup
     static {
         loadUsers();
         loadAdmins();
+        loadFacultors();
     }
 
     // Register a new user
@@ -38,6 +41,18 @@ public class UserAuthenticator {
         users.add(new String[]{username, password});
         writeUserToFile(username, password);
         System.out.println("New user registered successfully: " + username);
+    }
+    // Register new facultor
+    public static void newFacultor(String username, String password) {
+        for (String[] facultor : facultors) {
+            if (facultor[0].equals(username)) {
+                System.out.println("Error: Faculty username already exists.");
+                return;
+            }
+        }
+        facultors.add(new String[]{username, password});
+        writeFacultorToFile(username, password);
+        System.out.println("New facultor registered successfully: " + username);
     }
 
     // Register a new admin
@@ -55,33 +70,42 @@ public class UserAuthenticator {
     }
 
     // Authenticate login
+    // Login authentication
     public static String login(String username, String password) {
         for (String[] user : users) {
             if (user[0].equals(username)) {
-                if (user[1].equals(password)) {
-                    System.out.println("User login successful: " + username);
-                    return "user";
-                } else {
-                    System.out.println("Incorrect password for user: " + username);
-                    return "invalid";
-                }
+                return user[1].equals(password) ? "user" : "invalid";
             }
         }
-
         for (String[] admin : admins) {
             if (admin[0].equals(username)) {
-                if (admin[1].equals(password)) {
-                    System.out.println("Admin login successful: " + username);
-                    return "admin";
-                } else {
-                    System.out.println("Incorrect password for admin: " + username);
-                    return "invalid";
-                }
+                return admin[1].equals(password) ? "admin" : "invalid";
+            }
+        }
+        for (String[] facultor : facultors) {
+            if (facultor[0].equals(username)) {
+                return facultor[1].equals(password) ? "faculty" : "invalid";
             }
         }
 
         System.out.println("Username not found.");
         return "invalid";
+    }
+
+    // Load facultors
+    private static void loadFacultors() {
+        facultors.clear();
+        try (BufferedReader reader = new BufferedReader(new FileReader(FACULTY_FILE))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] facultorDetails = line.split(",");
+                if (facultorDetails.length == 2) facultors.add(facultorDetails);
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("Faculty file not found.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     // Load users from file
@@ -133,6 +157,16 @@ public class UserAuthenticator {
     // Write single admin to file
     private static void writeAdminToFile(String username, String password) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(ADMIN_FILE, true))) {
+            bw.write(username + "," + password);
+            bw.newLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Write facultor
+    private static void writeFacultorToFile(String username, String password) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(FACULTY_FILE, true))) {
             bw.write(username + "," + password);
             bw.newLine();
         } catch (IOException e) {

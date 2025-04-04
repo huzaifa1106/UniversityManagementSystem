@@ -2,7 +2,7 @@
  *  File: UStudentManagementController.java
  *  Description: Controls the User Student Management Window. Displays profile, progress, and tuition info.
  *  Author: Huzaifa A. & Group
- *  Date: March 2nd, 2025
+ *  Date: April 2025
  */
 
 package GUI.CompanyLogin;
@@ -98,18 +98,12 @@ public class UStudentManagementController {
             Parent root = loader.load();
 
             switch (controllerKey) {
-                case "subject":
-                    USubjectManagementController subjectController = loader.getController();
-                    subjectController.setStudent(loggedInStudent);
-                    break;
+
                 case "course":
                     UCourseManagementController courseController = loader.getController();
                     courseController.setStudent(loggedInStudent);
                     break;
-                case "faculty":
-                    UFacultyManagementController facultyController = loader.getController();
-                    facultyController.setStudent(loggedInStudent);
-                    break;
+
                 case "event":
                     UEventManagementController eventController = loader.getController();
                     eventController.setStudent(loggedInStudent);
@@ -128,9 +122,6 @@ public class UStudentManagementController {
     }
 
     // Navigation Buttons
-    @FXML private void loadSubjectManagement() {
-        navigateTo("USubjectManagement.fxml", "Subject Management", "subject");
-    }
 
     @FXML private void loadCourseManagement() {
         navigateTo("UCourseManagement.fxml", "Course Management", "course");
@@ -140,10 +131,6 @@ public class UStudentManagementController {
         loadStudentInfo();
         loadProgressTable();
         loadTuitionTable();
-    }
-
-    @FXML private void loadFacultyManagement() {
-        navigateTo("UFacultyManagement.fxml", "Faculty Management", "faculty");
     }
 
     @FXML private void loadEventManagement() {

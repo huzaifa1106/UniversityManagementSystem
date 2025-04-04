@@ -2,7 +2,7 @@
  *  File: UCourseManagementController.java
  *  Description: Controls the User Course Management Window. Displays enrolled and offered courses.
  *  Author: Huzaifa A. & Group
- *  Date: March 2nd, 2025
+ *  Date: April 2025
  */
 
 package GUI.CompanyLogin;
@@ -84,17 +84,9 @@ public class UCourseManagementController {
 
             // Set student in target controller
             switch (controllerKey) {
-                case "subject":
-                    USubjectManagementController subjectController = loader.getController();
-                    subjectController.setStudent(loggedInStudent);
-                    break;
                 case "student":
                     UStudentManagementController studentController = loader.getController();
                     studentController.setStudent(loggedInStudent);
-                    break;
-                case "faculty":
-                    UFacultyManagementController facultyController = loader.getController();
-                    facultyController.setStudent(loggedInStudent);
                     break;
                 case "event":
                     UEventManagementController eventController = loader.getController();
@@ -114,17 +106,8 @@ public class UCourseManagementController {
         }
     }
 
-    // Navigation button handlers
-    @FXML private void loadSubjectManagement() {
-        navigateTo("USubjectManagement.fxml", "Subject Management", "subject");
-    }
-
     @FXML private void loadStudentManagement() {
         navigateTo("UStudentManagement.fxml", "Student Management", "student");
-    }
-
-    @FXML private void loadFacultyManagement() {
-        navigateTo("UFacultyManagement.fxml", "Faculty Management", "faculty");
     }
 
     @FXML private void loadEventManagement() {

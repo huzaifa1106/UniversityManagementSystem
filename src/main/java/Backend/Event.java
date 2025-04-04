@@ -3,7 +3,7 @@
  * Description: Represents an event at the University of Guelph. Handles functionality for event
  * creation, duplication validation, student registration, and data access for event listings.
  * Author: Huzaifa A. & Group
- * Date: March 2nd, 2025
+ * Date: April 2025
  */
 
 package Backend;
@@ -60,6 +60,14 @@ public class Event {
     // Static accessor for all events
     public static List<Event> getEventList() {
         return eventList;
+    }
+    public static Event getEventByCode(String code) {
+        for (Event event : eventList) {
+            if (event.getEventCode().equalsIgnoreCase(code)) {
+                return event;
+            }
+        }
+        return null;
     }
 
     public static void setEventList(List<Event> events) {

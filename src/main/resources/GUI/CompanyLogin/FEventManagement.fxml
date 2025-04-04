@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
- File Name: UEventManagement.fxml
+ File Name: FEventManagement.fxml
  Description: Calendar view + student event registration system.
  Updated: April 4th, 2025
 -->
@@ -12,7 +12,7 @@
 
 <BorderPane xmlns="http://javafx.com/javafx/11.0.14-internal"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="GUI.CompanyLogin.UEventManagementController"
+            fx:controller="GUI.CompanyLogin.FEventManagementController"
             prefHeight="600.0" prefWidth="880.0"
             style="-fx-background-color: #f8f9fa;">
     <left>
@@ -23,8 +23,9 @@
                 </image>
             </ImageView>
             <Button layoutX="10.0" layoutY="171.0" onAction="#loadCourseManagement" prefHeight="69.0" prefWidth="146.0" styleClass="menu-button" text="Course Management" />
-            <Button layoutX="11.0" layoutY="254.0" onAction="#loadStudentManagement" prefHeight="68.0" prefWidth="147.0" styleClass="menu-button" text="Student Management" />
+            <Button layoutX="11.0" layoutY="254.0" onAction="#loadUserManagement" prefHeight="68.0" prefWidth="147.0" styleClass="menu-button" text="User Management" />
             <Button layoutX="11.0" layoutY="419.0" onAction="#loadEventManagement" prefHeight="76.0" prefWidth="146.0" styleClass="menu-button" text="Event Management" />
+
         </VBox>
     </left>
 

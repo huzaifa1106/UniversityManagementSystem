@@ -1,11 +1,9 @@
 /**
  * AAssignCoursesController.java
- *
  * This controller handles assigning courses to a selected faculty member.
  * Allows the user to select one or more courses from a table and link them
  * to the faculty. The course's instructor is updated accordingly, and the
  * faculty's course list is updated to reflect the changes.
- *
  * Author: Group 10
  * Date: April 2025
  */

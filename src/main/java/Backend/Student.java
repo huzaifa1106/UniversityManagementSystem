@@ -3,7 +3,7 @@
  * as well as information about the courses and subjects the student is enrolled in. The class also includes methods
  * for enrollment, course management, and interacting with backend components like the course and subject management systems.
  * Author: Huzaifa A. & Group
- * Date: March 2nd, 2025
+ * Date:April 2025
  */
 
 package Backend;
@@ -138,7 +138,7 @@ public class Student extends User {
 
         this.studentID = new SimpleIntegerProperty(studentID);
         this.fullName = new SimpleStringProperty(fullName);
-        this.profilePicture = new SimpleObjectProperty<>(new Image("file:src/main/resources/GUI/CompanyLogin/ProfilePicture.jpg"));  // Handle null profilePicture by assigning a default image.
+        this.profilePicture = new SimpleObjectProperty<>(null);  // Delay loading until JavaFX is ready
         this.address = new SimpleStringProperty(address);
         this.telephone = new SimpleLongProperty(telephone);
         this.tuitionAnnual = new SimpleIntegerProperty(tuitionAnnual);
@@ -173,6 +173,17 @@ public class Student extends User {
         return false;
     }
 
+    // Lazy-loads the default profile image only when JavaFX is initialized
+    public void loadDefaultProfilePicture() {
+        if (this.profilePicture.get() == null) {
+            try {
+                Image img = new Image(getClass().getResource("/GUI/CompanyLogin/ProfilePicture.jpg").toExternalForm());
+                this.profilePicture.set(img);
+            } catch (Exception e) {
+                System.err.println("Failed to load default profile picture.");
+            }
+        }
+    }
 
 
     /**

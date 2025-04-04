@@ -1,16 +1,14 @@
 /**
- *  File: LoginController.java
- *  Description: This class is used to control the flow of the
- *  Login Window for the application. It retrieves the username and password
- *  upon login button click, verifies authentication, and reroutes to the correct
- *  dashboard depending on the role (Admin or Student).
- *  Author: Huzaifa A. & Group
- *  Date: March 2nd, 2025
+ * File: LoginController.java
+ * Description: Handles login logic for Admins, Students, and Faculty.
+ *              Authenticates users, determines their role, and redirects to the correct dashboard.
+ * Author: Group 10
+ * Date: April 2025
  */
 
 package GUI.CompanyLogin;
 
-// Import Statements
+import Backend.Faculty;
 import Backend.Student;
 import Backend.UserAuthenticator;
 import javafx.fxml.FXML;
@@ -21,8 +19,12 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
 
 public class LoginController {
 
@@ -31,57 +33,119 @@ public class LoginController {
 
     private final UserAuthenticator authenticator = new UserAuthenticator();
 
-    // Handle login logic
+    /**
+     * Called when the login button is pressed.
+     * Verifies input and authenticates credentials.
+     */
     @FXML
     private void handleLogin() {
         String username = usernameField.getText().trim();
         String password = passwordField.getText().trim();
 
+        // Simple empty field validation
         if (username.isEmpty() || password.isEmpty()) {
             showAlert("Login Failed", "Username and password cannot be empty.", Alert.AlertType.ERROR);
             return;
         }
 
+        // Authenticate the credentials and get the user role
         String userRole = authenticator.login(username, password);
 
-        if ("admin".equals(userRole)) {
-            navigateTo("ADashboard.fxml", "Admin Dashboard");
+        switch (userRole) {
+            case "admin":
+                // Navigate to admin dashboard
+                navigateTo("ADashboard.fxml", "Admin Dashboard");
+                break;
 
-        } else if ("user".equals(userRole)) {
-            try {
-                int studentID = Integer.parseInt(username);
-                Student loggedInStudent = Student.getStudent(studentID);
+            case "user":
+                // User is a student - validate and load their dashboard
+                try {
+                    int studentID = Integer.parseInt(username);
+                    Student loggedInStudent = Student.getStudent(studentID);
 
-                if (loggedInStudent == null) {
-                    showAlert("Error", "Student not found. Make sure the student ID matches the users.txt entry.", Alert.AlertType.ERROR);
-                    return;
+                    if (loggedInStudent == null) {
+                        showAlert("Error", "Student not found. Ensure student ID matches users.txt.", Alert.AlertType.ERROR);
+                        return;
+                    }
+
+                    // Load the student course management scene
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/CompanyLogin/UCourseManagement.fxml"));
+                    Parent root = loader.load();
+
+                    UCourseManagementController controller = loader.getController();
+                    controller.setStudent(loggedInStudent);
+
+                    Stage stage = (Stage) usernameField.getScene().getWindow();
+                    stage.setScene(new Scene(root));
+                    stage.setTitle("Student Portal");
+                    stage.show();
+
+                } catch (NumberFormatException e) {
+                    showAlert("Login Error", "Student ID must be numeric.", Alert.AlertType.ERROR);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    showAlert("Navigation Error", "Failed to load student dashboard.", Alert.AlertType.ERROR);
                 }
+                break;
 
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/CompanyLogin/USubjectManagement.fxml"));
-                Parent root = loader.load();
+            case "faculty":
+                // User is a faculty member - validate and load their dashboard
+                try {
+                    Faculty loggedInFaculty = Faculty.findByID(username);
 
-                // 🎯 Pass student to the subject management controller
-                USubjectManagementController controller = loader.getController();
-                controller.setStudent(loggedInStudent);
+                    if (loggedInFaculty == null) {
+                        showAlert("Error", "Faculty not found. Check the name spelling or faculty list.", Alert.AlertType.ERROR);
+                        return;
+                    }
 
-                Stage stage = (Stage) usernameField.getScene().getWindow();
-                stage.setScene(new Scene(root));
-                stage.setTitle("Student Portal");
-                stage.show();
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/CompanyLogin/FCourseManagement.fxml"));
+                    Parent root = loader.load();
 
-            } catch (NumberFormatException e) {
-                showAlert("Login Error", "Student ID must be numeric.", Alert.AlertType.ERROR);
-            } catch (IOException e) {
-                e.printStackTrace();
-                showAlert("Navigation Error", "Failed to load student dashboard.", Alert.AlertType.ERROR);
-            }
+                    FCourseManagementController controller = loader.getController();
+                    controller.setFaculty(loggedInFaculty);
 
-        } else {
-            showAlert("Login Failed", "Invalid username or password.", Alert.AlertType.ERROR);
+                    Stage stage = (Stage) usernameField.getScene().getWindow();
+                    stage.setScene(new Scene(root));
+                    stage.setTitle("Faculty Portal");
+                    stage.show();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    showAlert("Navigation Error", "Failed to load faculty portal.", Alert.AlertType.ERROR);
+                }
+                break;
+
+            default:
+                // Invalid credentials or unknown role
+                showAlert("Login Failed", "Invalid username or password.", Alert.AlertType.ERROR);
         }
     }
 
-    // Navigation helper for admin dashboard
+    /**
+     * Helper method to check for matching faculty entry in a backup file.
+     * Not actively used, but kept for potential fallback auth strategy.
+     */
+    private boolean isFaculty(String username, String password) {
+        try {
+            Path path = Path.of("faculty.txt");
+            List<String> lines = Files.readAllLines(path);
+
+            for (String line : lines) {
+                String[] parts = line.split(",");
+                if (parts.length == 2 && parts[0].trim().equals(username) && parts[1].trim().equals(password)) {
+                    return true;
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("Could not read faculty.txt: " + e.getMessage());
+        }
+
+        return false;
+    }
+
+    /**
+     * Generic screen loader utility. Takes the FXML file name and page title.
+     */
     private void navigateTo(String fxmlFile, String title) {
         try {
             URL resource = getClass().getResource("/GUI/CompanyLogin/" + fxmlFile);
@@ -89,6 +153,7 @@ public class LoginController {
 
             FXMLLoader loader = new FXMLLoader(resource);
             Parent root = loader.load();
+
             Stage stage = (Stage) usernameField.getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.setTitle(title);
@@ -100,7 +165,9 @@ public class LoginController {
         }
     }
 
-    // Show alert box
+    /**
+     * Utility method to show alert popups.
+     */
     private void showAlert(String title, String message, Alert.AlertType type) {
         Alert alert = new Alert(type);
         alert.setTitle(title);
