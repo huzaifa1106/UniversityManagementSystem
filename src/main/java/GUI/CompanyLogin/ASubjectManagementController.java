@@ -3,7 +3,7 @@
  *  Description: This controller handles admin-side subject management functionality — adding,
  *  editing, deleting, and viewing academic subjects offered at the institution.
  *  Author: Huzaifa A. & Group
- *  Date: March 2nd, 2025
+ *  Date: April 2025
  */
 
 package GUI.CompanyLogin;

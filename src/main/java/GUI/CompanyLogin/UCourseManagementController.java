@@ -2,7 +2,7 @@
  *  File: UCourseManagementController.java
  *  Description: Controls the User Course Management Window. Displays enrolled and offered courses.
  *  Author: Huzaifa A. & Group
- *  Date: March 2nd, 2025
+ *  Date: April 2025
  */
 
 package GUI.CompanyLogin;

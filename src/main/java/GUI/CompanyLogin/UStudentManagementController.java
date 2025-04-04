@@ -2,7 +2,7 @@
  *  File: UStudentManagementController.java
  *  Description: Controls the User Student Management Window. Displays profile, progress, and tuition info.
  *  Author: Huzaifa A. & Group
- *  Date: March 2nd, 2025
+ *  Date: April 2025
  */
 
 package GUI.CompanyLogin;
