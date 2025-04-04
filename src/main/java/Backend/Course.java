@@ -67,11 +67,33 @@ public class Course {
                 if ((newCourse.lectureStartTime >= existing.lectureStartTime && newCourse.lectureStartTime < existing.lectureEndTime) ||
                         (newCourse.lectureEndTime > existing.lectureStartTime && newCourse.lectureEndTime <= existing.lectureEndTime) ||
                         (newCourse.lectureStartTime <= existing.lectureStartTime && newCourse.lectureEndTime >= existing.lectureEndTime)) {
-                    return true;
+                    return true;// conflict found
                 }
             }
         }
-        return false;
+        return false; // no conflict
+    }
+
+    //Method to enroll a student in the course
+    public boolean enrollStudent(Student student) {
+        // Check if student is already enrolled or if there is a time conflict
+        for (Course course : student.getEnrolledCourses()) {
+            if (checkConflict(course)) {
+                System.out.println("Cannot enroll in " + this.courseName + " due to a time conflict with " + course.getCourseName());
+                return false;  // Enrollment failed due to time conflict
+            }
+        }
+
+        // If no conflict, add student to this course and course to student's enrolled courses
+        if (enrolledStudents.size() < courseCapacity) {
+            enrolledStudents.add(student);
+            student.getEnrolledCourses().add(this);
+            System.out.println("Successfully enrolled in " + this.courseName);
+            return true;  // Enrollment successful
+        } else {
+            System.out.println("Course is full. Cannot enroll.");
+            return false;  // Enrollment failed due to full capacity
+        }
     }
 
     // Add course if not duplicate
@@ -176,5 +198,8 @@ public class Course {
     public void changeCourseCapacity(int courseCapacity) { this.courseCapacity = courseCapacity; }
     public void changeLocation(String location) { this.location = location; }
     public void setGrade(int grade) { this.grade = grade; }
+
+}
+
     public void setFinalExamDate(LocalDateTime finalExamDate) { this.finalExamDate = finalExamDate; }
 }
