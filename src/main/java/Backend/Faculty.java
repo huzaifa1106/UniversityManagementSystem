@@ -138,4 +138,3 @@ public class Faculty {
         System.out.println("Office Location: " + officeLocation);
     }
 }
-

@@ -39,6 +39,10 @@ public class Student extends User {
     private List<Subject> enrolledSubjects;
 
 
+    static {
+        initializeStudents();
+    }
+
     // Manual constructor with ID
     public Student(int studentID, String fullName, String password, Image profilePicture, String address, long telephone,
                    int tuitionAnnual, int tuitionBalance, String emailAddress, int average, String semester,
@@ -212,6 +216,12 @@ public class Student extends User {
         System.out.println("Student added successfully: " + student.getFullName());
     }
 
+    public static void saveAllStudents() {
+        // Example logic to simulate saving
+        System.out.println("Saving all student data...");
+        for (Student s : students) {
+            System.out.println(" - " + s.getFullName() + " (" + s.getStudentID() + ")");}
+    }
     public static boolean isDuplicate(Student student) {
         for (Student s : students) {
             if (s.getStudentID() == student.getStudentID() ||
@@ -239,6 +249,8 @@ public class Student extends User {
     public String getSemester() { return semester.get(); }
     public String getAcademicLevel() { return academicLevel.get(); }
     public String getThesisTitle() { return thesisTitle.get(); }
+    public String getCourseNamesAsString() {if (enrolledCourses == null || enrolledCourses.isEmpty()) return "No courses enrolled.";StringBuilder sb = new StringBuilder();for (Course c : enrolledCourses) {sb.append("- ").append(c.getCourseName()).append("\n");}return sb.toString();}
+    public boolean checkDuplicateCourse(Course course) {for (Course c : enrolledCourses) {if (c.getCourseName().equalsIgnoreCase(course.getCourseName())) {return true;}}return false;}
     public int getProgress() { return progress.get(); }
 
 
@@ -257,6 +269,7 @@ public class Student extends User {
     public void setEmailAddress(String emailAddress) { this.emailAddress.set(emailAddress); }
     public void setAverage(int average) { this.average.set(average); }
     public void setSemester(String semester) { this.semester.set(semester); }
+    public void updateEnrolledCourses(Course course) {if (!checkDuplicateCourse(course)) {enrolledCourses.add(course);if (!course.getEnrolledStudents().contains(this)) {course.getEnrolledStudents().add(this);}System.out.println("Course added: " + course.getCourseName());} else {System.out.println("Student already enrolled in: " + course.getCourseName());}}
     public void setAcademicLevel(String academicLevel) { this.academicLevel.set(academicLevel); }
     public void setThesisTitle(String thesisTitle) { this.thesisTitle.set(thesisTitle); }
     public void setProgress(int progress) { this.progress.set(progress); }
