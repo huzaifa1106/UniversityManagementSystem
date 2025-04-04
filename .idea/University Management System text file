@@ -1,0 +1,50 @@
+University Management System (UMS) - How to Run the Code and What It Does
+
+1. Project Overview:
+   This project implements a University Management System (UMS) with backend functionality and a GUI for user interaction.
+   The system helps manage various aspects of a university's administration, including student and faculty management, courses, and events.
+
+2. Prerequisites:
+   - Java Development Kit (JDK) 8 or higher must be installed.
+   - Apache Maven must be installed for building the project.
+   - Ensure you have the necessary dependencies configured through the 'pom.xml' file.
+
+3. Running the Project:
+   - Navigate to the project directory where the 'pom.xml' file is located.
+   - Open a terminal and run the following command to build the project:
+     mvn clean install
+   - Once the build completes successfully, you can run the application using:
+     mvn exec:java
+   - The backend services and the user interface will start.
+
+4. Project Structure:
+
+   - Backend:
+     - Contains Java classes that manage the data and business logic.
+     - Important classes include:
+       - UserAuthenticator.java: Handles user authentication.
+       - Student.java: Represents a student in the system.
+       - Faculty.java: Represents a faculty member.
+       - Course.java: Handles course-related operations.
+       - Subject.java, `Event.java`: Manage subjects and events respectively.
+
+   - GUI:
+     - Contains the graphical user interface components.
+     - CompanyLogin.java: Provides the login interface for the application.
+
+5. Expected Functionality:
+   - Users can log in to the system through the GUI.
+   - After logging in, users can interact with various features like:
+     - Managing student and faculty information.
+     - Managing courses and subjects.
+     - Scheduling and managing university events.
+     - Admin users can perform administrative tasks like adding/removing users.
+
+6. Data Files:
+   - The system uses text files (students.txt, admins.txt, users.txt) for storing user data.
+   - Additionally, UMS_Data.xlsx might be used for storing Excel-based data related to the university.
+
+7. Troubleshooting:
+   - If you encounter any issues related to dependencies or running the application, ensure that Maven is correctly installed and the project dependencies are correctly downloaded.
+
+
