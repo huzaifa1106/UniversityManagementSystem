@@ -32,26 +32,7 @@ public class Course {
     private List<Student> enrolledStudents;
     private int grade;
 
-    //  Static Initialization Block: Preloads demo courses
-    static {
-        Course[] courses = {
-                new Course(1, "Calculus I", "MATH001", 1, "Dr. Alan Turing", 30, "Room 101", "Mon/Wed", 900, 1100, LocalDateTime.of(2025, 12, 15, 9, 0)),
-                new Course(2, "Literature Basics", "ENG101", 1, "Prof. Emily Brontë", 25, "Room 102", "Tue/Thu", 1000, 1200, LocalDateTime.of(2025, 12, 16, 10, 0)),
-                new Course(3, "Literature Basics", "ENG101", 2, "Prof. Emily Brontë", 25, "Room 102", "Mon/Wed", 1000, 1200, LocalDateTime.of(2025, 12, 16, 10, 0)),
-                new Course(4, "Introduction to Programming", "CS201", 1, "Dr. Grace Hopper", 42, "Room 103", "Tue/Thu", 1200, 1400, LocalDateTime.of(2025, 12, 16, 12, 30)),
-                new Course(5, "Introduction to Chemistry", "CHEM200", 1, "Dr. Lakyn Copeland", 50, "Room 201", "Mon/Thu", 1500, 1600, LocalDateTime.of(2025, 12, 14, 16, 0)),
-                new Course(6, "Introduction to Chemistry", "CHEM200", 2, "Dr. Lakyn Copeland", 50, "Room 202", "Mon/Tue", 1700, 1800, LocalDateTime.of(2025, 12, 14, 17, 0)),
-                new Course(7, "Introduction to Chemistry", "CHEM200", 3, "Dr. Lakyn Copeland", 50, "Room 203", "Fri/Thu", 1400, 1500, LocalDateTime.of(2025, 12, 14, 14, 0)),
-                new Course(8, "Introduction to French", "ENG101", 1, "Prof. Emily Brontë", 25, "Room 104", "Tue/Thu", 1630, 1730, LocalDateTime.of(2025, 12, 17, 16, 30)),
-                new Course(9, "Introduction to French", "ENG101", 2, "Prof. Emily Brontë", 25, "Room 105", "Tue/Thu", 1730, 1830, LocalDateTime.of(2025, 12, 17, 17, 30)),
-                new Course(10, "Water Resources", "ENGG402", 1, "Albozr Gharabaghi", 50, "Room 301", "Mon/Fri", 900, 1030, LocalDateTime.of(2025, 12, 18, 9, 0))
-        };
-        for (Course course : courses) {
-            courseList.add(course);
-        }
-    }
-
-    //  Full Constructor with course ID
+    // Full Constructor with course ID
     public Course(int courseID, String courseName, String subjectName, int sectionNumber,
                   String teacherName, int courseCapacity, String location, String lectureDay,
                   int lectureStartTime, int lectureEndTime, LocalDateTime finalExamDate) {
@@ -70,7 +51,7 @@ public class Course {
         this.grade = -1;
     }
 
-    //  Auto-incremented constructor for new courses
+    // Auto-incremented constructor for new courses
     public Course(String courseName, String subjectName, int sectionNumber,
                   String teacherName, int courseCapacity, String location, String lectureDay,
                   int lectureStartTime, int lectureEndTime, LocalDateTime finalExamDate) {
@@ -79,7 +60,7 @@ public class Course {
                 lectureStartTime, lectureEndTime, finalExamDate);
     }
 
-    //  Check if a new course conflicts with any existing one
+    // Check if a new course conflicts with any existing one
     public static boolean checkConflict(Course newCourse) {
         for (Course existing : courseList) {
             if (existing.lectureDay.equalsIgnoreCase(newCourse.lectureDay)) {
@@ -93,7 +74,7 @@ public class Course {
         return false;
     }
 
-    //  Add course if not duplicate
+    // Add course if not duplicate
     public static boolean Course(Course newCourse) {
         if (isDuplicate(newCourse.getCourseName(), newCourse.getSectionNumber())) {
             return false;
@@ -127,7 +108,7 @@ public class Course {
         return null;
     }
 
-    //  Find course by ID
+    // Find course by ID
     public static Course findCourseByID(int courseID) {
         for (Course course : courseList) {
             if (course.getCourseID() == courseID) {
@@ -137,7 +118,7 @@ public class Course {
         return null;
     }
 
-    //  Print course details (console)
+    // Print course details (console)
     public void displayCourse() {
         System.out.println("Course ID: " + courseID);
         System.out.println("Course Name: " + courseName);
@@ -147,17 +128,18 @@ public class Course {
         System.out.println("Course Capacity: " + courseCapacity);
         System.out.println("Location: " + location);
         System.out.println("Lecture Time: " + lectureDay + " " + lectureStartTime + " - " + lectureEndTime);
-        System.out.println("Final Exam: " + finalExamDate);
+        System.out.println("Final Exam: " + (finalExamDate != null ? finalExamDate : "Not scheduled"));
         System.out.println("Enrolled: " + enrolledStudents.size());
     }
 
-    //  Course list operations
+    // Course list operations
     public static List<Course> getCourseList() {
         return courseList;
     }
 
     public static void addCourse(Course course) {
         courseList.add(course);
+        ReadExcelFile.writeToExcel();
         System.out.println("Course added: " + course.getCourseName());
     }
 
@@ -166,7 +148,7 @@ public class Course {
         System.out.println("Course removed: " + courseID);
     }
 
-    //  Getters
+    // Getters
     public int getCourseID() { return courseID; }
     public String getCourseName() { return courseName; }
     public String getSubjectName() { return subjectName; }
@@ -178,13 +160,21 @@ public class Course {
     public int getLectureStartTime() { return lectureStartTime; }
     public int getLectureEndTime() { return lectureEndTime; }
     public LocalDateTime getFinalExamDate() { return finalExamDate; }
+    public String getFinalExamDateAsString() {
+        return finalExamDate != null ? finalExamDate.toString() : "";
+    }
     public List<Student> getEnrolledStudents() { return enrolledStudents; }
     public int getGrade() { return grade; }
 
-    //  Setters
+    public static void setCourseList(List<Course> courses) {
+        courseList = courses;
+    }
+
+    // Setters
     public void changeCourseName(String courseName) { this.courseName = courseName; }
     public void changeTeacherName(String teacherName) { this.teacherName = teacherName; }
     public void changeCourseCapacity(int courseCapacity) { this.courseCapacity = courseCapacity; }
     public void changeLocation(String location) { this.location = location; }
     public void setGrade(int grade) { this.grade = grade; }
+    public void setFinalExamDate(LocalDateTime finalExamDate) { this.finalExamDate = finalExamDate; }
 }

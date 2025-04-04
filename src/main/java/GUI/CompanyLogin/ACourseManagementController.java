@@ -1,6 +1,7 @@
 package GUI.CompanyLogin;
 
 import Backend.Course;
+import Backend.ReadExcelFile;
 import Backend.Faculty;
 import Backend.Subject;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -125,6 +126,7 @@ public class ACourseManagementController extends ASubjectManagementController {
             }
 
             Course.addCourse(newCourse);
+            ReadExcelFile.writeToExcel();
             loadCoursesIntoTable();
             clearFields();
             showAlert("Success", "Course added successfully!", Alert.AlertType.INFORMATION);
@@ -142,6 +144,7 @@ public class ACourseManagementController extends ASubjectManagementController {
                 selectedCourse.changeTeacherName(instructorComboBox.getValue());
                 selectedCourse.changeLocation(locationField.getText());
                 selectedCourse.changeCourseCapacity(Integer.parseInt(sectionField.getText()));
+                ReadExcelFile.writeToExcel();
                 loadCoursesIntoTable();
                 clearFields();
                 showAlert("Success", "Course updated successfully.", Alert.AlertType.INFORMATION);
@@ -157,6 +160,7 @@ public class ACourseManagementController extends ASubjectManagementController {
     private void deleteCourse() {
         if (selectedCourse != null) {
             Course.removeCourse(selectedCourse.getCourseID());
+            ReadExcelFile.writeToExcel();
             loadCoursesIntoTable();
             clearFields();
             selectedCourse = null;

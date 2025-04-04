@@ -19,21 +19,11 @@ public class Subject {
     private String subjectCode;
     private List<Course> courses;
 
-    // Static block to preload some subjects
-    static {
-        subjects.add(new Subject("Mathematics", "MATH001"));
-        subjects.add(new Subject("English", "ENG101"));
-        subjects.add(new Subject("Computer Science", "CS201"));
-        subjects.add(new Subject("Chemistry", "CHEM200"));
-        subjects.add(new Subject("Biology", "BIO300"));
-    }
-
     // Constructor with provided subject name and code
     public Subject(String name, String code) {
         this.subjectName = name;
         this.subjectCode = code;
         this.courses = new ArrayList<>();
-        subjects.add(this);
     }
 
     // Constructor with only name, auto-generates subject code
@@ -41,7 +31,6 @@ public class Subject {
         this.subjectName = name;
         this.subjectCode = generateUniqueSubjectCode();
         this.courses = new ArrayList<>();
-        subjects.add(this);
     }
 
     // Generate a unique subject code
@@ -49,36 +38,40 @@ public class Subject {
         int count = subjects.size() + 1;
         return "SUBJ" + count; // e.g., SUBJ6
     }
+
+
     /**
-     * Adds a new subject if it's not a duplicate.
+     * Adds a new subject object directly (used for programmatic calls).
      */
-    public static boolean addSubject(String name, String code) {
-        if (isDuplicate(name, code)) {
+    public static boolean addSubject(Subject subject) {
+        if (isDuplicate(subject.getSubjectName(), subject.getSubjectCode())) {
             return false;
         }
-        subjects.add(new Subject(name, code));
-        System.out.println("Subject added successfully.");
+
+        subjects.add(subject);
+        System.out.println("✅ Subject added successfully: " + subject.getSubjectName() + " (" + subject.getSubjectCode() + ")");
         return true;
     }
 
     /**
-     * Validates if a subject with the same name or code already exists..
+     * Validates if a subject with the same name or code already exists.
      */
     private static boolean isDuplicate(String name, String code) {
         for (Subject subject : subjects) {
             if (subject.getSubjectName().equalsIgnoreCase(name)) {
-                System.out.println("Error: A subject with the name '" + name + "' already exists.");
+                System.out.println("❌ Error: A subject with the name '" + name + "' already exists.");
                 return true;
             }
             if (subject.getSubjectCode().equalsIgnoreCase(code)) {
-                System.out.println("Error: A subject with the code '" + code + "' already exists.");
+                System.out.println("❌ Error: A subject with the code '" + code + "' already exists.");
                 return true;
             }
         }
         return false;
     }
 
-    // Find subject by name
+    // === Lookup Methods ===
+
     public static Subject findSubject(String subjectName) {
         for (Subject subject : subjects) {
             if (subject.subjectName.equalsIgnoreCase(subjectName)) {
@@ -88,7 +81,6 @@ public class Subject {
         return null;
     }
 
-    // Find subject by code
     public static Subject findSubjectByCode(String subjectCode) {
         for (Subject subject : subjects) {
             if (subject.subjectCode.equalsIgnoreCase(subjectCode)) {
@@ -98,12 +90,16 @@ public class Subject {
         return null;
     }
 
-    // Return all registered subjects
+    // === Getters & Setters ===
+
     public static List<Subject> getSubjectList() {
         return subjects;
     }
 
-    // Getters
+    public static void setSubjectList(List<Subject> list) {
+        subjects = list;
+    }
+
     public String getSubjectName() {
         return this.subjectName;
     }
@@ -116,7 +112,6 @@ public class Subject {
         return courses;
     }
 
-    // Setters
     public void setSubjectName(String name) {
         this.subjectName = name;
     }
@@ -125,7 +120,6 @@ public class Subject {
         this.subjectCode = code;
     }
 
-    // Add a course to this subject
     public void addCourse(Course course) {
         courses.add(course);
     }
