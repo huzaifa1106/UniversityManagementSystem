@@ -66,6 +66,14 @@ public class Event {
     public static List<Event> getEventList() {
         return eventList;
     }
+    public static Event getEventByCode(String code) {
+        for (Event event : eventList) {
+            if (event.getEventCode().equalsIgnoreCase(code)) {
+                return event;
+            }
+        }
+        return null;
+    }
 
     // Getter Methods
     public String getEventName() {

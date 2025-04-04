@@ -2,7 +2,7 @@
  *  File: Main.java
  *  Description: This class is used for the launching of the application
  *  Date: March 2nd, 2025
- *  */
+ **/
 
 package GUI.CompanyLogin;
 

@@ -1,16 +1,6 @@
-/**
- *  File: LoginController.java
- *  Description: This class is used to control the flow of the
- *  Login Window for the application. It retrieves the username and password
- *  upon login button click, verifies authentication, and reroutes to the correct
- *  dashboard depending on the role (Admin or Student).
- *  Author: Huzaifa A. & Group
- *  Date: March 2nd, 2025
- */
-
 package GUI.CompanyLogin;
 
-// Import Statements
+import Backend.Faculty;
 import Backend.Student;
 import Backend.UserAuthenticator;
 import javafx.fxml.FXML;
@@ -21,8 +11,12 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
 
 public class LoginController {
 
@@ -31,7 +25,6 @@ public class LoginController {
 
     private final UserAuthenticator authenticator = new UserAuthenticator();
 
-    // Handle login logic
     @FXML
     private void handleLogin() {
         String username = usernameField.getText().trim();
@@ -60,7 +53,6 @@ public class LoginController {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/CompanyLogin/USubjectManagement.fxml"));
                 Parent root = loader.load();
 
-                // 🎯 Pass student to the subject management controller
                 USubjectManagementController controller = loader.getController();
                 controller.setStudent(loggedInStudent);
 
@@ -76,12 +68,54 @@ public class LoginController {
                 showAlert("Navigation Error", "Failed to load student dashboard.", Alert.AlertType.ERROR);
             }
 
+        } else if (isFaculty(username, password)) {
+            try {
+                Faculty loggedInFaculty = Faculty.findByName(username);
+
+                if (loggedInFaculty == null) {
+                    showAlert("Error", "Faculty not found. Check faculty list or spelling.", Alert.AlertType.ERROR);
+                    return;
+                }
+
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/CompanyLogin/FUserManagement.fxml"));
+                Parent root = loader.load();
+
+                FUserManagementController controller = loader.getController(); // Make sure this import is correct
+                controller.setFaculty(loggedInFaculty); // Should be public
+
+                Stage stage = (Stage) usernameField.getScene().getWindow();
+                stage.setScene(new Scene(root));
+                stage.setTitle("Faculty Portal");
+                stage.show();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                showAlert("Navigation Error", "Failed to load faculty portal.", Alert.AlertType.ERROR);
+            }
+
         } else {
             showAlert("Login Failed", "Invalid username or password.", Alert.AlertType.ERROR);
         }
     }
 
-    // Navigation helper for admin dashboard
+    private boolean isFaculty(String username, String password) {
+        try {
+            Path path = Path.of("faculty.txt");
+            List<String> lines = Files.readAllLines(path);
+
+            for (String line : lines) {
+                String[] parts = line.split(",");
+                if (parts.length == 2 && parts[0].trim().equals(username) && parts[1].trim().equals(password)) {
+                    return true;
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("Could not read faculty.txt: " + e.getMessage());
+        }
+
+        return false;
+    }
+
     private void navigateTo(String fxmlFile, String title) {
         try {
             URL resource = getClass().getResource("/GUI/CompanyLogin/" + fxmlFile);
@@ -100,7 +134,6 @@ public class LoginController {
         }
     }
 
-    // Show alert box
     private void showAlert(String title, String message, Alert.AlertType type) {
         Alert alert = new Alert(type);
         alert.setTitle(title);

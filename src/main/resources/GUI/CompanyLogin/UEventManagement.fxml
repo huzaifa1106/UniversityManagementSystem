@@ -2,15 +2,19 @@
 
 <!--
  File Name: UEventManagement.fxml
- Description: This is the UEventManagement FXML file to assist with front end development
- Date: March 2nd, 2025
- -->
+ Description: Calendar view + student event registration system.
+ Updated: April 4th, 2025
+-->
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #f8f9fa;" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.CompanyLogin.UEventManagementController">
+<BorderPane xmlns="http://javafx.com/javafx/11.0.14-internal"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="GUI.CompanyLogin.UEventManagementController"
+            prefHeight="600.0" prefWidth="880.0"
+            style="-fx-background-color: #f8f9fa;">
 
     <left>
         <VBox spacing="10" style="-fx-background-color: #6A89A7; -fx-padding: 10px;" BorderPane.alignment="CENTER">
@@ -19,79 +23,34 @@
                     <Image url="@HomeScreen.png" />
                 </image>
             </ImageView>
-            <Button layoutX="10.0" layoutY="98.0" onAction="#loadSubjectManagement" prefHeight="62.0" prefWidth="147.0" styleClass="menu-button" text="Subject Management" />
-            <Button layoutX="10.0" layoutY="171.0" onAction="#loadCourseManagement" prefHeight="69.0" prefWidth="146.0" styleClass="menu-button" text="Course Management" />
-            <Button layoutX="11.0" layoutY="254.0" onAction="#loadStudentManagement" prefHeight="68.0" prefWidth="147.0" styleClass="menu-button" text="Student Management" />
-            <Button layoutX="12.0" layoutY="336.0" onAction="#loadFacultyManagement" prefHeight="69.0" prefWidth="145.0" styleClass="menu-button" text="Faculty Management" />
-            <Button layoutX="11.0" layoutY="419.0" onAction="#loadEventManagement" prefHeight="76.0" prefWidth="146.0" styleClass="menu-button" text="Event Management" />
-
+            <Button text="Subject Management" prefWidth="150.0" onAction="#loadSubjectManagement"/>
+            <Button text="Course Management" prefWidth="150.0" onAction="#loadCourseManagement"/>
+            <Button text="Student Management" prefWidth="150.0" onAction="#loadStudentManagement"/>
+            <Button text="Faculty Management" prefWidth="150.0" onAction="#loadFacultyManagement"/>
+            <Button text="Event Management" prefWidth="150.0" onAction="#loadEventManagement"/>
         </VBox>
     </left>
 
     <center>
         <VBox alignment="CENTER" spacing="10" style="-fx-padding: 10px;">
-            <Label style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Event Calendar (Next 30 Days)" />
+            <HBox alignment="CENTER" spacing="10">
+                <Button text="&lt; Previous" onAction="#previousMonth"/>
+                <Label fx:id="monthYearLabel" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+                <Button text="Next &gt;" onAction="#nextMonth"/>
+            </HBox>
 
-            <GridPane fx:id="calendarGrid" hgap="10" prefHeight="430.0" prefWidth="435.0" style="-fx-padding: 10px;" vgap="10">
-                <StackPane prefHeight="18.0" prefWidth="61.0" GridPane.columnIndex="0" GridPane.rowIndex="0"><Label prefHeight="41.0" prefWidth="11.0" text="1" /></StackPane>
-                <StackPane prefHeight="18.0" prefWidth="62.0" GridPane.columnIndex="1" GridPane.rowIndex="0"><Label text="2" /></StackPane>
-                <StackPane prefHeight="54.0" prefWidth="67.0" GridPane.columnIndex="2" GridPane.rowIndex="0"><Label text="3" /></StackPane>
-                <StackPane GridPane.columnIndex="3" GridPane.rowIndex="0"><Label prefHeight="54.0" prefWidth="45.0" text="4" /></StackPane>
-                <StackPane prefHeight="18.0" prefWidth="66.0" GridPane.columnIndex="4" GridPane.rowIndex="0"><Label text="5" /></StackPane>
-
-                <StackPane GridPane.columnIndex="0" GridPane.rowIndex="1"><Label prefHeight="37.0" prefWidth="7.0" text="6" /></StackPane>
-                <StackPane GridPane.columnIndex="1" GridPane.rowIndex="1"><Label text="7" /></StackPane>
-                <StackPane GridPane.columnIndex="2" GridPane.rowIndex="1"><Label text="8" /></StackPane>
-                <StackPane prefHeight="55.0" prefWidth="68.0" GridPane.columnIndex="3" GridPane.rowIndex="1"><Label text="9" /></StackPane>
-                <StackPane GridPane.columnIndex="4" GridPane.rowIndex="1"><Label text="10" /></StackPane>
-
-                <StackPane GridPane.columnIndex="0" GridPane.rowIndex="2"><Label prefHeight="67.0" prefWidth="14.0" text="11" /></StackPane>
-                <StackPane GridPane.columnIndex="1" GridPane.rowIndex="2"><Label text="12" /></StackPane>
-                <StackPane GridPane.columnIndex="2" GridPane.rowIndex="2"><Label text="13" /></StackPane>
-                <StackPane GridPane.columnIndex="3" GridPane.rowIndex="2"><Label text="14" /></StackPane>
-                <StackPane GridPane.columnIndex="4" GridPane.rowIndex="2"><Label text="15" /></StackPane>
-
-                <StackPane GridPane.columnIndex="0" GridPane.rowIndex="3"><Label prefHeight="37.0" prefWidth="14.0" text="16" /></StackPane>
-                <StackPane GridPane.columnIndex="1" GridPane.rowIndex="3"><Label text="17" /></StackPane>
-                <StackPane GridPane.columnIndex="2" GridPane.rowIndex="3"><Label prefHeight="54.0" prefWidth="14.0" text="18" /></StackPane>
-                <StackPane GridPane.columnIndex="3" GridPane.rowIndex="3"><Label text="19" /></StackPane>
-                <StackPane GridPane.columnIndex="4" GridPane.rowIndex="3"><Label text="20" /></StackPane>
-
-                <StackPane GridPane.columnIndex="0" GridPane.rowIndex="4"><Label prefHeight="54.0" prefWidth="14.0" text="21" /></StackPane>
-                <StackPane GridPane.columnIndex="1" GridPane.rowIndex="4"><Label text="22" /></StackPane>
-                <StackPane GridPane.columnIndex="2" GridPane.rowIndex="4"><Label text="23" /></StackPane>
-                <StackPane prefHeight="50.0" prefWidth="68.0" GridPane.columnIndex="3" GridPane.rowIndex="4"><Label text="24" /></StackPane>
-                <StackPane GridPane.columnIndex="4" GridPane.rowIndex="4"><Label text="25" /></StackPane>
-
-                <StackPane GridPane.columnIndex="0" GridPane.rowIndex="5"><Label prefHeight="59.0" prefWidth="14.0" text="26" /></StackPane>
-                <StackPane GridPane.columnIndex="1" GridPane.rowIndex="5"><Label text="27" /></StackPane>
-                <StackPane GridPane.columnIndex="2" GridPane.rowIndex="5"><Label text="28" /></StackPane>
-                <StackPane GridPane.columnIndex="3" GridPane.rowIndex="5"><Label text="29" /></StackPane>
-                <StackPane GridPane.columnIndex="4" GridPane.rowIndex="5"><Label text="30" /></StackPane>
-            <columnConstraints>
-               <ColumnConstraints />
-               <ColumnConstraints />
-               <ColumnConstraints />
-               <ColumnConstraints />
-               <ColumnConstraints />
-            </columnConstraints>
-            <rowConstraints>
-               <RowConstraints />
-               <RowConstraints />
-               <RowConstraints />
-               <RowConstraints />
-               <RowConstraints />
-               <RowConstraints />
-            </rowConstraints>
+            <Label text="Available Events Calendar" style="-fx-font-size: 24px; -fx-font-weight: bold;" />
+            <GridPane fx:id="calendarGrid" hgap="5" vgap="5" prefHeight="420.0" prefWidth="440.0" style="-fx-padding: 10px;">
+                <!-- Calendar days populate dynamically -->
             </GridPane>
         </VBox>
     </center>
 
     <right>
-        <VBox alignment="CENTER" spacing="15" style="-fx-padding: 10px;">
-            <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Register for an Event" />
-            <TextField fx:id="eventCodeField" promptText="Enter Event Code" />
-            <Button fx:id="registerButton" text="Register" />
+        <VBox alignment="CENTER" spacing="12" style="-fx-padding: 20px;">
+            <Label text="Register for an Event" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+            <TextField fx:id="eventCodeField" promptText="Enter Event Code"/>
+            <Button text="Register" onAction="#onRegisterButtonClicked" />
         </VBox>
     </right>
 

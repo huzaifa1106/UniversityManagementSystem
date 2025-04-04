@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+ File Name: FCourseManagement.fxml
+ Description: Faculty Course Management view for managing their own courses and enrolled students
+ Author: Huzaifa A. & Group
+ Date: April 3rd, 2025
+-->
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/11.0.14-internal"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="GUI.CompanyLogin.FCourseManagementController"
+            prefHeight="600.0" prefWidth="800.0"
+            style="-fx-background-color: #f8f9fa;">
+
+    <left>
+        <VBox spacing="10" style="-fx-background-color: #6A89A7; -fx-padding: 10px;">
+            <ImageView fitHeight="70.0" fitWidth="155.0">
+                <image><Image url="@HomeScreen.png" /></image>
+            </ImageView>
+
+            <Button onAction="#loadCourseManagement" text="My Courses" />
+            <Button onAction="#loadUserManagement" text="My Info" />
+        </VBox>
+    </left>
+
+    <center>
+        <VBox alignment="CENTER" spacing="15" style="-fx-padding: 20px;">
+            <Label text="Faculty Course Management" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-padding: 5px;" />
+            <Label text="Courses You Teach" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+
+            <TableView fx:id="facultyCourseTable" prefHeight="200.0" prefWidth="600.0">
+                <columns>
+                    <TableColumn fx:id="colCourseID" text="Course ID" prefWidth="100.0" />
+                    <TableColumn fx:id="colCourseName" text="Course Name" prefWidth="200.0" />
+                    <TableColumn fx:id="colSectionNumber" text="Section" prefWidth="100.0" />
+                    <TableColumn fx:id="colLocation" text="Location" prefWidth="200.0" />
+                </columns>
+            </TableView>
+
+            <Button fx:id="manageEnrollmentsButton" onAction="#manageEnrollments" prefHeight="40.0" prefWidth="200.0" text="Manage Enrollments" />
+        </VBox>
+    </center>
+
+</BorderPane>

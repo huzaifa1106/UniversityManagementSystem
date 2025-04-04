@@ -1,62 +1,139 @@
-/**
- *  File: UEventManagementController.java
- *  Description: Controls the User Event Management Window. Displays a static calendar and allows event registration.
- *  Author: Huzaifa A. & Group
- *  Date: March 2nd, 2025
- */
-
 package GUI.CompanyLogin;
 
+import Backend.Event;
 import Backend.Student;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.YearMonth;
+import java.time.ZoneId;
+import java.time.format.TextStyle;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 public class UEventManagementController {
 
-    @FXML private TextField eventCodeField; // Input field for entering event codes
+    @FXML private Label monthYearLabel;
+    @FXML private GridPane calendarGrid;
+    @FXML private TextField eventCodeField;
 
-    private Student loggedInStudent; // Holds the current student
+    private YearMonth currentYearMonth;
+    private Student loggedInStudent;
 
-    // Method to receive and store the logged-in student
+    // This will be set from the login or previous screen
     public void setStudent(Student student) {
         this.loggedInStudent = student;
-        System.out.println("Student Loaded in Event Management: " + student.getFullName());
+        System.out.println("✅ Student Loaded: " + student.getFullName());
     }
 
-    // Called automatically by JavaFX after the FXML is loaded
     @FXML
     private void initialize() {
-        // Placeholder: Add any setup or listeners here
+        currentYearMonth = YearMonth.now();
+        updateCalendar();
     }
 
-    // Triggered when the Register button is clicked
-    @FXML
-    private void onRegisterButtonClicked() {
-        String eventCode = eventCodeField.getText().trim();
+    private void updateCalendar() {
+        calendarGrid.getChildren().clear();
+        LocalDate firstDay = currentYearMonth.atDay(1);
+        int daysInMonth = currentYearMonth.lengthOfMonth();
+        int startDay = firstDay.getDayOfWeek().getValue(); // 1 = Monday
 
-        if (eventCode.isEmpty()) {
-            showAlert("Input Error", "Please enter an event code to register.", Alert.AlertType.WARNING);
-        } else {
-            // Simulated registration (hook up to real Event logic if needed)
-            showAlert("Success", "Successfully registered for event: " + eventCode, Alert.AlertType.INFORMATION);
-            eventCodeField.clear();
+        monthYearLabel.setText(currentYearMonth.getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault()) + " " + currentYearMonth.getYear());
+
+        int dayCounter = 1;
+        int colCount = 5;
+
+        for (int row = 0; row < 7; row++) {
+            for (int col = 0; col < colCount; col++) {
+                if (dayCounter > daysInMonth) return;
+
+                LocalDate date = currentYearMonth.atDay(dayCounter);
+                Date javaDate = Date.from(date.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+                StackPane dayCell = new StackPane();
+                dayCell.setPrefSize(80, 80);
+                dayCell.setStyle("-fx-border-color: lightgray; -fx-background-color: white;");
+                Text dayText = new Text(String.valueOf(dayCounter));
+                dayCell.getChildren().add(dayText);
+
+                for (Event event : Event.getEventList()) {
+                    if (isSameDay(event.getDateTime(), javaDate)) {
+                        dayCell.setStyle("-fx-background-color: #d1ecf1; -fx-border-color: gray;");
+                        Tooltip tooltip = new Tooltip(event.getEventName() + " @ " + event.getLocation());
+                        Tooltip.install(dayCell, tooltip);
+                        break;
+                    }
+                }
+
+                calendarGrid.add(dayCell, col, row);
+                dayCounter++;
+            }
         }
     }
 
-    // Utility method for switching scenes while passing along the logged-in student
+    private boolean isSameDay(Date d1, Date d2) {
+        return d1.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+                .equals(d2.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+    }
+
+    @FXML
+    private void previousMonth() {
+        currentYearMonth = currentYearMonth.minusMonths(1);
+        updateCalendar();
+    }
+
+    @FXML
+    private void nextMonth() {
+        currentYearMonth = currentYearMonth.plusMonths(1);
+        updateCalendar();
+    }
+
+    @FXML
+    private void onRegisterButtonClicked() {
+        String eventCode = eventCodeField.getText().trim();
+        if (eventCode.isEmpty()) {
+            showAlert("Missing Input", "Please enter an event code to register.", Alert.AlertType.WARNING);
+            return;
+        }
+
+        List<Event> events = Event.getEventList();
+        Event event = events.stream()
+                .filter(e -> e.getEventCode().equalsIgnoreCase(eventCode))
+                .findFirst()
+                .orElse(null);
+
+        if (event == null) {
+            showAlert("Not Found", "No event found with that code.", Alert.AlertType.ERROR);
+            return;
+        }
+
+        String studentID = String.valueOf(loggedInStudent.getStudentID());
+        if (event.getRegisteredStudents().contains(studentID)) {
+            showAlert("Already Registered", "You are already registered for this event.", Alert.AlertType.INFORMATION);
+            return;
+        }
+
+        event.registerStudent(studentID);
+        showAlert("Success", "You have been registered for: " + event.getEventName(), Alert.AlertType.INFORMATION);
+        eventCodeField.clear();
+        updateCalendar();
+    }
+
     private void navigateTo(String fxmlFile, String title, String controllerKey) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/CompanyLogin/" + fxmlFile));
             Parent root = loader.load();
 
-            // Based on destination, cast and pass student to correct controller
             switch (controllerKey) {
                 case "subject":
                     USubjectManagementController subjectController = loader.getController();
@@ -76,7 +153,6 @@ public class UEventManagementController {
                     break;
             }
 
-            // Set the new scene
             Stage stage = (Stage) eventCodeField.getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.setTitle(title);
@@ -88,7 +164,6 @@ public class UEventManagementController {
         }
     }
 
-    // Navigation button actions
     @FXML private void loadSubjectManagement() {
         navigateTo("USubjectManagement.fxml", "Subject Management", "subject");
     }
@@ -106,15 +181,14 @@ public class UEventManagementController {
     }
 
     @FXML private void loadEventManagement() {
-        // Already on this page — refresh logic can be added here if needed
+        updateCalendar(); // Refresh
     }
 
-    // Displays alert popups
-    private void showAlert(String title, String message, Alert.AlertType type) {
+    private void showAlert(String title, String msg, Alert.AlertType type) {
         Alert alert = new Alert(type);
         alert.setTitle(title);
         alert.setHeaderText(null);
-        alert.setContentText(message);
+        alert.setContentText(msg);
         alert.showAndWait();
     }
 }
