@@ -13,10 +13,8 @@
                     <Image url="@HomeScreen.png" />
                 </image>
             </ImageView>
-            <Button onAction="#loadSubjectManagement" prefHeight="62.0" prefWidth="147.0" text="Subject Management" />
             <Button onAction="#loadCourseManagement" prefHeight="69.0" prefWidth="146.0" text="Course Management" />
-            <Button onAction="#loadStudentManagement" prefHeight="68.0" prefWidth="147.0" text="Student Management" />
-            <Button onAction="#loadFacultyManagement" prefHeight="69.0" prefWidth="145.0" text="Faculty Management" />
+            <Button onAction="#loadUserManagement" prefHeight="68.0" prefWidth="147.0" text="User Management" />
             <Button onAction="#loadEventManagement" prefHeight="76.0" prefWidth="146.0" text="Event Management" />
         </VBox>
     </left>

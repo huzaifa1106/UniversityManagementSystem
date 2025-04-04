@@ -18,29 +18,50 @@
             style="-fx-background-color: #f8f9fa;">
 
     <left>
-        <VBox spacing="10" style="-fx-background-color: #6A89A7; -fx-padding: 10px;">
+        <VBox spacing="10" style="-fx-background-color: #6A89A7; -fx-padding: 10px;" BorderPane.alignment="CENTER">
             <ImageView fitHeight="70.0" fitWidth="155.0">
-                <image><Image url="@HomeScreen.png" /></image>
+                <image>
+                    <Image url="@HomeScreen.png" />
+                </image>
             </ImageView>
+            <Button layoutX="10.0" layoutY="171.0" onAction="#loadCourseManagement" prefHeight="69.0" prefWidth="146.0" styleClass="menu-button" text="Course Management" />
+            <Button layoutX="11.0" layoutY="254.0" onAction="#loadUserManagement" prefHeight="68.0" prefWidth="147.0" styleClass="menu-button" text="User Management" />
+            <Button layoutX="11.0" layoutY="419.0" onAction="#loadEventManagement" prefHeight="76.0" prefWidth="146.0" styleClass="menu-button" text="Event Management" />
 
-            <Button onAction="#loadCourseManagement" text="My Courses" />
-            <Button onAction="#loadUserManagement" text="My Info" />
         </VBox>
     </left>
+
+
+    <left>
+        <VBox spacing="10" style="-fx-background-color: #6A89A7; -fx-padding: 10px;" BorderPane.alignment="CENTER">
+            <ImageView fitHeight="70.0" fitWidth="155.0">
+                <image>
+                    <Image url="@HomeScreen.png" />
+                </image>
+            </ImageView>
+            <Button layoutX="10.0" layoutY="171.0" onAction="#loadCourseManagement" prefHeight="69.0" prefWidth="146.0" styleClass="menu-button" text="Course Management" />
+            <Button layoutX="11.0" layoutY="254.0" onAction="#loadUserManagement" prefHeight="68.0" prefWidth="147.0" styleClass="menu-button" text="User Management" />
+            <Button layoutX="11.0" layoutY="419.0" onAction="#loadEventManagement" prefHeight="76.0" prefWidth="146.0" styleClass="menu-button" text="Event Management" />
+
+        </VBox>
+    </left>
+
 
     <center>
         <VBox alignment="CENTER" spacing="15" style="-fx-padding: 20px;">
             <Label text="Faculty Course Management" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-padding: 5px;" />
             <Label text="Courses You Teach" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
 
-            <TableView fx:id="facultyCourseTable" prefHeight="200.0" prefWidth="600.0">
+            <TableView fx:id="facultyCoursesTable" prefHeight="200.0" prefWidth="600.0">
                 <columns>
                     <TableColumn fx:id="colCourseID" text="Course ID" prefWidth="100.0" />
                     <TableColumn fx:id="colCourseName" text="Course Name" prefWidth="200.0" />
                     <TableColumn fx:id="colSectionNumber" text="Section" prefWidth="100.0" />
+                    <TableColumn fx:id="colSubjectName" text="Subject" prefWidth="100.0" />
                     <TableColumn fx:id="colLocation" text="Location" prefWidth="200.0" />
                 </columns>
             </TableView>
+
 
             <Button fx:id="manageEnrollmentsButton" onAction="#manageEnrollments" prefHeight="40.0" prefWidth="200.0" text="Manage Enrollments" />
         </VBox>

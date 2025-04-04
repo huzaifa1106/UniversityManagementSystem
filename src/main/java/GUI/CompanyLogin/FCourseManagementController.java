@@ -1,3 +1,12 @@
+/**
+ * File: FCourseManagementController.java
+ * Description: Controls the Faculty-side course management interface.
+ *              Displays a list of faculty-assigned courses, and allows navigation
+ *              to manage enrollments and access related dashboards.
+ * Author: Group 10
+ * Last Updated: April 2025
+ */
+
 package GUI.CompanyLogin;
 
 import Backend.Course;
@@ -24,16 +33,23 @@ public class FCourseManagementController {
     @FXML private TableColumn<Course, String> colSubjectName;
     @FXML private TableColumn<Course, String> colLocation;
 
-    private String loggedInFacultyName;
+    private Faculty loggedInFaculty;
 
-    public void setFacultyName(String name) {
-        this.loggedInFacultyName = name;
+    /**
+     * Called by parent to provide the logged-in faculty member context.
+     * @param faculty the logged-in Faculty object
+     */
+    public void setFaculty(Faculty faculty) {
+        this.loggedInFaculty = faculty;
         loadFacultyCourses();
     }
 
+    /**
+     * Filters and displays the list of courses assigned to the current faculty member.
+     */
     private void loadFacultyCourses() {
         List<Course> myCourses = Course.getCourseList().stream()
-                .filter(c -> c.getTeacherName().equalsIgnoreCase(loggedInFacultyName))
+                .filter(c -> c.getTeacherName().equalsIgnoreCase(loggedInFaculty.getName()))
                 .collect(Collectors.toList());
 
         colCourseID.setCellValueFactory(data -> new SimpleStringProperty(String.valueOf(data.getValue().getCourseID())));
@@ -45,6 +61,9 @@ public class FCourseManagementController {
         facultyCoursesTable.setItems(FXCollections.observableArrayList(myCourses));
     }
 
+    /**
+     * Opens a window to view and manage enrollments for the selected course.
+     */
     @FXML
     private void manageEnrollments() {
         Course selected = facultyCoursesTable.getSelectionModel().getSelectedItem();
@@ -70,10 +89,7 @@ public class FCourseManagementController {
         }
     }
 
-    @FXML
-    private void loadCourseManagement() {
-        // Already on this screen
-    }
+    // ---------- Navigation Buttons (Sidebar) ----------
 
     @FXML
     private void loadUserManagement() {
@@ -82,7 +98,7 @@ public class FCourseManagementController {
             Parent root = loader.load();
 
             FUserManagementController controller = loader.getController();
-            controller.setFaculty(Faculty.findByName(loggedInFacultyName));
+            controller.setFaculty(loggedInFaculty);
 
             Stage stage = (Stage) facultyCoursesTable.getScene().getWindow();
             stage.setScene(new Scene(root));
@@ -90,14 +106,56 @@ public class FCourseManagementController {
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
+            showAlert("Navigation Error", "Could not load User Management screen.", Alert.AlertType.ERROR);
         }
     }
 
-    private void showAlert(String title, String message, Alert.AlertType type) {
+    @FXML
+    private void loadEventManagement() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/CompanyLogin/FEventManagement.fxml"));
+            Parent root = loader.load();
+
+            FEventManagementController controller = loader.getController();
+            controller.setFaculty(loggedInFaculty);
+
+            Stage stage = (Stage) facultyCoursesTable.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Event Management");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert("Navigation Error", "Could not load Event Management screen.", Alert.AlertType.ERROR);
+        }
+    }
+
+    @FXML
+    private void loadCourseManagement() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/CompanyLogin/FCourseManagement.fxml"));
+            Parent root = loader.load();
+
+            FCourseManagementController controller = loader.getController();
+            controller.setFaculty(loggedInFaculty); // Refresh context
+
+            Stage stage = (Stage) facultyCoursesTable.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Course Management");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert("Navigation Error", "Could not reload Course Management screen.", Alert.AlertType.ERROR);
+        }
+    }
+
+    /**
+     * Displays a simple alert dialog.
+     */
+    private void showAlert(String title, String msg, Alert.AlertType type) {
         Alert alert = new Alert(type);
         alert.setTitle(title);
         alert.setHeaderText(null);
-        alert.setContentText(message);
+        alert.setContentText(msg);
         alert.showAndWait();
     }
 }
