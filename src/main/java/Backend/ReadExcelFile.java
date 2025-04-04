@@ -474,7 +474,8 @@ public class ReadExcelFile {
                 row.createCell(1).setCellValue(e.getEventCode());
                 row.createCell(2).setCellValue(e.getDescription());
                 row.createCell(3).setCellValue(e.getLocation());
-                row.createCell(4).setCellValue(e.getDateTime() != null ? e.getDateTime().toString() : "N/A");
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");//Ensuring in readable/parsable format
+                row.createCell(4).setCellValue(e.getDateTime() != null ? sdf.format(e.getDateTime()) : "N/A");
                 row.createCell(5).setCellValue(e.getCapacity());
                 row.createCell(6).setCellValue(e.getCost());
                 row.createCell(7).setCellValue(String.join(", ", e.getRegisteredStudents()));
@@ -512,7 +513,7 @@ public class ReadExcelFile {
         try {
             return new SimpleDateFormat("yyyy-MM-dd").parse(input);
         } catch (Exception e) {
-            return new Date(); // fallback
+            return new Date();
         }
     }
 
