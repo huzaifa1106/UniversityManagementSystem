@@ -2,11 +2,17 @@ package GUI.CompanyLogin;
 
 import Backend.Event;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.ZoneId;
@@ -190,6 +196,22 @@ public class AEventManagementController {
         eventCostField.clear();
         selectedEvent = null;
     }
+    @FXML
+    private void openStudentEnrollment() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/CompanyLogin/AEventEnrollment.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = new Stage();
+            stage.setTitle("Manage Event Enrollment");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL); // Prevents interacting with the main window until closed
+            stage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     // Navigation stubs
     @FXML private void loadDashboard() { Router.navigate("ADashboard.fxml", "Admin Dashboard"); }
