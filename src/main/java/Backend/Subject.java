@@ -3,7 +3,7 @@
  * Description: Represents a university subject (e.g., Math, Chemistry) and stores metadata such as
  * its name, code, and associated course offerings. Supports lookup by name or code, and auto-generates codes if needed.
  * Author: Huzaifa A. & Group
- * Date: March 2nd, 2025
+ * Date: April 2025
  */
 
 package Backend;

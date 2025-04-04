@@ -4,7 +4,7 @@
  * such as instructor, lecture time, location, enrolled students, and final exam date.
  * Also provides utility methods for course lookup, conflict checking, and static initialization of sample courses.
  * Author: Huzaifa A. & Group
- * Date: March 2nd, 2025
+ * Date: April 2025
  */
 
 package Backend;

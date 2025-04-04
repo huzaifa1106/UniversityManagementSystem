@@ -3,7 +3,7 @@
  * Description: Represents an event at the University of Guelph. Handles functionality for event
  * creation, duplication validation, student registration, and data access for event listings.
  * Author: Huzaifa A. & Group
- * Date: March 2nd, 2025
+ * Date: April 2025
  */
 
 package Backend;

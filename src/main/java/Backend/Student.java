@@ -3,7 +3,7 @@
  * as well as information about the courses and subjects the student is enrolled in. The class also includes methods
  * for enrollment, course management, and interacting with backend components like the course and subject management systems.
  * Author: Huzaifa A. & Group
- * Date: March 2nd, 2025
+ * Date:April 2025
  */
 
 package Backend;

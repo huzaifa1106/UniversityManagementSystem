@@ -4,7 +4,7 @@
  * Stores credentials in memory and reads/writes to `users.txt` and `admins.txt`.
  *
  * Author: Huzaifa A. & Group
- * Date: March 2nd, 2025
+ * Date: April 2025
  */
 
 package Backend;
