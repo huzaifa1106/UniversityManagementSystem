@@ -9,8 +9,9 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<BorderPane prefHeight="600.0" prefWidth="880.0" style="-fx-background-color: #f8f9fa;" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.CompanyLogin.AEventManagementController">
+<BorderPane prefHeight="600.0" prefWidth="880.0" style="-fx-background-color: #f8f9fa;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.CompanyLogin.AEventManagementController">
 
     <left>
         <VBox spacing="10" style="-fx-background-color: #6A89A7; -fx-padding: 10px;" BorderPane.alignment="CENTER">
@@ -37,7 +38,7 @@
             </HBox>
 
             <Label style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Event Calendar" />
-            <GridPane fx:id="calendarGrid" hgap="5" vgap="5" prefHeight="420.0" prefWidth="440.0" style="-fx-padding: 10px;">
+            <GridPane fx:id="calendarGrid" hgap="5" prefHeight="420.0" prefWidth="440.0" style="-fx-padding: 10px;" vgap="5">
                 <!-- Calendar Days will be dynamically added here -->
             </GridPane>
         </VBox>
@@ -47,24 +48,36 @@
         <VBox alignment="CENTER" prefHeight="600.0" prefWidth="263.0" spacing="12" style="-fx-padding: 15px;">
             <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Create an Event" />
 
-            <GridPane hgap="15" vgap="12" prefHeight="276.0" prefWidth="203.0">
-                <Label text="Event Name:" GridPane.columnIndex="0" GridPane.rowIndex="0" style="-fx-font-weight: bold;" />
+            <GridPane hgap="15" prefHeight="276.0" prefWidth="203.0" vgap="12">
+                <Label style="-fx-font-weight: bold;" text="Event Name:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
                 <TextField fx:id="eventNameField" promptText="Enter Event Name" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
-                <Label text="Event Code:" GridPane.columnIndex="0" GridPane.rowIndex="1" style="-fx-font-weight: bold;" />
+                <Label style="-fx-font-weight: bold;" text="Event Code:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
                 <TextField fx:id="eventCodeField" promptText="Enter Event Code" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-                <Label text="Location:" GridPane.columnIndex="0" GridPane.rowIndex="2" style="-fx-font-weight: bold;" />
+                <Label style="-fx-font-weight: bold;" text="Location:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
                 <TextField fx:id="eventLocationField" promptText="Enter Venue" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
-                <Label text="Date:" GridPane.columnIndex="0" GridPane.rowIndex="3" style="-fx-font-weight: bold;" />
+                <Label style="-fx-font-weight: bold;" text="Date:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
                 <DatePicker fx:id="eventDatePicker" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
-                <Label text="Capacity:" GridPane.columnIndex="0" GridPane.rowIndex="4" style="-fx-font-weight: bold;" />
+                <Label style="-fx-font-weight: bold;" text="Capacity:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
                 <TextField fx:id="eventCapacityField" promptText="Max Participants" GridPane.columnIndex="1" GridPane.rowIndex="4" />
 
-                <Label text="Cost:" GridPane.columnIndex="0" GridPane.rowIndex="5" style="-fx-font-weight: bold;" />
+                <Label style="-fx-font-weight: bold;" text="Cost:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
                 <TextField fx:id="eventCostField" promptText="Enter Cost" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <columnConstraints>
+               <ColumnConstraints />
+               <ColumnConstraints />
+            </columnConstraints>
+            <rowConstraints>
+               <RowConstraints />
+               <RowConstraints />
+               <RowConstraints />
+               <RowConstraints />
+               <RowConstraints />
+               <RowConstraints />
+            </rowConstraints>
             </GridPane>
 
             <HBox alignment="CENTER" spacing="12">
@@ -73,6 +86,11 @@
             </HBox>
             <HBox alignment="CENTER" spacing="12">
                 <Button fx:id="deleteEventButton" onAction="#deleteEvent" prefHeight="34.0" prefWidth="89.0" text="Delete Event" />
+            <Button fx:id="AddStudentButton" layoutX="82.0" layoutY="10.0" onAction="#openStudentEnrollment" prefHeight="34.0" prefWidth="89.0" text="Add Student(s)">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Button>
             </HBox>
         </VBox>
     </right>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane prefHeight="400" prefWidth="700" xmlns="http://javafx.com/javafx/17.0.12"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="GUI.CompanyLogin.AEventManageEnrollmentController">
+
+    <left>
+        <VBox spacing="10" style="-fx-padding: 10;">
+            <Label style="-fx-font-weight: bold;" text="Event:" />
+            <ListView fx:id="eventListView" prefWidth="200" />
+        </VBox>
+    </left>
+
+    <center>
+        <VBox spacing="10" style="-fx-padding: 10;">
+            <Label style="-fx-font-weight: bold; -fx-font-size: 16px;" text="Selected Event Info" />
+            <Label fx:id="eventNameLabel" text="Event" />
+            <Label style="-fx-font-weight: bold;" text="Registered Students:" />
+            <TextArea fx:id="studentsTextArea" editable="false" prefHeight="150" wrapText="true" />
+
+            <HBox spacing="10">
+                <ComboBox fx:id="addStudentComboBox" promptText="Select student to add" />
+                <Button onAction="#addStudent" text="Add Student" />
+            </HBox>
+
+            <HBox spacing="10">
+                <ComboBox fx:id="removeStudentComboBox" promptText="Select student to remove" />
+                <Button onAction="#removeStudent" text="Remove Student" />
+            </HBox>
+
+            <Button onAction="#closeWindow" text="Close" />
+        </VBox>
+    </center>
+</BorderPane>
