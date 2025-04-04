@@ -8,6 +8,7 @@
 
 package GUI.CompanyLogin;
 
+import Backend.ReadExcelFile;
 import Backend.Student;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleLongProperty;
@@ -115,6 +116,8 @@ public class AStudentManagementController extends ASubjectManagementController {
             );
 
             Student.addStudent(newStudent);
+            ReadExcelFile.writeToExcel();
+
             loadStudentsIntoTable();
             clearFields();
             showAlert("Success", "Student added successfully!", Alert.AlertType.INFORMATION);
@@ -137,7 +140,7 @@ public class AStudentManagementController extends ASubjectManagementController {
                 selectedStudent.setAddress(studentAddressField.getText());
                 selectedStudent.setSemester(studentSemesterField.getText());
                 selectedStudent.setAcademicLevel(studentLevelField.getText());
-
+                ReadExcelFile.writeToExcel();
                 loadStudentsIntoTable();
                 clearFields();
                 showAlert("Success", "Student updated successfully!", Alert.AlertType.INFORMATION);
@@ -154,6 +157,7 @@ public class AStudentManagementController extends ASubjectManagementController {
     private void deleteStudent() {
         if (selectedStudent != null) {
             Student.removeStudent(selectedStudent.getStudentID());
+            ReadExcelFile.writeToExcel();
             loadStudentsIntoTable();
             clearFields();
             selectedStudent = null;

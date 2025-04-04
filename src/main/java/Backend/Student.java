@@ -12,6 +12,8 @@ package Backend;
 
 import javafx.beans.property.*;
 import javafx.scene.image.Image;
+
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class Student extends User {
@@ -88,6 +90,36 @@ public class Student extends User {
     }
 
     // Auto-ID Constructor
+    public Student(int studentID, String fullName, String password, Image profilePicture, String address, long telephone,
+                   int tuitionAnnual, int tuitionBalance, String emailAddress, int average, String semester,
+                   String academicLevel, String thesisTitle, int progress,
+                   ArrayList<Course> enrolledCourses, ArrayList<Subject> enrolledSubjects,
+                   boolean register) {
+        super(String.valueOf(studentID), password, "student");
+        this.studentID = new SimpleIntegerProperty(studentID);
+        this.fullName = new SimpleStringProperty(fullName);
+        this.profilePicture = new SimpleObjectProperty<>(profilePicture);
+        this.address = new SimpleStringProperty(address);
+        this.telephone = new SimpleLongProperty(telephone);
+        this.tuitionAnnual = new SimpleIntegerProperty(tuitionAnnual);
+        this.tuitionBalance = new SimpleIntegerProperty(tuitionBalance);
+        this.emailAddress = new SimpleStringProperty(emailAddress);
+        this.average = new SimpleIntegerProperty(average);
+        this.semester = new SimpleStringProperty(semester);
+        this.academicLevel = new SimpleStringProperty(academicLevel);
+        this.thesisTitle = new SimpleStringProperty(thesisTitle);
+        this.progress = new SimpleIntegerProperty(progress);
+        this.enrolledCourses = enrolledCourses;
+        this.enrolledSubjects = enrolledSubjects;
+
+        if (register) {
+            UserAuthenticator.newUser(this.getUsername(), this.getPassword());
+            students.add(this);
+        }
+    }
+
+
+
     public Student(String fullName, String password, Image profilePicture, String address, long telephone,
                    int tuitionAnnual, int tuitionBalance, String emailAddress, int average, String semester,
                    String academicLevel, String thesisTitle) {
@@ -167,7 +199,6 @@ public class Student extends User {
     }
 
     public static void addStudent(Student student) {
-        students.add(student);
         System.out.println("Student added successfully: " + student.getFullName());
     }
 
@@ -221,6 +252,12 @@ public class Student extends User {
     public String getCourseNamesAsString() {if (enrolledCourses == null || enrolledCourses.isEmpty()) return "No courses enrolled.";StringBuilder sb = new StringBuilder();for (Course c : enrolledCourses) {sb.append("- ").append(c.getCourseName()).append("\n");}return sb.toString();}
     public boolean checkDuplicateCourse(Course course) {for (Course c : enrolledCourses) {if (c.getCourseName().equalsIgnoreCase(course.getCourseName())) {return true;}}return false;}
     public int getProgress() { return progress.get(); }
+
+
+    public static void setStudentList(List<Student> list) {
+        students = list;
+    }
+
 
     // Setters
     public void setFullName(String fullName) { this.fullName.set(fullName); }

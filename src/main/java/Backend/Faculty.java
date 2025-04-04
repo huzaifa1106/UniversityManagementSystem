@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Faculty {
 
-    private static final List<Faculty> facultyList = new ArrayList<>();
+    private static List<Faculty> facultyList = new ArrayList<>();
 
     private String facultyID;
     private String name;
@@ -29,16 +29,7 @@ public class Faculty {
         this.officeLocation = officeLocation;
     }
 
-    static {
-        facultyList.add(new Faculty("F0001", "Dr. Alan Turing", null, "Ph.D.", "Computational Theory",
-                List.of("Calculus I"), "turing@university.edu", "Room 201"));
 
-        facultyList.add(new Faculty("F0002", "Prof. Emily Brontë", null, "Master's", "English Literature",
-                List.of("Literature Basics", "Introduction to French"), "bronte@university.edu", "Room 202"));
-
-        facultyList.add(new Faculty("F0003", "Dr. Grace Hopper", null, "Ph.D.", "Computer Programming",
-                List.of("Programming Fundamentals", "Operating Systems"), "hopper@university.edu", "Lab 203"));
-    }
 
     // Method to check if a faculty already exists
     public static boolean isFacultyDuplicate(String facultyID, String email) {
@@ -61,6 +52,7 @@ public class Faculty {
 
     public static void addFaculty(Faculty faculty) {
         facultyList.add(faculty);
+        ReadExcelFile.writeToExcel();
     }
 
     public static void removeFaculty(String facultyID) {
@@ -148,6 +140,10 @@ public class Faculty {
 
     public String getResearchInterest() {
         return researchInterest;
+    }
+
+    public static void setFacultyList(List<Faculty> faculties) {
+        facultyList = faculties;
     }
 
     // Display method

@@ -1,12 +1,19 @@
 package GUI.CompanyLogin;
 
 import Backend.Event;
+import Backend.ReadExcelFile;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.ZoneId;
@@ -132,6 +139,7 @@ public class AEventManagementController {
             );
 
             Event.addEvent(newEvent);
+            ReadExcelFile.writeToExcel();
             System.out.println("Event added.");
             updateCalendar();
             clearForm();
@@ -143,6 +151,25 @@ public class AEventManagementController {
 
     @FXML
     private void editEvent() {
+        if (selectedEvent != null) {
+            try {
+                selectedEvent.setEventName(eventNameField.getText());
+                selectedEvent.setEventCode(eventCodeField.getText());
+                selectedEvent.setLocation(eventLocationField.getText());
+                selectedEvent.setDateTime(formatter.parse(eventDateTimeField.getText()));
+                selectedEvent.setCapacity(Integer.parseInt(eventCapacityField.getText()));
+                selectedEvent.setCost(Double.parseDouble(eventCostField.getText()));
+                ReadExcelFile.writeToExcel();
+                populateCalendarWithEvents();
+                clearForm();
+                selectedEvent = null;
+
+                showAlert("Success", "Event updated successfully!", Alert.AlertType.INFORMATION);
+            } catch (Exception e) {
+                showAlert("Error", "Invalid input. Please check values.", Alert.AlertType.ERROR);
+            }
+        } else {
+            showAlert("No Event Selected", "Click a date with an event to edit.", Alert.AlertType.WARNING);
         if (selectedEvent == null) {
             System.out.println("No event selected to edit.");
             return;
@@ -162,6 +189,15 @@ public class AEventManagementController {
 
     @FXML
     private void deleteEvent() {
+        if (selectedEvent != null) {
+            Event.removeEvent(selectedEvent.getEventCode());
+            ReadExcelFile.writeToExcel();
+            populateCalendarWithEvents();
+            clearForm();
+            selectedEvent = null;
+            showAlert("Deleted", "Event removed from calendar.", Alert.AlertType.INFORMATION);
+        } else {
+            showAlert("No Event Selected", "Click a date with an event to delete.", Alert.AlertType.WARNING);
         if (selectedEvent == null) {
             System.out.println("No event selected to delete.");
             return;
@@ -190,6 +226,22 @@ public class AEventManagementController {
         eventCostField.clear();
         selectedEvent = null;
     }
+    @FXML
+    private void openStudentEnrollment() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GUI/CompanyLogin/AEventEnrollment.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = new Stage();
+            stage.setTitle("Manage Event Enrollment");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL); // Prevents interacting with the main window until closed
+            stage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     // Navigation stubs
     @FXML private void loadDashboard() { Router.navigate("ADashboard.fxml", "Admin Dashboard"); }
